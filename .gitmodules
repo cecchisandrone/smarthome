@@ -1,0 +1,3 @@
+[submodule "smarthome-server"]
+	path = smarthome-server
+	url = https://github.com/cecchisandrone/smarthome-server.git

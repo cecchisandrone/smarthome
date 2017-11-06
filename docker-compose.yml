@@ -1,0 +1,17 @@
+version: '3'
+services:  
+  smarthome-server:    
+    image: repo.treescale.com/cecchisandrone/smarthome-server:latest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  smarthome-ui:
+    image: repo.treescale.com/cecchisandrone/smarthome-ui:latest
+  smarthome-db:
+    image: repo.treescale.com/cecchisandrone/smarthome-db:latest 
+networks:
+  default:
+    external:
+      name: "smarthome"
