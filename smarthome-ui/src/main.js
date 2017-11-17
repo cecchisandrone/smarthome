@@ -29,6 +29,11 @@ const router = new VueRouter({
   routes, // short for routes: routes
   linkActiveClass: 'active'
 })
+router.beforeEach((to, from, next) => {
+  console.log(to)
+  console.log(from)
+  next()
+})
 
 // global library setup
 Object.defineProperty(Vue.prototype, '$Chartist', {

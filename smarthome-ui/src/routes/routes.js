@@ -10,8 +10,13 @@ import Icons from 'src/components/Dashboard/Views/Icons.vue'
 import Maps from 'src/components/Dashboard/Views/Maps.vue'
 import Typography from 'src/components/Dashboard/Views/Typography.vue'
 import TableList from 'src/components/Dashboard/Views/TableList.vue'
+import Login from 'src/components/GeneralViews/LoginPage.vue'
 
 const routes = [
+  {
+    path: '/login',
+    component: Login
+  },
   {
     path: '/',
     component: DashboardLayout,
@@ -59,7 +64,10 @@ const routes = [
       }
     ]
   },
-  { path: '*', component: NotFound }
+  {
+    path: '*',
+    component: NotFound
+  }
 ]
 
 /**

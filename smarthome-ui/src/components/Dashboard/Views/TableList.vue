@@ -12,7 +12,7 @@
 <script>
   import PaperTable from 'components/UIComponents/PaperTable.vue'
   import axios from 'axios'
-  const tableColumns = ['Id', 'Title', 'Body']
+  const tableColumns = ['ID', 'Name', 'Username', 'Enabled']
   const tableData = []
 
   export default {
@@ -30,13 +30,11 @@
       }
     },
     created () {
-      setTimeout(() => {
-        axios.get(`https://jsonplaceholder.typicode.com/posts`).then(response => {
-          this.table1.data = response.data
-        }).catch(e => {
-          this.errors.push(e)
-        })
-      }, 2000)
+      axios.get(`http://localhost:8080/api/v1/configurations/2/cameras/`).then(response => {
+        this.table1.data = response.data
+      }).catch(e => {
+        this.errors.push(e)
+      })
     }
   }
 
