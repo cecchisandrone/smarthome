@@ -10,7 +10,7 @@ import Icons from 'src/components/Dashboard/Views/Icons.vue'
 import Maps from 'src/components/Dashboard/Views/Maps.vue'
 import Typography from 'src/components/Dashboard/Views/Typography.vue'
 import TableList from 'src/components/Dashboard/Views/TableList.vue'
-import Login from 'src/components/GeneralViews/LoginPage.vue'
+import Login from 'src/components/Login/LoginPage.vue'
 
 const routes = [
   {

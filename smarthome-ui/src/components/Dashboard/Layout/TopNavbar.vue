@@ -33,6 +33,9 @@
               </p>
             </a>
           </li>
+          <li>
+            <logout></logout>
+          </li>  
         </ul>
       </div>
     </div>

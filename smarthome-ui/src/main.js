@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import vClickOutside from 'v-click-outside'
+import {store} from 'components/store.js'
+import * as loginService from 'components/Login/loginService.js'
 
 // Plugins
 import GlobalComponents from './gloablComponents'
@@ -32,7 +34,12 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   console.log(to)
   console.log(from)
-  next()
+  console.log(store)
+  if (to.path === '/login' || loginService.checkAuth()) {
+    next()
+  } else {
+    next('/login')
+  }
 })
 
 // global library setup
@@ -47,6 +54,7 @@ new Vue({
   el: '#app',
   render: h => h(App),
   router,
+  store,
   data: {
     Chartist: Chartist
   }
