@@ -10,12 +10,14 @@ import Icons from 'src/components/Dashboard/Views/Icons.vue'
 import Maps from 'src/components/Dashboard/Views/Maps.vue'
 import Typography from 'src/components/Dashboard/Views/Typography.vue'
 import TableList from 'src/components/Dashboard/Views/TableList.vue'
-import Login from 'src/components/Login/LoginPage.vue'
+import Login from 'src/components/Login/Login.vue'
 
 const routes = [
   {
+    name: 'login',
     path: '/login',
-    component: Login
+    component: Login,
+    props: (route) => ({ loggedOut: route.query.loggedOut })
   },
   {
     path: '/',

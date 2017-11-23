@@ -11,7 +11,7 @@ export default {
     logoutUser: function () {
       localStorage.removeItem('smarthomeUser')
       this.$store.commit('setLoggedIn', false)
-      this.$router.push('/login')
+      this.$router.push({name: 'login', query: { loggedOut: 'true' }})
     }
   }
 }

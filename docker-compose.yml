@@ -7,10 +7,12 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    restart: always
   smarthome-ui:
     image: repo.treescale.com/cecchisandrone/smarthome-ui:latest
   smarthome-db:
-    image: repo.treescale.com/cecchisandrone/smarthome-db:latest 
+    image: repo.treescale.com/cecchisandrone/smarthome-db:latest
+    restart: always
 networks:
   default:
     external:

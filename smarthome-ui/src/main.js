@@ -32,9 +32,8 @@ const router = new VueRouter({
   linkActiveClass: 'active'
 })
 router.beforeEach((to, from, next) => {
-  console.log(to)
   console.log(from)
-  console.log(store)
+  console.log(to)
   if (to.path === '/login' || loginService.checkAuth()) {
     next()
   } else {

@@ -1,33 +1,56 @@
 <template>
-  <div class='container'>
+  <div class='wrapper'>
+      <notifications>
 
-      <form class='form-signin'>
-        <h2 class='form-signin-heading'>SmartHome Login</h2>
-        <fg-input type='text' label='Username' placeholder='Username' v-model='username'></fg-input>
-        <fg-input type='password' label='Password' placeholder='Password' v-model='password'></fg-input>        
+      </notifications>
+      <div class='form-signin' v-on:keyup.enter='loginUser'>
+        <div class="text-center">
+        <img class="avatar border-white" src="static/img/vue-logo.png" alt="...">
+        <h3 class='form-signin-heading'>SmartHome Authentication</h3>
+        </div>
+        <fg-input type='text' label='Username' placeholder='Username' name='username' id='username' v-model='username'></fg-input>
+        <fg-input type='password' label='Password' placeholder='Password' name='password' id='password' v-model='password'></fg-input>        
         <div class='form-check'>
             <label class='form-check-label'>
                 <input class='form-check-input' type='checkbox' value=''>
                 Remember me
             </label>
         </div>
-        <button v-on:click='loginUser()' type='submit' class='btn btn-info btn-fill btn-wd'>Sign in</button>
+        <button v-on:click='loginUser()' type='submit' class='btn btn-info btn-fill btn-wd'>Sign in</button>        
         <h5 v-show="errors !==''" class="text-danger">
           {{ errors }}
         </h5>
-      </form>
+      </div>
 
     </div> <!-- /container -->
 </template>
 
 <script>
 import * as loginService from './loginService.js'
+import Notification from 'src/components/UIComponents/NotificationPlugin/Notification.vue'
 export default {
+  props: {
+    loggedOut: {
+      type: String
+    }
+  },
   data () {
     return {
       username: '',
       password: '',
       errors: ''
+    }
+  },
+  mounted () {
+    if (this.loggedOut) {
+      this.$notifications.notify(
+        {
+          message: 'You have been successfully logged out',
+          icon: 'ti-user',
+          horizontalAlign: 'center',
+          verticalAlign: 'center',
+          type: 'success'
+        })
     }
   },
   methods: {
@@ -36,8 +59,6 @@ export default {
       loginService
         .login(this.username, this.password)
         .then(function (res) {
-          app.$store.commit('setLoggedIn', true)
-          window.localStorage.setItem('smarthomeUser', JSON.stringify(res))
           app.$router.push('/')
         })
         .catch(function (err) {
@@ -45,6 +66,9 @@ export default {
           app.errors = err.message
         })
     }
+  },
+  components: {
+    Notification
   }
 }
 </script>
