@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import vClickOutside from 'v-click-outside'
 import {store} from 'components/store.js'
-import * as loginService from 'components/Login/loginService.js'
+import * as loginService from 'src/services/authService.js'
 
 // Plugins
 import GlobalComponents from './gloablComponents'

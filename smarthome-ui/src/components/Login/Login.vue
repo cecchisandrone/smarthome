@@ -10,13 +10,7 @@
         </div>
         <fg-input type='text' label='Username' placeholder='Username' name='username' id='username' v-model='username'></fg-input>
         <fg-input type='password' label='Password' placeholder='Password' name='password' id='password' v-model='password'></fg-input>        
-        <div class='form-check'>
-            <label class='form-check-label'>
-                <input class='form-check-input' type='checkbox' value=''>
-                Remember me
-            </label>
-        </div>
-        <button v-on:click='loginUser()' type='submit' class='btn btn-info btn-fill btn-wd'>Sign in</button>        
+        <button v-on:click='loginUser()' type='submit' class='btn btn-info btn-fill btn-wd btn-block'>Sign in</button>                
         <h5 v-show="errors !==''" class="text-danger">
           {{ errors }}
         </h5>
@@ -26,7 +20,7 @@
 </template>
 
 <script>
-import * as loginService from './loginService.js'
+import * as loginService from 'src/services/authService.js'
 import Notification from 'src/components/UIComponents/NotificationPlugin/Notification.vue'
 export default {
   props: {
@@ -48,7 +42,7 @@ export default {
           message: 'You have been successfully logged out',
           icon: 'ti-user',
           horizontalAlign: 'center',
-          verticalAlign: 'center',
+          verticalAlign: 'top',
           type: 'success'
         })
     }

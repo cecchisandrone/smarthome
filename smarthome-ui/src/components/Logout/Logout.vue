@@ -9,6 +9,7 @@
 export default {
   methods: {
     logoutUser: function () {
+      this.$sidebar.displaySidebar(false)
       localStorage.removeItem('smarthomeUser')
       this.$store.commit('setLoggedIn', false)
       this.$router.push({name: 'login', query: { loggedOut: 'true' }})

@@ -11,6 +11,7 @@ import Maps from 'src/components/Dashboard/Views/Maps.vue'
 import Typography from 'src/components/Dashboard/Views/Typography.vue'
 import TableList from 'src/components/Dashboard/Views/TableList.vue'
 import Login from 'src/components/Login/Login.vue'
+import Configuration from 'src/components/Dashboard/Views/Configuration.vue'
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
         path: 'overview',
         name: 'overview',
         component: Overview
+      },
+      {
+        path: 'configuration',
+        name: 'configuration',
+        component: Configuration
       },
       {
         path: 'stats',

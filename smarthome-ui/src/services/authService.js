@@ -1,4 +1,4 @@
-import config from '../../config/config.js'
+import config from '../config/config.js'
 import axios from 'axios'
 
 function login (username, password) {
@@ -30,7 +30,7 @@ function renewToken (token) {
 }
 
 function checkAuth () {
-  var token = JSON.parse(window.localStorage.getItem('smarthomeUser'))
+  var token = getAuthToken()
   if (token != null) {
     var tokenExpiration = new Date(token.expire)
     if (tokenExpiration < Date.now()) {
@@ -42,6 +42,15 @@ function checkAuth () {
     }
   }
   return false
+}
+
+function getAuthToken () {
+  var token = window.localStorage.getItem('smarthomeUser')
+  if (token != null) {
+    return JSON.parse(token).data
+  } else {
+    return null
+  }
 }
 
 export { login, checkAuth }
