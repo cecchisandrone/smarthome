@@ -5,12 +5,19 @@ function login (username, password) {
   return new Promise(function (resolve, reject) {
     var user = { 'username': username, 'password': password }
     axios.post(config.apiEndpoint + '/auth', user)
-      .then(function (res) {
-        window.localStorage.setItem('smarthomeUser', JSON.stringify(res))
-        resolve(res.data)
+      .then((response1) => {
+        axios.get(config.apiEndpoint + '/auth/', {headers: { Authorization: `Bearer ${response1.data.token}` }})
+          .then((response2) => {
+            var userData = Object.assign(response1.data, response2.data.claims)
+            window.localStorage.setItem('smarthomeUser', JSON.stringify(userData))
+            resolve(userData)
+          })
+          .catch((err) => {
+            reject(err.response2.data)
+          })
       })
-      .catch(function (err) {
-        reject(err.response.data)
+      .catch((err) => {
+        reject(err.response2.data)
       })
   })
 }
@@ -20,7 +27,7 @@ function renewToken (token) {
   return new Promise(function (resolve, reject) {
     axios.put(config.apiEndpoint + '/auth', {headers: { Authorization: `Bearer ${token}` }})
       .then(function (res) {
-        window.localStorage.setItem('smarthomeUser', JSON.stringify(res))
+        window.localStorage.setItem('smarthomeUser', JSON.stringify(res.data))
         resolve(res.data)
       })
       .catch(function (err) {
@@ -47,7 +54,7 @@ function checkAuth () {
 function getAuthToken () {
   var token = window.localStorage.getItem('smarthomeUser')
   if (token != null) {
-    return JSON.parse(token).data
+    return JSON.parse(token)
   } else {
     return null
   }
