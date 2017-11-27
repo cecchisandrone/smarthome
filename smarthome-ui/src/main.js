@@ -2,10 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import vClickOutside from 'v-click-outside'
 import {store} from 'components/store.js'
-import * as loginService from 'src/services/authService.js'
+import * as authService from 'src/services/authService.js'
 
 // Plugins
-import GlobalComponents from './gloablComponents'
+import GlobalComponents from './globalComponents'
 import Notifications from './components/UIComponents/NotificationPlugin'
 import SideBar from './components/UIComponents/SidebarPlugin'
 import App from './App'
@@ -34,7 +34,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   console.log(from)
   console.log(to)
-  if (to.path === '/login' || loginService.checkAuth()) {
+  if (to.path === '/login' || authService.checkAuth()) {
     next()
   } else {
     next('/login')

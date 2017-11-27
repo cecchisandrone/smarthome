@@ -37,7 +37,7 @@ function renewToken (token) {
 }
 
 function checkAuth () {
-  var token = getAuthToken()
+  var token = getCurrentUser()
   if (token != null) {
     var tokenExpiration = new Date(token.expire)
     if (tokenExpiration < Date.now()) {
@@ -51,13 +51,13 @@ function checkAuth () {
   return false
 }
 
-function getAuthToken () {
-  var token = window.localStorage.getItem('smarthomeUser')
-  if (token != null) {
-    return JSON.parse(token)
+function getCurrentUser () {
+  var user = window.localStorage.getItem('smarthomeUser')
+  if (user != null) {
+    return JSON.parse(user)
   } else {
     return null
   }
 }
 
-export { login, checkAuth }
+export { login, checkAuth, getCurrentUser }
