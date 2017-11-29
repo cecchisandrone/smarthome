@@ -12,6 +12,7 @@ import Typography from 'src/components/Dashboard/Views/Typography.vue'
 import TableList from 'src/components/Dashboard/Views/TableList.vue'
 import Login from 'src/components/Login/Login.vue'
 import Configuration from 'src/components/Dashboard/Views/Configuration.vue'
+import Cameras from 'src/components/Dashboard/Views/Cameras.vue'
 
 const routes = [
   {
@@ -39,6 +40,11 @@ const routes = [
         path: 'configuration',
         name: 'configuration',
         component: Configuration
+      },
+      {
+        path: 'cameras',
+        name: 'cameras',
+        component: Cameras
       },
       {
         path: 'stats',

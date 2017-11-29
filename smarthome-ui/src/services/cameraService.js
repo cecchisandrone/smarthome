@@ -44,4 +44,18 @@ function deleteCamera (camera) {
   })
 }
 
-export {createCamera, updateCamera, deleteCamera}
+function getAllCameras () {
+  var user = authService.getCurrentUser()
+  var configurationId = user.configurationId
+  return new Promise(function (resolve, reject) {
+    axios.get(config.apiEndpoint + '/configurations/' + configurationId + '/cameras/', {headers: { Authorization: `Bearer ${user.token}` }})
+      .then(function (res) {
+        resolve(res.data)
+      })
+      .catch(function (err) {
+        reject(err)
+      })
+  })
+}
+
+export {createCamera, updateCamera, deleteCamera, getAllCameras}

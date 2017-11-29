@@ -11,7 +11,7 @@
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    width: 260px;
+    width: 195px;
     z-index: 4;
     box-shadow: inset -1px 0px 0px 0px $medium-gray;
   }
@@ -31,7 +31,7 @@
 
 .sidebar,
 .off-canvas-sidebar {
-  width: 260px;
+  width: 195px;
   display: block;
   font-weight: 200;
 
@@ -163,7 +163,7 @@
   min-height: 100%;
 
   > .content {
-    padding: 30px 15px;
+    padding: 5px 5px;
     min-height: calc(100% - 123px);
   }
 

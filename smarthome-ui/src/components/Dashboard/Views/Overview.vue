@@ -70,7 +70,6 @@
 <script>
   import StatsCard from 'components/UIComponents/Cards/StatsCard.vue'
   import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
-  import axios from 'axios'
   export default {
     components: {
       StatsCard,
@@ -165,14 +164,7 @@
 
       }
     },
-    created () {
-      axios.get(`https://jsonplaceholder.typicode.com/posts`).then(response => {
-        // JSON responses are automatically parsed.
-        console.log(response.data)
-      }).catch(e => {
-        this.errors.push(e)
-      })
-    }
+    created () {}
   }
 
 </script>

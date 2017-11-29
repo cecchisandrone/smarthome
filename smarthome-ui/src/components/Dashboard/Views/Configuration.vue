@@ -63,11 +63,33 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-md-12">  
+            <div class="form-group">        
+              <label>Type</label>
+              <select label="asd" class="form-control border-input" v-model="selectedCamera.Type">
+                <option disabled value="">Please select camera type</option>
+                <option value="foscam">Foscam</option>
+                <option value="adj">ADJ</option>
+                <option value="microcam">Microcam</option>
+              </select>
+            </div>
+          </div>
+        </div>  
+        <div class="row">
           <div class="col-md-12">
             <fg-input type="text"
                       label="Host"
                       placeholder="Host"
                       v-model="selectedCamera.Host">
+            </fg-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <fg-input type="number"
+                      label="Port"
+                      placeholder="Port"
+                      v-model.number="selectedCamera.Port">
             </fg-input>
           </div>
         </div>  
@@ -122,7 +144,7 @@
         configuration: [],
         cameraTable: {
           title: 'Cameras',
-          columns: ['ID', 'Name', 'Host', 'Enabled'],
+          columns: ['ID', 'Name', 'Type', 'Host', 'Port', 'Enabled'],
           data: [...[]]
         },
         showModal: false,
