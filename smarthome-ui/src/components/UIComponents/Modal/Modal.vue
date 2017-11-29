@@ -3,26 +3,33 @@
         <div class="modal-mask">
           <div class="modal-wrapper">
             <div class="modal-container">
-
-              <div class="modal-header">
-                <slot name="header">
-                  default header
-                </slot>
-              </div>
+              <div class="container-fluid">
+              <div class="row">
+                <div class="col-xs-11">
+                    <div class="modal-header">
+                        <slot name="header">
+                        default header
+                        </slot>                
+                    </div>
+                </div>              
+                <div class="col-xs-1">
+                    <button class="btn btn-sm" @click="$emit('close')">
+                    X
+                    </button>
+                </div>
+              </div>             
+              </div>             
 
               <div class="modal-body">
-                <slot name="body">
+                <slot name="body" >
                   default body
                 </slot>
               </div>
 
               <div class="modal-footer">
                 <slot name="footer">
-                  default footer
-                  <button class="modal-default-button" @click="$emit('close')">
-                    OK
-                  </button>
-                </slot>
+                  default footer                  
+                </slot>                
               </div>
             </div>
           </div>
@@ -31,13 +38,12 @@
 </template>
 
 <script>
-
 </script>
 
 <style>
 
 .modal-mask {
-  position: fixed;
+  position: absolute;
   z-index: 9998;
   top: 0;
   left: 0;
@@ -54,7 +60,7 @@
 }
 
 .modal-container {
-  width: 300px;
+  width: 500px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;

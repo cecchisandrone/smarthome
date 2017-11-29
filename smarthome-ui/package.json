@@ -81,6 +81,7 @@
     "vue-style-loader": "^2.0.0",
     "vue-template-compiler": "^2.3.0",
     "vue-unit": "^0.1.0",
+    "vue2-simplert": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",

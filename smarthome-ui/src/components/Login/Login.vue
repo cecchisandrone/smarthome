@@ -49,6 +49,7 @@ export default {
   },
   methods: {
     loginUser: function () {
+      this.errors = null
       var app = this
       loginService
         .login(this.username, this.password)

@@ -13,11 +13,11 @@ function login (username, password) {
             resolve(userData)
           })
           .catch((err) => {
-            reject(err.response2.data)
+            reject(err)
           })
       })
       .catch((err) => {
-        reject(err.response2.data)
+        reject(err)
       })
   })
 }
@@ -31,7 +31,7 @@ function renewToken (token) {
         resolve(res.data)
       })
       .catch(function (err) {
-        reject(err.response.data)
+        reject(err)
       })
   })
 }

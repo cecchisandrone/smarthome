@@ -11,7 +11,7 @@ function getConfiguration () {
         resolve(res.data)
       })
       .catch(function (err) {
-        reject(err.response.data)
+        reject(err)
       })
   })
 }
