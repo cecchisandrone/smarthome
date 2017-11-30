@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Slack</h3>
+        <h3>Raspsonar</h3>
         <div class="card">
             {{ configuration.ID }}
         </div>

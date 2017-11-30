@@ -1,14 +1,12 @@
 <template>
   <div>
-      <h5 v-show="errors !==''" class="text-danger">
+    <h5 v-show="errors !==''" class="text-danger">
       {{ errors }}
-    </h5>    
-    <div class="row">
+    </h5>
+    <div class="row">        
       <div class="col-md-12">
-        <div class="card">
-          <div class="header">
-            <h4 class="title">Cameras</h4>
-          </div>
+        <h3>Cameras</h3>
+        <div class="card">          
           <div class="content table-responsive table-full-width">
             <table class="table table-Striped">
               <thead>
@@ -149,7 +147,7 @@
     computed: {
       cameraTable: function () {
         var cameras = []
-        if (this.configuration != null) {
+        if (this.configuration.Cameras) {
           cameras = this.configuration.Cameras
         }
         return {
@@ -183,12 +181,13 @@
         }
       },
       deleteCamera: function (camera) {
+        let that = this
         let confirmFn = function () {
           cameraService.deleteCamera(camera).then((data) => {
-            this.$notifications.notify({message: 'Camera deleted successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
-            this.$emit('loadConfiguration')
+            that.$notifications.notify({message: 'Camera deleted successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            that.$emit('loadConfiguration')
           }).catch((err) => {
-            this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            that.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
           })
         }
         let obj = {

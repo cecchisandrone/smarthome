@@ -16,4 +16,18 @@ function getConfiguration () {
   })
 }
 
-export {getConfiguration}
+function saveConfiguration (configuration) {
+  var user = authService.getCurrentUser()
+  var configurationId = user.configurationId
+  return new Promise(function (resolve, reject) {
+    axios.put(config.apiEndpoint + '/configurations/' + configurationId, configuration, {headers: { Authorization: `Bearer ${user.token}` }})
+      .then(function (res) {
+        resolve(res.data)
+      })
+      .catch(function (err) {
+        reject(err)
+      })
+  })
+}
+
+export {getConfiguration, saveConfiguration}
