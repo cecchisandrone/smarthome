@@ -33,19 +33,11 @@
   
 <script>
 export default {
-  props: ['configuration'],
-  computed: {
-    gate: function () {
-      var gate = {}
-      if (this.configuration && this.configuration.Gate) {
-        gate = this.configuration.Gate
-      }
-      return gate
-    }
-  },
+  props: ['gate'],
   methods: {
     modelChanged: function () {
       this.$emit('gateModified', this.gate)
+      console.log(this.gate)
     }
   }
 }

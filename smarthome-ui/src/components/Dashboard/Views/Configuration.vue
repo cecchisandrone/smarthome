@@ -1,10 +1,5 @@
 <template>
   <div class="container-fluid">
-    <div class="row" v-if="errors !==''">
-      <h5 class="text-danger">
-        {{ errors }}
-      </h5>
-    </div>
     <div class="row">
       <camera-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></camera-configuration>
     </div>
@@ -13,10 +8,10 @@
         <slack-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></slack-configuration>
       </div>
       <div class="col-sm-3">
-        <raspsonar-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
+        <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
       </div>
       <div class="col-sm-3">
-        <gate-configuration :configuration="configuration.Gate" @gateModified="gateModified" @loadConfiguration="loadConfiguration"></gate-configuration>
+        <gate-configuration :gate="configuration.Gate" @gateModified="gateModified" @loadConfiguration="loadConfiguration"></gate-configuration>
       </div>
       <div class="col-sm-3">
         <temperature-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></temperature-configuration>
@@ -46,7 +41,7 @@
     },
     data () {
       return {
-        configuration: {},
+        configuration: {Gate: {}, Raspsonar: {}},
         errors: null,
         saveButtonEnabled: false
       }
@@ -63,16 +58,22 @@
       },
       saveConfiguration: function () {
         var app = this
-        configurationService.saveConfiguration().then((data) => {
+        configurationService.saveConfiguration(this.configuration).then((data) => {
           app.configuration = data
+          this.$notifications.notify({message: 'Configuration saved', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
         })
         .catch((err) => {
           app.errors = err.message
+          this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
         })
       },
       gateModified: function (gate) {
         this.saveButtonEnabled = true
         this.configuration.Gate = gate
+      },
+      raspsonarModified: function (raspsonar) {
+        this.saveButtonEnabled = true
+        this.configuration.Raspsonar = raspsonar
       }
     },
     created () {

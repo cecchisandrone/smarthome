@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <h5 v-show="errors !==''" class="text-danger">
-      {{ errors }}
-    </h5>
+  <div>    
     <div class="row">        
       <div class="col-md-12">
         <h3>Cameras</h3>
@@ -140,7 +137,6 @@
       return {
         showModal: false,
         selectedCamera: null,
-        errors: null,
         modalErrors: null
       }
     },
