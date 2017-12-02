@@ -5,7 +5,7 @@
     </div>
     <div class="row">    
       <div class="col-sm-3">
-        <slack-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></slack-configuration>
+        <slack-configuration :slack="configuration.Slack" @slackModified="slackModified" @loadConfiguration="loadConfiguration"></slack-configuration>
       </div>
       <div class="col-sm-3">
         <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
@@ -14,7 +14,7 @@
         <gate-configuration :gate="configuration.Gate" @gateModified="gateModified" @loadConfiguration="loadConfiguration"></gate-configuration>
       </div>
       <div class="col-sm-3">
-        <temperature-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></temperature-configuration>
+        <temperature-configuration :temperature="configuration.Temperature" @temperatureModified="temperatureModified" @loadConfiguration="loadConfiguration"></temperature-configuration>
       </div>
     </div>
     <button v-if="saveButtonEnabled" style="margin: 10px" class="btn btn-success" v-on:click="saveConfiguration">
@@ -41,7 +41,7 @@
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}},
+        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}},
         errors: null,
         saveButtonEnabled: false
       }
@@ -74,6 +74,14 @@
       raspsonarModified: function (raspsonar) {
         this.saveButtonEnabled = true
         this.configuration.Raspsonar = raspsonar
+      },
+      slackModified: function (slack) {
+        this.saveButtonEnabled = true
+        this.configuration.Slack = slack
+      },
+      temperatureModified: function (temperature) {
+        this.saveButtonEnabled = true
+        this.configuration.Temperature = temperature
       }
     },
     created () {
