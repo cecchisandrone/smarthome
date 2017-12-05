@@ -6,17 +6,17 @@
           <div class="row">
           <form class="col-md-4">
             <fg-input type="text"
-                        label="Host"
-                        placeholder="Host"
-                        v-model="temperature.Host"
-                        @input="modelChanged">
-                </fg-input>
-                <fg-input type="number"
-                        label="Port"
-                        placeholder="Port"
-                        v-model.number="temperature.Port"
-                        @input="modelChanged">
-                </fg-input>                
+                    label="Host"
+                    placeholder="Host"
+                    v-model="temperature.Host"
+                    @input="modelChanged">
+            </fg-input>
+            <fg-input type="number"
+                    label="Port"
+                    placeholder="Port"
+                    v-model.number="temperature.Port"
+                    @input="modelChanged">
+            </fg-input>
           </form>
           </div>
           </div>

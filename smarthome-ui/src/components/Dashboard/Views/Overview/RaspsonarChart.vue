@@ -1,25 +1,27 @@
 <template>
-  <chart-card ref="temperatureChart" :chart-data="temperatureChart.data" :chart-options="temperatureChart.options">
-    <h4 class="title" slot="title">Outdoor Temperature</h4>
+  <chart-card ref="raspsonarChart" :chart-data="raspsonarChart.data" :chart-options="raspsonarChart.options">
+    <h4 class="title" slot="title">Basement water level</h4>
     <span slot="subTitle"> Measured every hour</span>
   </chart-card>  
 </template>
 
 <script>
   import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
-  import * as temperatureService from 'src/services/temperatureService.js'
+  import * as raspsonarService from 'src/services/raspsonarService.js'
   export default {
     components: {
       ChartCard
     },
     data () {
       return {
-        temperatureChart: {
+        raspsonarChart: {
           data: {
             labels: [],
             series: [[]]
           },
           options: {
+            low: 48,
+            high: 62,
             showArea: false,
             height: '250px',
             axisX: {
@@ -36,14 +38,14 @@
     },
     created () {
       var that = this
-      temperatureService.getScheduledMeasurements().then((data) => {
-        that.temperatureChart.data.labels = []
-        that.temperatureChart.data.series = [[]]
+      raspsonarService.getScheduledMeasurements().then((data) => {
+        that.raspsonarChart.data.labels = []
+        that.raspsonarChart.data.series = [[]]
         for (const prop in data) {
-          that.temperatureChart.data.labels.push(new Date(prop).toLocaleTimeString())
-          that.temperatureChart.data.series[0].push(data[prop])
+          that.raspsonarChart.data.labels.push(new Date(prop).toLocaleTimeString())
+          that.raspsonarChart.data.series[0].push(data[prop])
         }
-        that.$refs.temperatureChart.initChart()
+        that.$refs.raspsonarChart.initChart()
       })
       .catch((err) => {
         that.errors = err.message

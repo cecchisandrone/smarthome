@@ -24,7 +24,7 @@
         raspsonar: {
           type: 'success',
           icon: 'ti-ruler',
-          title: 'Water level',
+          title: 'Basement water level',
           value: 'N.A. cm',
           footerText: 'Updated now',
           footerIcon: 'ti-reload'
@@ -34,7 +34,7 @@
     created () {
       var that = this
       raspsonarService.getLastMeasurement().then((data) => {
-        that.raspsonar.value = data.value.toFixed(2) + ' °C'
+        that.raspsonar.value = data.value.toFixed(2) + ' cm'
         that.raspsonar.footerText = 'Updated at ' + new Date(data.timestamp).toLocaleString()
       })
       .catch((err) => {

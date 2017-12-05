@@ -8,17 +8,6 @@
     </div>
     <div class="content">
       <div :id="chartId" class="ct-chart"></div>
-      <div class="footer">
-        <div class="chart-legend">
-          <slot name="legend"></slot>
-        </div>
-        <hr>
-        <div class="stats">
-          <slot name="footer"></slot>
-        </div>
-        <div class="pull-right">
-        </div>
-      </div>
     </div>
 
   </div>
@@ -88,5 +77,16 @@
 
 </script>
 <style>
+svg.ct-chart-bar, svg.ct-chart-line{
+	overflow: visible;
+}
+.ct-label.ct-label.ct-horizontal.ct-end {
+  position: relative;
+  justify-content: flex-end;
+  text-align: right;
+  transform-origin: 100% 0;
+  transform: translate(-100%) rotate(-45deg);
+  white-space:nowrap;
+}
 
 </style>

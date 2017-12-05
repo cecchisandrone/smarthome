@@ -24,7 +24,7 @@
         temperature: {
           type: 'success',
           icon: 'ti-cloud',
-          title: 'Temperature',
+          title: 'Outdoor temperature',
           value: 'N.A °C',
           footerText: 'Updated now',
           footerIcon: 'ti-reload'
