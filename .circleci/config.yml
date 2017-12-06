@@ -2,10 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:9.2.0
-    working_directory: ~/smarthome-ui
+      - image: node:9.2.0    
     steps:
       - checkout
+      - run: ls
       - run: npm install
       - run: npm run build
   deploy:
