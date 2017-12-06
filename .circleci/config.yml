@@ -9,13 +9,20 @@ jobs:
       - run: ls
       - run: cd smarthome-ui && npm install
       - run: cd smarthome-ui && npm run build
+      - persist_to_workspace:
+          root: /root
+          paths:
+            - project/*
   deploy:
     machine:
       enabled: true
+    working_directory: /tmp/workspace
     steps:
+      - attach_workspace:
+          at: /tmp/workspace
       - run: |
+          pwd
           ls
-          ls smarthome-ui
           docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker build -t repo.treescale.com/cecchisandrone/smarthome-ui:latest smarthome-ui
           docker build -t repo.treescale.com/cecchisandrone/smarthome-server:latest smarthome-server
