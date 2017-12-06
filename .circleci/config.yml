@@ -1,5 +1,5 @@
 version: 2
-jobs:                
+jobs:
   build:
     docker:
     - image: node:9.2.0
@@ -20,9 +20,9 @@ jobs:
         docker push repo.treescale.com/cecchisandrone/smarthome-server:latest
 workflows:
   version: 2
-  build_and_test:
+  build-and-deploy:
     jobs:
       - build
-      - deploy
+      - deploy:
           requires:
             - build
