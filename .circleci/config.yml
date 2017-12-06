@@ -9,7 +9,7 @@ jobs:
     - run: npm install
     - run: npm run build
   deploy:
-    - machine: true
+    machine: true
     - run: |
         ls
         ls smarthome-ui
