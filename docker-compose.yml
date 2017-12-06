@@ -11,8 +11,16 @@ services:
   smarthome-ui:
     image: repo.treescale.com/cecchisandrone/smarthome-ui:latest
   smarthome-db:
-    image: repo.treescale.com/cecchisandrone/smarthome-db:latest
-    restart: always
+    environment:
+    - MYSQL_ROOT_PASSWORD=${MYSQL_SMARTHOME_ROOT_PASSWORD}
+    - MYSQL_DATABASE=${MYSQL_SMARTHOME_DATABASE}
+    - MYSQL_USER=${MYSQL_SMARTHOME_USER}
+    - MYSQL_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
+    image: mysql
+    ports:
+    - 4306:3306
+    volumes:
+    - smarthome-mysql-data:/var/lib/mysql
 networks:
   default:
     external:

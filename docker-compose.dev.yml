@@ -8,17 +8,6 @@ services:
     build: smarthome-ui  
     ports:
       - 80:80
-  smarthome-db:
-    environment:
-    - MYSQL_ROOT_PASSWORD=${MYSQL_SMARTHOME_ROOT_PASSWORD}
-    - MYSQL_DATABASE=${MYSQL_SMARTHOME_DATABASE}
-    - MYSQL_USER=${MYSQL_SMARTHOME_USER}
-    - MYSQL_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
-    image: mysql
-    ports:
-    - 4306:3306
-    volumes:
-    - smarthome-mysql-data:/var/lib/mysql
 volumes:  
   smarthome-mysql-data:
    
