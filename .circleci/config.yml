@@ -1,13 +1,28 @@
 version: 2
-jobs:
+jobs:                
   build:
-    machine: true
+    docker:
+    - image: node:9.2.0
+    working_directory: ~/smarthome-ui
     steps:
     - checkout
+    - run: npm install
+    - run: npm run build
+  deploy:
+    - machine: true
     - run: |
+        ls
+        ls smarthome-ui
         docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
         docker build -t repo.treescale.com/cecchisandrone/smarthome-ui:latest smarthome-ui
         docker build -t repo.treescale.com/cecchisandrone/smarthome-server:latest smarthome-server
         docker push repo.treescale.com/cecchisandrone/smarthome-ui:latest
         docker push repo.treescale.com/cecchisandrone/smarthome-server:latest
-    - run: echo Deploy
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - deploy
+          requires:
+            - build
