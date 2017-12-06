@@ -16,10 +16,10 @@ jobs:
   deploy:
     machine:
       enabled: true
-    working_directory: /tmp/workspace
+    working_directory: /root/project
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: /root
       - run: |
           pwd
           ls
