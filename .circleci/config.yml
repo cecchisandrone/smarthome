@@ -4,10 +4,10 @@ jobs:
     docker:
       - image: node:6.12.1
     steps:
-      - checkout
-          post:
-          - git submodule sync --recursive
-          - git submodule update --recursive --init
+      checkout:
+        post:
+        - git submodule sync --recursive
+        - git submodule update --recursive --init
       - run: pwd
       - run: ls
       - run: cd smarthome-ui && npm install
