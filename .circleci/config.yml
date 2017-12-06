@@ -3,12 +3,11 @@ jobs:
   build:
     docker:
       - image: node:6.12.1
-    working_directory: ~/smarthome/smarthome-ui
     steps:
       - checkout
       - run: ls
-      - run: npm install
-      - run: npm run build
+      - run: cd smarthome-ui && npm install
+      - run: cd smarthome-ui && npm run build
   deploy:
     machine:
       enabled: true
