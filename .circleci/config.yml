@@ -5,7 +5,7 @@ jobs:
       - image: node:6.12.1
     steps:
       - checkout
-      - run: cd
+      - run: pwd
       - run: ls
       - run: cd smarthome-ui && npm install
       - run: cd smarthome-ui && npm run build
