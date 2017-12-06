@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: node:6.12.1
     steps:
-      - checkout:
+      - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - run: cd smarthome-ui && npm install
