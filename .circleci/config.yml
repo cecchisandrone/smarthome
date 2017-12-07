@@ -21,8 +21,6 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run: |
-          pwd
-          ls
           docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker build -t repo.treescale.com/cecchisandrone/smarthome-ui:latest smarthome-ui
           docker build -t repo.treescale.com/cecchisandrone/smarthome-server:latest smarthome-server

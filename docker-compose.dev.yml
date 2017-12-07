@@ -8,6 +8,8 @@ services:
     build: smarthome-ui  
     ports:
       - 80:80
+  smarthome-db:
+    image: mysql
 volumes:  
   smarthome-mysql-data:
    
