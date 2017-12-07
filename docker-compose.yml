@@ -1,6 +1,8 @@
 version: '3'
 services:  
-  smarthome-server:    
+  smarthome-server:
+    environment:
+    - SMARTHOME_ENV=${SMARTHOME_ENV}
     image: repo.treescale.com/cecchisandrone/smarthome-server:latest
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
