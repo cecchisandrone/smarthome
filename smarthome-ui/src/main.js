@@ -19,6 +19,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './assets/sass/paper-dashboard.scss'
 import 'es6-promise/auto'
 
+window['environment'] = process.env
+
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(GlobalComponents)

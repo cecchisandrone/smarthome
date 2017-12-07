@@ -3,6 +3,8 @@ services:
   smarthome-server:
     environment:
     - SMARTHOME_ENV=${SMARTHOME_ENV}
+    - MYSQL_SMARTHOME_USER=${MYSQL_SMARTHOME_USER}
+    - MYSQL_SMARTHOME_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
     image: repo.treescale.com/cecchisandrone/smarthome-server:latest
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]

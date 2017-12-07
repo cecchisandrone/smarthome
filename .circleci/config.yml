@@ -26,6 +26,7 @@ jobs:
           docker build -t repo.treescale.com/cecchisandrone/smarthome-server:latest smarthome-server
           docker push repo.treescale.com/cecchisandrone/smarthome-ui:latest
           docker push repo.treescale.com/cecchisandrone/smarthome-server:latest
+          ssh -o StrictHostKeyChecking=no -l pi $SMARTHOME_SSH_HOST -p $SMARTHOME_SSH_PORT "docker-compose stop && docker-compose pull && docker compose up"
 workflows:
   version: 2
   build-and-deploy:
