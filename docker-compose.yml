@@ -10,6 +10,9 @@ services:
     restart: always
   smarthome-ui:
     image: repo.treescale.com/cecchisandrone/smarthome-ui:latest
+    ports:
+    - 80:80
+    - 443:443
   smarthome-db:
     environment:
     - MYSQL_ROOT_PASSWORD=${MYSQL_SMARTHOME_ROOT_PASSWORD}
