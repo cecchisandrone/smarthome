@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-ui:
+  build_ui:
     docker:
       - image: node:6.12.1
     steps:
@@ -17,7 +17,7 @@ jobs:
           root: /root
           paths:
             - project/*
-  build-server:
+  build_server:
     machine: 
       enabled: true
     working_directory: /tmp/project/smarthome-server
@@ -44,11 +44,11 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build-ui
-      - build-server
+      - build_ui
+      - build_server
           requires:
-            - build-ui
+            - build_ui
       - deploy:
           requires:
-            - build-ui
-            - build-server
+            - build_ui
+            - build_server
