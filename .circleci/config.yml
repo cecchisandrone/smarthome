@@ -47,7 +47,7 @@ workflows:
       - build-ui
       - build-server
           requires:
-          - build-ui
+            - build-ui
       - deploy:
           requires:
             - build-ui
