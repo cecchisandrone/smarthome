@@ -8,8 +8,6 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - run: |
-          pwd
-          ls
           cd smarthome-ui
           docker build -t smarthome-ui:build .
           id=$(docker create smarthome-ui:build)
@@ -18,7 +16,7 @@ jobs:
           docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push repo.treescale.com/cecchisandrone/smarthome-ui:latest
       - persist_to_workspace:
-          root: /root
+          root: /home/circleci
           paths:
             - project/*
   build_server:
