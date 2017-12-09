@@ -45,7 +45,7 @@ workflows:
   build-and-deploy:
     jobs:
       - build_ui
-      - build_server
+      - build_server:
           requires:
             - build_ui
       - deploy:
