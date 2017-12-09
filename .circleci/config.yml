@@ -40,7 +40,7 @@ jobs:
     working_directory: /tmp/project
     steps:
       - run:
-          command: ssh -o StrictHostKeyChecking=no -l pi $SMARTHOME_SSH_HOST -p $SMARTHOME_SSH_PORT "docker-compose stop && docker-compose pull && docker-compose up"
+          command: ssh -o StrictHostKeyChecking=no -l pi $SMARTHOME_SSH_HOST -p $SMARTHOME_SSH_PORT "docker-compose stop && docker-compose pull && docker-compose up -d"
           no_output_timeout: 30m
 workflows:
   version: 2
