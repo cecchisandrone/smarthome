@@ -1,2 +1,3 @@
-FROM tobi312/rpi-nginx
-ADD dist /var/www/html
+FROM node:6.12.1
+RUN npm install
+RUN npm run build

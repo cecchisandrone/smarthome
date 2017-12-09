@@ -1,15 +1,17 @@
 version: 2
 jobs:
   build_ui:
-    docker:
-      - image: node:6.12.1
+    machine:
+      enabled: true
     steps:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-      - run: cd smarthome-ui && npm install
-      - run: cd smarthome-ui && npm run build
       - run: |
+          docker build -t smarthome-ui:build smarthome-ui
+          id=$(docker create smarthome-ui:build)
+          docker cp $id:/dist .
+          docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-ui:latest . 
           docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker build -t repo.treescale.com/cecchisandrone/smarthome-ui:latest smarthome-ui
           docker push repo.treescale.com/cecchisandrone/smarthome-ui:latest
