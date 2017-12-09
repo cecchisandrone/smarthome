@@ -1,31 +1,42 @@
 version: 2
 jobs:
-  build:
+  build-ui:
     docker:
       - image: node:6.12.1
     steps:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-      - run: cd smarthome-ui && npm install
-      - run: cd smarthome-ui && npm run build
+      #- run: cd smarthome-ui && npm install
+      #- run: cd smarthome-ui && npm run build
+      #- run: |
+      #    docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+      #    docker build -t repo.treescale.com/cecchisandrone/smarthome-ui:latest smarthome-ui
+      #    docker push repo.treescale.com/cecchisandrone/smarthome-ui:latest
       - persist_to_workspace:
           root: /root
           paths:
             - project/*
+  build-server:
+    machine: 
+      enabled: true
+    working_directory: /tmp/project/smarthome-server
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run: |
+          docker build -t smarthome-server:build .
+          docker images
+          id=$(docker create smarthome-server:build)
+          docker cp $id:/go/src/github.com/cecchisandrone/smarthome-server/smarthome-server .
+          docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-server:latest . 
+          docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+          docker push repo.treescale.com/cecchisandrone/smarthome-server:latest
   deploy:
     machine:
       enabled: true
     working_directory: /tmp/project
     steps:
-      - attach_workspace:
-          at: /tmp
-      - run: |
-          docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker build -t repo.treescale.com/cecchisandrone/smarthome-ui:latest smarthome-ui
-          docker build -t repo.treescale.com/cecchisandrone/smarthome-server:latest smarthome-server
-          docker push repo.treescale.com/cecchisandrone/smarthome-ui:latest
-          docker push repo.treescale.com/cecchisandrone/smarthome-server:latest
       - run:
           command: ssh -o StrictHostKeyChecking=no -l pi $SMARTHOME_SSH_HOST -p $SMARTHOME_SSH_PORT "docker-compose stop && docker-compose pull && docker compose up"
           no_output_timeout: 30m
@@ -33,7 +44,11 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
+      - build-ui
+      - build-server
+          requires:
+          - build-ui
       - deploy:
           requires:
-            - build
+            - build-ui
+            - build-server
