@@ -10,7 +10,7 @@ jobs:
       - run: |
           docker build -t smarthome-ui:build smarthome-ui
           id=$(docker create smarthome-ui:build)
-          docker cp $id:/dist .
+          docker cp $id:/build/dist .
           docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-ui:latest . 
           docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker build -t repo.treescale.com/cecchisandrone/smarthome-ui:latest smarthome-ui
