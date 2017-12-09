@@ -8,6 +8,8 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - run: |
+          pwd
+          ls
           cd smarthome-ui
           docker build -t smarthome-ui:build .
           id=$(docker create smarthome-ui:build)
