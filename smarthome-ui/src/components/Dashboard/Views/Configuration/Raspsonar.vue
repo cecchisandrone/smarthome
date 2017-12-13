@@ -17,16 +17,16 @@
                     v-model.number="raspsonar.Port"
                     @input="modelChanged">
             </fg-input>
-            <fg-input type="number"
-                    label="Sonar index"
-                    placeholder="Sonar index"
-                    v-model.number="raspsonar.SonarIndex"
+            <fg-input type="text"
+                    label="Sonar name"
+                    placeholder="Sonar name"
+                    v-model.number="raspsonar.SonarName"
                     @input="modelChanged">
             </fg-input>
-            <fg-input type="number"
-                    label="Relay index"
-                    placeholder="Relay index"
-                    v-model.number="raspsonar.RelayIndex"                        
+            <fg-input type="text"
+                    label="Relay name"
+                    placeholder="Relay name"
+                    v-model.number="raspsonar.RelayName"                        
                     @input="modelChanged">
             </fg-input>
             <fg-input type="number"
