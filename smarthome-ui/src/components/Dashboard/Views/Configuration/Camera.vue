@@ -66,6 +66,7 @@
                 <option value="foscam">Foscam</option>
                 <option value="adj">ADJ</option>
                 <option value="microcam">Microcam</option>
+                <option value="sv3c">SV3C</option>
               </select>
             </div>
           </div>
