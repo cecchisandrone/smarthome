@@ -31,7 +31,7 @@
               divisor: 3
             }),
             showLine: true,
-            showPoint: true
+            showPoint: false
           }
         }
       }
