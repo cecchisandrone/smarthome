@@ -5,12 +5,7 @@ services:
     - SMARTHOME_ENV=${SMARTHOME_ENV}
     - MYSQL_SMARTHOME_USER=${MYSQL_SMARTHOME_USER}
     - MYSQL_SMARTHOME_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
-    image: repo.treescale.com/cecchisandrone/smarthome-server:latest
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/health"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
+    image: repo.treescale.com/cecchisandrone/smarthome-server:latest    
     ports:
     - 8080:8080
     restart: always
