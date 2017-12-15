@@ -40,7 +40,7 @@
         that.temperatureChart.data.labels = []
         that.temperatureChart.data.series = [[]]
         for (const prop in data) {
-          that.temperatureChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}))
+          that.temperatureChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}))
           that.temperatureChart.data.series[0].push(data[prop])
         }
         that.$refs.temperatureChart.initChart()

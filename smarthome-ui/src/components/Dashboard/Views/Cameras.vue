@@ -4,7 +4,7 @@
       <div class="col-md-4" v-if="camera.Enabled && (singleCamera == null || index == singleCamera)">
         <div class="camera-view">
           <div class="camera-name">{{camera.Name}}</div>
-          <img class="img-responsive img-thumbnail" alt="Camera image" onerror="this.src='static/img/not_available.jpg'" :src="camera.Url" />	          				
+          <camera-view :camera="camera"></camera-view>
           <button v-if="singleCamera != null" class="btn btn-sm" v-on:click="toggleSingleCamera(null)">
             Show all cameras
           </button>
@@ -20,10 +20,12 @@
 <script>
   import Simplert from 'vue2-simplert'
   import * as cameraService from 'src/services/cameraService.js'
+  import CameraView from 'components/Dashboard/Views/CameraView.vue'
 
   export default {
     components: {
-      Simplert
+      Simplert,
+      CameraView
     },
     data () {
       return {
