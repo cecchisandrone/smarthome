@@ -26,7 +26,7 @@
           icon: 'ti-cloud',
           title: 'Outdoor temperature',
           value: 'N.A °C',
-          footerText: 'Updated now',
+          footerText: '',
           footerIcon: 'ti-reload'
         }
       }
@@ -38,7 +38,7 @@
         that.temperature.footerText = 'Updated at ' + new Date(data.timestamp).toLocaleString()
       })
       .catch((err) => {
-        that.errors = err.message
+        that.temperature.footerText = err.message
       })
     }
   }

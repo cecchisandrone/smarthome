@@ -4,7 +4,7 @@
           Gate
         </div>
         <div class="numbers" slot="content">        
-          <button class="btn btn-default btn-md" v-on:click="openGate">
+          <button class="btn btn-default btn-md" v-bind:class="{ active: isActive }" v-on:click="openGate">
             Open
           </button>
         </div>
@@ -22,7 +22,8 @@
     },
     data () {
       return {
-        messages: ''
+        messages: '',
+        isActive: false
       }
     },
     methods: {
@@ -30,9 +31,15 @@
         var that = this
         gateService.open().then((data) => {
           that.messages = 'Gate opened'
+          that.isActive = true
+          setTimeout(function () {
+            that.isActive = false
+            that.messages = ''
+          }, 3000)
         })
         .catch((err) => {
           that.messages = err.message
+          that.isActive = false
         })
       }
     }

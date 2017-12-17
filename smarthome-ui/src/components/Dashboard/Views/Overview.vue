@@ -10,8 +10,11 @@
         <temperature></temperature>
       </div>
       <div class="col-lg-3 col-sm-6">
-        <raspsonar></raspsonar>
+        <pump></pump>
       </div>
+      <div class="col-lg-3 col-sm-6">
+        <raspsonar></raspsonar>
+      </div>      
     </div>
 
     <!--Charts-->
@@ -29,6 +32,7 @@
 </template>
 <script>
   import Gate from 'components/Dashboard/Views/Overview/Gate.vue'
+  import Pump from 'components/Dashboard/Views/Overview/Pump.vue'
   import Temperature from 'components/Dashboard/Views/Overview/Temperature.vue'
   import TemperatureChart from 'components/Dashboard/Views/Overview/TemperatureChart.vue'
   import RaspsonarChart from 'components/Dashboard/Views/Overview/RaspsonarChart.vue'
@@ -37,6 +41,7 @@
   export default {
     components: {
       Gate,
+      Pump,
       Temperature,
       TemperatureChart,
       Raspsonar,

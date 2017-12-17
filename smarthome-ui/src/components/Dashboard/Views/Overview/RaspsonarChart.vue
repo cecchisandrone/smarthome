@@ -28,6 +28,8 @@
             lineSmooth: this.$Chartist.Interpolation.simple({
               divisor: 3
             }),
+            low: 48,
+            high: 62,
             showLine: true,
             showPoint: false
           }

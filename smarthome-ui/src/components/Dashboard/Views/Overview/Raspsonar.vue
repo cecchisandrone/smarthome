@@ -26,7 +26,7 @@
           icon: 'ti-ruler',
           title: 'Basement water level',
           value: 'N.A. cm',
-          footerText: 'Updated now',
+          footerText: '',
           footerIcon: 'ti-reload'
         }
       }
@@ -38,7 +38,7 @@
         that.raspsonar.footerText = 'Updated at ' + new Date(data.timestamp).toLocaleString()
       })
       .catch((err) => {
-        that.errors = err.message
+        that.raspsonar.footerText = err.message
       })
     }
   }
