@@ -8,7 +8,7 @@
     props: ['camera'],
     created () {
       if (this.camera.Type === 'sv3c') {
-        setInterval(this.updateUrl, 1000)
+        setInterval(this.updateUrl, 10000)
       }
     },
     methods: {
