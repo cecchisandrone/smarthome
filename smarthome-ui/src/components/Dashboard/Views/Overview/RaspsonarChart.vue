@@ -1,6 +1,6 @@
 <template>
   <chart-card ref="raspsonarChart" :chart-data="raspsonarChart.data" :chart-options="raspsonarChart.options">
-    <h4 class="title" slot="title">Basement water level</h4>
+    <h4 class="title" slot="title">Basement water level (cm)</h4>
     <span slot="subTitle"> Measured every hour</span>
   </chart-card>  
 </template>
