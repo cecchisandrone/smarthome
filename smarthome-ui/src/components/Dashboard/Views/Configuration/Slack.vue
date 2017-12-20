@@ -29,6 +29,9 @@
                         v-model.number="slack.LocationChangeUsers"                        
                         @input="modelChanged">
                 </fg-input>
+                <button style="margin: 10px" class="btn btn-success" v-on:click="testSlackSettings">
+                  Test
+                </button>
           </form>
           </div>
           </div>
@@ -37,12 +40,35 @@
 </template>
   
 <script>
+import * as notificationService from 'src/services/notificationService.js'
 export default {
   props: ['slack'],
   methods: {
     modelChanged: function () {
       this.$emit('slackModified', this.slack)
       console.log(this.slack)
+    },
+    testSlackSettings: function () {
+      var that = this
+      notificationService.testSlackNotification().then(function (res) {
+        that.$notifications.notify(
+          {
+            message: 'Configuration is correct',
+            icon: 'ti-info',
+            horizontalAlign: 'center',
+            verticalAlign: 'top',
+            type: 'success'
+          })
+      }).catch(function (err) {
+        that.$notifications.notify(
+          {
+            message: err,
+            icon: 'ti-error',
+            horizontalAlign: 'center',
+            verticalAlign: 'top',
+            type: 'danger'
+          })
+      })
     }
   }
 }

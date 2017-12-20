@@ -1,14 +1,14 @@
 <template>
   <div>
     <div v-for="(camera, index) in cameras">
-      <div class="col-md-4" v-if="camera.Enabled && (singleCamera == null || index == singleCamera)">
+      <div class="col-md-4" v-if="camera.Enabled && (singleCamera == null || camera.Name == singleCamera)">
         <div class="camera-view">
           <div class="camera-name">{{camera.Name}}</div>
           <camera-view :camera="camera"></camera-view>
-          <button v-if="singleCamera != null" class="btn btn-sm" v-on:click="toggleSingleCamera(null)">
+          <button style="margin: 10px" v-if="singleCamera != null" class="btn btn-sm" v-on:click="toggleSingleCamera(null)">
             Show all cameras
           </button>
-          <button v-if="singleCamera == null" class="btn btn-sm" v-on:click="toggleSingleCamera(index)">
+          <button style="margin: 10px" v-if="singleCamera == null" class="btn btn-sm" v-on:click="toggleSingleCamera(camera.Name)">
             Show only this camera
           </button>
         </div>
@@ -30,27 +30,20 @@
     data () {
       return {
         cameras: {},
-        singleCamera: null
+        singleCamera: localStorage.getItem('singleCamera')
       }
     },
     methods: {
-      toggleSingleCamera: function (index) {
-        this.singleCamera = index
-        if (index != null) {
-          this.invalidateImgTags(index)
+      toggleSingleCamera: function (name) {
+        this.singleCamera = name
+        if (name != null) {
+          localStorage.setItem('singleCamera', name)
+        } else {
+          localStorage.removeItem('singleCamera')
         }
-      },
-      invalidateImgTags: function (index) {
-        // for (var i = 0; i < cameras.length; i++) {
-        //   this.$el.children[i].setAttribute('src', '#')
-        // }
       }
     },
-    beforeDestroy () {
-      this.invalidateImgTags(null)
-    },
     created () {
-      this.singleCamera = null
       var app = this
       cameraService.getAllCameras().then((cameras) => {
         app.cameras = cameras
