@@ -56,7 +56,6 @@ export default {
   methods: {
     modelChanged: function () {
       this.$emit('raspsonarModified', this.raspsonar)
-      console.log(this.raspsonar)
     }
   }
 }

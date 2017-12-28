@@ -30,7 +30,6 @@ export default {
   methods: {
     modelChanged: function () {
       this.$emit('temperatureModified', this.temperature)
-      console.log(this.temperature)
     }
   }
 }

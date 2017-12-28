@@ -4,18 +4,17 @@
       <camera-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></camera-configuration>
     </div>
     <div class="row">    
-      <div class="col-sm-3">
-        <slack-configuration :slack="configuration.Slack" @slackModified="slackModified" @loadConfiguration="loadConfiguration"></slack-configuration>
-      </div>
-      <div class="col-sm-3">
+      <div class="col-sm-4">
         <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-4">
         <gate-configuration :gate="configuration.Gate" @gateModified="gateModified" @loadConfiguration="loadConfiguration"></gate-configuration>
-      </div>
-      <div class="col-sm-3">
         <temperature-configuration :temperature="configuration.Temperature" @temperatureModified="temperatureModified" @loadConfiguration="loadConfiguration"></temperature-configuration>
       </div>
+      <div class="col-sm-4">
+        <slack-configuration :slack="configuration.Slack" @slackModified="slackModified" @loadConfiguration="loadConfiguration"></slack-configuration>
+        <alarm-configuration :alarm="configuration.Alarm" @alarmModified="alarmModified" @loadConfiguration="loadConfiguration"></alarm-configuration>
+      </div>      
     </div>
     <button v-if="saveButtonEnabled" style="margin: 10px" class="btn btn-success" v-on:click="saveConfiguration">
       Save
@@ -30,6 +29,7 @@
   import * as GateConfiguration from 'src/components/Dashboard/Views/Configuration/Gate.vue'
   import * as RaspsonarConfiguration from 'src/components/Dashboard/Views/Configuration/Raspsonar.vue'
   import * as TemperatureConfiguration from 'src/components/Dashboard/Views/Configuration/Temperature.vue'
+  import * as AlarmConfiguration from 'src/components/Dashboard/Views/Configuration/Alarm.vue'
 
   export default {
     components: {
@@ -37,11 +37,12 @@
       'camera-configuration': CameraConfiguration,
       'gate-configuration': GateConfiguration,
       'raspsonar-configuration': RaspsonarConfiguration,
-      'temperature-configuration': TemperatureConfiguration
+      'temperature-configuration': TemperatureConfiguration,
+      'alarm-configuration': AlarmConfiguration
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}},
+        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}},
         errors: null,
         saveButtonEnabled: false
       }
@@ -82,6 +83,10 @@
       temperatureModified: function (temperature) {
         this.saveButtonEnabled = true
         this.configuration.Temperature = temperature
+      },
+      alarmModified: function (alarm) {
+        this.saveButtonEnabled = true
+        this.configuration.Alarm = alarm
       }
     },
     created () {

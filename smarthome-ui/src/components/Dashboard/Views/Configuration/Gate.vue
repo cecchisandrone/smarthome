@@ -37,7 +37,6 @@ export default {
   methods: {
     modelChanged: function () {
       this.$emit('gateModified', this.gate)
-      console.log(this.gate)
     }
   }
 }

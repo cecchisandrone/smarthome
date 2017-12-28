@@ -46,7 +46,6 @@ export default {
   methods: {
     modelChanged: function () {
       this.$emit('slackModified', this.slack)
-      console.log(this.slack)
     },
     testSlackSettings: function () {
       var that = this
