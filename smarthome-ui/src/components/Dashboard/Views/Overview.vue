@@ -3,16 +3,19 @@
 
     <!--Stats cards-->
     <div class="row">
-      <div class="col-lg-3 col-sm-6">
+      <div class="col-lg-2 col-sm-6">
         <gate></gate>
       </div>
-      <div class="col-lg-3 col-sm-6">
+      <div class="col-lg-2 col-sm-6">
+        <alarm></alarm>
+      </div>
+      <div class="col-lg-2 col-sm-6">
         <temperature></temperature>
       </div>
-      <div class="col-lg-3 col-sm-6">
+      <div class="col-lg-2 col-sm-6">
         <pump></pump>
       </div>
-      <div class="col-lg-3 col-sm-6">
+      <div class="col-lg-2 col-sm-6">
         <raspsonar></raspsonar>
       </div>      
     </div>
@@ -37,6 +40,7 @@
   import TemperatureChart from 'components/Dashboard/Views/Overview/TemperatureChart.vue'
   import RaspsonarChart from 'components/Dashboard/Views/Overview/RaspsonarChart.vue'
   import Raspsonar from 'components/Dashboard/Views/Overview/Raspsonar.vue'
+  import Alarm from 'components/Dashboard/Views/Overview/Alarm.vue'
   import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
   export default {
     components: {
@@ -46,7 +50,8 @@
       TemperatureChart,
       Raspsonar,
       RaspsonarChart,
-      ChartCard
+      ChartCard,
+      Alarm
     }
   }
 </script>

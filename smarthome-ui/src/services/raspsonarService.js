@@ -29,11 +29,11 @@ function getScheduledMeasurements () {
   })
 }
 
-function togglePump (status) {
+function toggleRelay (status) {
   var user = authService.getCurrentUser()
   var configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.post(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/raspsonar/', null, {params: {relayStatus: status ? 1 : 0}, headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/raspsonar/relay', null, {params: {relayStatus: status ? 1 : 0}, headers: { Authorization: `Bearer ${user.token}` }})
       .then(function (res) {
         resolve(res.data)
       })
@@ -43,4 +43,18 @@ function togglePump (status) {
   })
 }
 
-export {getLastMeasurement, getScheduledMeasurements, togglePump}
+function getRelayStatus () {
+  var user = authService.getCurrentUser()
+  var configurationId = user.configurationId
+  return new Promise(function (resolve, reject) {
+    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/raspsonar/relay', {headers: { Authorization: `Bearer ${user.token}` }})
+      .then(function (res) {
+        resolve(res.data)
+      })
+      .catch(function (err) {
+        reject(err)
+      })
+  })
+}
+
+export {getLastMeasurement, getScheduledMeasurements, toggleRelay, getRelayStatus}

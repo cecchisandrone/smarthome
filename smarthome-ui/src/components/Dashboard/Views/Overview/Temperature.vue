@@ -35,7 +35,7 @@
       var that = this
       temperatureService.getLastMeasurement().then((data) => {
         that.temperature.value = data.value.toFixed(2) + ' °C'
-        that.temperature.footerText = 'Updated at ' + new Date(data.timestamp).toLocaleString()
+        that.temperature.footerText = new Date(data.timestamp).toLocaleString()
       })
       .catch((err) => {
         that.temperature.footerText = err.message

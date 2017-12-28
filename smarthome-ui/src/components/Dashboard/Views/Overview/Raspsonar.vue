@@ -35,7 +35,7 @@
       var that = this
       raspsonarService.getLastMeasurement().then((data) => {
         that.raspsonar.value = data.value.toFixed(2) + ' cm'
-        that.raspsonar.footerText = 'Updated at ' + new Date(data.timestamp).toLocaleString()
+        that.raspsonar.footerText = new Date(data.timestamp).toLocaleString()
       })
       .catch((err) => {
         that.raspsonar.footerText = err.message

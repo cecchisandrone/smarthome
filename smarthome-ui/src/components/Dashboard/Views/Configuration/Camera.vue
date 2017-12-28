@@ -112,7 +112,13 @@
             <input type='checkbox' v-model="selectedCamera.Enabled"/>
             Enabled
           </label>
-        </div>        
+        </div>
+        <div>
+          <label>
+            <input type='checkbox' v-model="selectedCamera.AlarmEnabled"/>
+            Alarm Enabled
+          </label>
+        </div>
       </div>
       <div slot="footer">
         <button class="btn btn-info" v-on:click="createOrUpdateCamera()">
@@ -149,7 +155,7 @@
         }
         return {
           title: 'Cameras',
-          columns: ['ID', 'Name', 'Type', 'Host', 'Port', 'Enabled'],
+          columns: ['ID', 'Name', 'Type', 'Host', 'Port', 'Enabled', 'AlarmEnabled'],
           data: cameras
         }
       }

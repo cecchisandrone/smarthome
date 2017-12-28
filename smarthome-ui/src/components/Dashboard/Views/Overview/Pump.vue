@@ -34,10 +34,10 @@
     methods: {
       togglePump: function () {
         var that = this
-        raspsonarService.togglePump(that.isActive).then((data) => {
-          that.isActive = !that.isActive
+        raspsonarService.toggleRelay(!that.isActive).then((data) => {
+          that.isActive = data.relayStatus
           if (that.isActive) {
-            that.messages = 'Pump activated at ' + new Date().toLocaleTimeString()
+            that.messages = 'Pump activated at ' + new Date(data.activationTime).toLocaleTimeString()
           } else {
             that.messages = ''
           }
@@ -47,6 +47,21 @@
           that.isActive = false
         })
       }
+    },
+    created () {
+      var that = this
+      raspsonarService.getRelayStatus().then((data) => {
+        that.isActive = data.relayStatus
+        if (that.isActive) {
+          that.messages = 'Pump activated at ' + new Date(data.activationTime).toLocaleTimeString()
+        } else {
+          that.messages = ''
+        }
+      })
+      .catch((err) => {
+        that.messages = err.message
+        that.isActive = false
+      })
     }
   }
 </script>
