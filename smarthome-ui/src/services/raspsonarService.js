@@ -33,7 +33,7 @@ function toggleRelay (status) {
   var user = authService.getCurrentUser()
   var configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/raspsonar/relay', null, {params: {relayStatus: status ? 1 : 0}, headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/raspsonar/relay', null, {params: {relayStatus: status}, headers: { Authorization: `Bearer ${user.token}` }})
       .then(function (res) {
         resolve(res.data)
       })
