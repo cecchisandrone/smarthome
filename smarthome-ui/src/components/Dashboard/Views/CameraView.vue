@@ -20,15 +20,21 @@
       }
       img.src = this.camera.Url
       if (this.camera.Type === 'sv3c') {
-        setInterval(this.updateUrl, 10000)
+        setInterval(this.updateSv3cUrl, 10000)
+      }
+      if (this.camera.Type === 'microcam') {
+        setInterval(this.updateMicrocamUrl, 10000)
       }
     },
     beforeDestroy () {
       this.imageSrc = '#'
     },
     methods: {
-      updateUrl: function () {
+      updateSv3cUrl: function () {
         this.imageSrc = this.camera.Url.split('?')[0] + '?' + Date.now()
+      },
+      updateMicrocamUrl: function () {
+        this.imageSrc = this.camera.Url + '&param=' + Date.now()
       }
     }
   }
