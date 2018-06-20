@@ -20,7 +20,7 @@ services:
     - MYSQL_DATABASE=${MYSQL_SMARTHOME_DATABASE}
     - MYSQL_USER=${MYSQL_SMARTHOME_USER}
     - MYSQL_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
-    image: hypriot/rpi-mysql
+    image: hypriot/rpi-mysql:5.5
     ports:
     - 4306:3306
     volumes:

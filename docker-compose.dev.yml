@@ -9,7 +9,7 @@ services:
     ports:
       - 80:80
   smarthome-db:
-    image: mysql
+    image: mysql:5.7
 volumes:  
   smarthome-mysql-data:
    

@@ -7,10 +7,13 @@
         <gate></gate>
       </div>
       <div class="col-lg-2 col-sm-6">
-        <alarm></alarm>
-      </div>
+        <well-pump></well-pump>
+      </div>      
       <div class="col-lg-2 col-sm-6">
         <temperature></temperature>
+      </div>
+      <div class="col-lg-2 col-sm-6">
+        <alarm></alarm>
       </div>
       <div class="col-lg-2 col-sm-6">
         <pump></pump>
@@ -41,6 +44,7 @@
   import RaspsonarChart from 'components/Dashboard/Views/Overview/RaspsonarChart.vue'
   import Raspsonar from 'components/Dashboard/Views/Overview/Raspsonar.vue'
   import Alarm from 'components/Dashboard/Views/Overview/Alarm.vue'
+  import WellPump from 'components/Dashboard/Views/Overview/WellPump.vue'
   import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
   export default {
     components: {
@@ -51,7 +55,8 @@
       Raspsonar,
       RaspsonarChart,
       ChartCard,
-      Alarm
+      Alarm,
+      WellPump
     }
   }
 </script>

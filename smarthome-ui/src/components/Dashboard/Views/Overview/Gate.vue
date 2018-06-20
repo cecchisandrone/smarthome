@@ -1,7 +1,7 @@
 <template>
     <stats-card>
-        <div class="icon-big icon-success" slot="header">
-          Gate
+        <div class="icon-success" slot="header">
+          <h3>Gate</h3>
         </div>
         <div class="numbers" slot="content">        
           <button class="btn btn-default btn-md" v-bind:class="{ active: isActive }" v-on:click="openGate">

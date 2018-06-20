@@ -3,6 +3,9 @@
     <div class="row">
       <camera-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></camera-configuration>
     </div>
+    <div class="row">
+      <well-pump-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></well-pump-configuration>
+    </div>
     <div class="row">    
       <div class="col-sm-4">
         <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
@@ -30,6 +33,7 @@
   import * as RaspsonarConfiguration from 'src/components/Dashboard/Views/Configuration/Raspsonar.vue'
   import * as TemperatureConfiguration from 'src/components/Dashboard/Views/Configuration/Temperature.vue'
   import * as AlarmConfiguration from 'src/components/Dashboard/Views/Configuration/Alarm.vue'
+  import * as WellPumpConfiguration from 'src/components/Dashboard/Views/Configuration/WellPump.vue'
 
   export default {
     components: {
@@ -38,7 +42,8 @@
       'gate-configuration': GateConfiguration,
       'raspsonar-configuration': RaspsonarConfiguration,
       'temperature-configuration': TemperatureConfiguration,
-      'alarm-configuration': AlarmConfiguration
+      'alarm-configuration': AlarmConfiguration,
+      'well-pump-configuration': WellPumpConfiguration
     },
     data () {
       return {
@@ -59,6 +64,7 @@
       },
       saveConfiguration: function () {
         var app = this
+        console.log(this.configuration)
         configurationService.saveConfiguration(this.configuration).then((data) => {
           app.configuration = data
           this.$notifications.notify({message: 'Configuration saved', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})

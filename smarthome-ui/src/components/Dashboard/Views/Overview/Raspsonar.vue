@@ -1,10 +1,9 @@
 <template>
     <stats-card>
-        <div class="icon-big text-center" :class="`icon-${raspsonar.type}`" slot="header">
-        <i :class="raspsonar.icon"></i>
+        <div class="text-center" :class="`icon-${raspsonar.type}`" slot="header">
+        <h3>Basement water level</h3>
         </div>
         <div class="numbers" slot="content">
-        <p>{{raspsonar.title}}</p>
         {{raspsonar.value}}
         </div>
         <div class="stats" slot="footer">

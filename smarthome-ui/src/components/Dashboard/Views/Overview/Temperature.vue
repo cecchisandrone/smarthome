@@ -1,10 +1,9 @@
 <template>
     <stats-card>
-        <div class="icon-big text-center" :class="`icon-${temperature.type}`" slot="header">
-        <i :class="temperature.icon"></i>
+        <div class="text-center" :class="`icon-${temperature.type}`" slot="header">
+        <h3>Outdoor Temperature</h3>
         </div>
         <div class="numbers" slot="content">
-        <p>{{temperature.title}}</p>
         {{temperature.value}}
         </div>
         <div class="stats" slot="footer">
