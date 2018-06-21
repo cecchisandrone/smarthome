@@ -52,7 +52,7 @@
       togglePump: function (wellPumpId, wellPumpName) {
         let status = this.wellPumpsStatus[wellPumpName]
         var that = this
-        wellPumpService.toggleWellPumpRelay(wellPumpId, status ^ 1).then((data) => {
+        wellPumpService.toggleWellPumpRelay(wellPumpId, status ^ 1, !!(status ^ 1)).then((data) => {
           if (data.status) {
             that.messages = 'Well Pump ' + wellPumpName + ' activated'
           } else {

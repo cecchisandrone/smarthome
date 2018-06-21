@@ -71,11 +71,11 @@ function getWellPumpRelay (wellPumpId) {
   })
 }
 
-function toggleWellPumpRelay (wellPumpId, status) {
+function toggleWellPumpRelay (wellPumpId, status, manuallyActivated) {
   var user = authService.getCurrentUser()
   var configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPumpId + '/relay', null, {params: {status: status}, headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPumpId + '/relay', null, {params: {status: status, manuallyActivated: manuallyActivated}, headers: { Authorization: `Bearer ${user.token}` }})
       .then(function (res) {
         resolve(res.data)
       })

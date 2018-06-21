@@ -75,10 +75,19 @@
             </fg-input>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-12">
+            <fg-input type="text"
+                      label="Activation intervals"
+                      placeholder="Activation intervals"
+                      v-model="selectedWellPump.ActivationIntervals">
+            </fg-input>
+          </div>
+        </div>
         <div>
           <label>
-            <input type='checkbox' v-model="selectedWellPump.Enabled"/>
-            Enabled
+            <input type='checkbox' v-model="selectedWellPump.AutomaticActivationEnabled"/>
+            Automatic activation enabled
           </label>
         </div>
       </div>
@@ -117,7 +126,7 @@
         }
         return {
           title: 'WellPumps',
-          columns: ['ID', 'Name', 'Host', 'Port', 'Enabled'],
+          columns: ['ID', 'Name', 'Host', 'Port', 'ActivationIntervals', 'AutomaticActivationEnabled'],
           data: wellPumps
         }
       }
