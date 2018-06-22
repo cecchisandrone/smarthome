@@ -5,6 +5,7 @@ services:
     - SMARTHOME_ENV=${SMARTHOME_ENV}
     - MYSQL_SMARTHOME_USER=${MYSQL_SMARTHOME_USER}
     - MYSQL_SMARTHOME_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
+    - TZ=Europe/Rome
     image: repo.treescale.com/cecchisandrone/smarthome-server:latest    
     ports:
     - 8080:8080
