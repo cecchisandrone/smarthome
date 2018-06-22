@@ -31,6 +31,7 @@ jobs:
           docker images
           id=$(docker create smarthome-server:build)
           docker cp $id:/go/src/github.com/cecchisandrone/smarthome-server/smarthome-server .
+          docker run --rm --privileged multiarch/qemu-user-static:register --reset 
           docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-server:latest . 
           docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push repo.treescale.com/cecchisandrone/smarthome-server:latest
