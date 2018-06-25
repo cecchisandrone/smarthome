@@ -19,6 +19,11 @@ const SidebarStore = {
       path: '/admin/configuration'
     },
     {
+      name: 'Web Radio',
+      icon: 'ti-volume',
+      path: '/admin/webradio'
+    },
+    {
       name: 'Notifications',
       icon: 'ti-bell',
       path: '/admin/notifications'
