@@ -4,7 +4,7 @@
       <h4 class="title">Web Radio</h4>
     </div>
     <div class="content">
-      <audio controls autoplay src="http://cecchisandrone.no-ip.org:8000/stream"></audio>
+      <audio controls autoplay src="http://cecchisandrone.ddns.net:8000/stream"></audio>
     </div>
   </div>
 </template>

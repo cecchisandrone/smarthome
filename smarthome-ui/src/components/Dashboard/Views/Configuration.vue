@@ -9,6 +9,7 @@
     <div class="row">    
       <div class="col-sm-4">
         <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
+        <rain-gauge-configuration :rainGauge="configuration.RainGauge" @rainGaugeModified="rainGaugeModified" @loadConfiguration="loadConfiguration"></rain-gauge-configuration>
       </div>
       <div class="col-sm-4">
         <gate-configuration :gate="configuration.Gate" @gateModified="gateModified" @loadConfiguration="loadConfiguration"></gate-configuration>
@@ -34,6 +35,7 @@
   import * as TemperatureConfiguration from 'src/components/Dashboard/Views/Configuration/Temperature.vue'
   import * as AlarmConfiguration from 'src/components/Dashboard/Views/Configuration/Alarm.vue'
   import * as WellPumpConfiguration from 'src/components/Dashboard/Views/Configuration/WellPump.vue'
+  import * as RainGaugeConfiguration from 'src/components/Dashboard/Views/Configuration/RainGauge.vue'
 
   export default {
     components: {
@@ -43,11 +45,12 @@
       'raspsonar-configuration': RaspsonarConfiguration,
       'temperature-configuration': TemperatureConfiguration,
       'alarm-configuration': AlarmConfiguration,
-      'well-pump-configuration': WellPumpConfiguration
+      'well-pump-configuration': WellPumpConfiguration,
+      'rain-gauge-configuration': RainGaugeConfiguration
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}},
+        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}},
         errors: null,
         saveButtonEnabled: false
       }
@@ -93,6 +96,10 @@
       alarmModified: function (alarm) {
         this.saveButtonEnabled = true
         this.configuration.Alarm = alarm
+      },
+      rainGaugeModified: function (rainGauge) {
+        this.saveButtonEnabled = true
+        this.configuration.RainGauge = rainGauge
       }
     },
     created () {

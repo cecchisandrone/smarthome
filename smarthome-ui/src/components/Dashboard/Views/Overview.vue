@@ -20,7 +20,10 @@
       </div>
       <div class="col-lg-2 col-sm-6">
         <raspsonar></raspsonar>
-      </div>      
+      </div>
+      <div class="col-lg-2 col-sm-6">
+        <rain-gauge></rain-gauge>
+      </div>   
     </div>
 
     <!--Charts-->
@@ -31,6 +34,9 @@
 
       <div class="col-md-6">
         <raspsonar-chart></raspsonar-chart>
+      </div>
+      <div class="col-md-6">
+        <rain-gauge-chart></rain-gauge-chart>
       </div>
     </div>
 
@@ -46,6 +52,9 @@
   import Alarm from 'components/Dashboard/Views/Overview/Alarm.vue'
   import WellPump from 'components/Dashboard/Views/Overview/WellPump.vue'
   import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
+  import RainGauge from 'components/Dashboard/Views/Overview/RainGauge.vue'
+  import RainGaugeChart from 'components/Dashboard/Views/Overview/RainGaugeChart.vue'
+  
   export default {
     components: {
       Gate,
@@ -56,7 +65,9 @@
       RaspsonarChart,
       ChartCard,
       Alarm,
-      WellPump
+      WellPump,
+      RainGauge,
+      RainGaugeChart
     }
   }
 </script>

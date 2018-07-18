@@ -1,7 +1,7 @@
 <template>
   <chart-card ref="temperatureChart" :chart-data="temperatureChart.data" :chart-options="temperatureChart.options">
     <h4 class="title" slot="title">Outdoor Temperature (°C)</h4>
-    <span slot="subTitle"> Measured every hour</span>
+    <span slot="subTitle"> Measured every 2 hours</span>
   </chart-card>  
 </template>
 
