@@ -14,6 +14,7 @@
       <div class="col-sm-4">
         <gate-configuration :gate="configuration.Gate" @gateModified="gateModified" @loadConfiguration="loadConfiguration"></gate-configuration>
         <temperature-configuration :temperature="configuration.Temperature" @temperatureModified="temperatureModified" @loadConfiguration="loadConfiguration"></temperature-configuration>
+        <humidity-configuration :humidity="configuration.Humidity" @humidityModified="humidityModified" @loadConfiguration="loadConfiguration"></humidity-configuration>
       </div>
       <div class="col-sm-4">
         <slack-configuration :slack="configuration.Slack" @slackModified="slackModified" @loadConfiguration="loadConfiguration"></slack-configuration>
@@ -36,6 +37,7 @@
   import * as AlarmConfiguration from 'src/components/Dashboard/Views/Configuration/Alarm.vue'
   import * as WellPumpConfiguration from 'src/components/Dashboard/Views/Configuration/WellPump.vue'
   import * as RainGaugeConfiguration from 'src/components/Dashboard/Views/Configuration/RainGauge.vue'
+  import * as HumidityConfiguration from 'src/components/Dashboard/Views/Configuration/Humidity.vue'
 
   export default {
     components: {
@@ -46,11 +48,12 @@
       'temperature-configuration': TemperatureConfiguration,
       'alarm-configuration': AlarmConfiguration,
       'well-pump-configuration': WellPumpConfiguration,
-      'rain-gauge-configuration': RainGaugeConfiguration
+      'rain-gauge-configuration': RainGaugeConfiguration,
+      'humidity-configuration': HumidityConfiguration
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}},
+        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}},
         errors: null,
         saveButtonEnabled: false
       }
@@ -100,6 +103,10 @@
       rainGaugeModified: function (rainGauge) {
         this.saveButtonEnabled = true
         this.configuration.RainGauge = rainGauge
+      },
+      humidityModified: function (humidity) {
+        this.saveButtonEnabled = true
+        this.configuration.Humidity = humidity
       }
     },
     created () {

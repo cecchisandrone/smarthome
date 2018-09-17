@@ -23,7 +23,10 @@
       </div>
       <div class="col-lg-2 col-sm-6">
         <rain-gauge></rain-gauge>
-      </div>   
+      </div>
+      <div class="col-lg-2 col-sm-6">
+        <humidity></humidity>
+      </div>
     </div>
 
     <!--Charts-->
@@ -31,12 +34,14 @@
       <div class="col-md-6">
         <temperature-chart></temperature-chart>
       </div>
-
       <div class="col-md-6">
-        <raspsonar-chart></raspsonar-chart>
+        <humidity-chart></humidity-chart>
       </div>
       <div class="col-md-6">
         <rain-gauge-chart></rain-gauge-chart>
+      </div>
+      <div class="col-md-6">
+        <raspsonar-chart></raspsonar-chart>
       </div>
     </div>
 
@@ -54,6 +59,8 @@
   import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
   import RainGauge from 'components/Dashboard/Views/Overview/RainGauge.vue'
   import RainGaugeChart from 'components/Dashboard/Views/Overview/RainGaugeChart.vue'
+  import Humidity from 'components/Dashboard/Views/Overview/Humidity.vue'
+  import HumidityChart from 'components/Dashboard/Views/Overview/HumidityChart.vue'
   
   export default {
     components: {
@@ -67,7 +74,9 @@
       Alarm,
       WellPump,
       RainGauge,
-      RainGaugeChart
+      RainGaugeChart,
+      Humidity,
+      HumidityChart
     }
   }
 </script>
