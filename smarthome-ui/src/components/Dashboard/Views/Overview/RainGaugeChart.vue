@@ -22,7 +22,7 @@
           },
           options: {
             showArea: false,
-            height: '250px',
+            height: '300px',
             axisX: {
               showGrid: false
             },
