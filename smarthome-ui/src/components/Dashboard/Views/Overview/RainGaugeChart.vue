@@ -1,7 +1,7 @@
 <template>
   <chart-card ref="rainGaugeChart" :chart-data="rainGaugeChart.data" :chart-options="rainGaugeChart.options" :chart-type="rainGaugeChart.type">
     <h4 class="title" slot="title">Rainfall (mm)</h4>
-    <span slot="subTitle"> Measured every 6 hours</span>
+    <span slot="subTitle"> Measured every 2 hours</span>
   </chart-card>  
 </template>
 
