@@ -84,6 +84,15 @@
             </fg-input>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-12">
+            <fg-input type="number"
+                      label="RainfallThreshold"
+                      placeholder="RainfallThreshold"
+                      v-model.number="selectedWellPump.RainfallThreshold">
+            </fg-input>
+          </div>
+        </div>
         <div>
           <label>
             <input type='checkbox' v-model="selectedWellPump.AutomaticActivationEnabled"/>
@@ -126,7 +135,7 @@
         }
         return {
           title: 'WellPumps',
-          columns: ['ID', 'Name', 'Host', 'Port', 'ActivationIntervals', 'AutomaticActivationEnabled'],
+          columns: ['ID', 'Name', 'Host', 'Port', 'ActivationIntervals', 'RainfallThreshold', 'AutomaticActivationEnabled'],
           data: wellPumps
         }
       }
