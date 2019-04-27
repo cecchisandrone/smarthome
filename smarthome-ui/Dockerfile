@@ -1,4 +1,4 @@
-FROM node:6.12.1
+FROM node:10.15.0
 ADD . /build
 WORKDIR /build
 RUN npm install
