@@ -36,6 +36,8 @@ services:
     restart: always
   grafana:
     image: grafana/grafana:6.5.1
+    environment:
+    - GF_SERVER_ROOT_URL=http://cecchisandrone.ddns.net/grafana/
     ports:
     - 3000:3000
     volumes:  
