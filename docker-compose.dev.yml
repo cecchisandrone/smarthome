@@ -10,6 +10,6 @@ services:
       - 80:80
   smarthome-db:
     image: mysql:5.7
-volumes:  
-  smarthome-mysql-data:
+  influxdb:
+    image: influxdb:1.7.9
    

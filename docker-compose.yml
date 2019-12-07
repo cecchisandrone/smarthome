@@ -27,5 +27,21 @@ services:
     volumes:
     - smarthome-mysql-data:/var/lib/mysql
     restart: always
+  influxdb:
+    image: arm32v7/influxdb:1.7.9
+    ports:  
+    - 8086:8086
+    volumes:
+    - smarthome-influxdb-data:/var/lib/influxdb
+    restart: always
+  grafana:
+    image: grafana/grafana:6.5.1
+    ports:
+    - 3000:3000
+    volumes:  
+    - smarthome-grafana-data:/var/lib/grafana
+    restart: always
 volumes:
   smarthome-mysql-data:
+  smarthome-grafana-data:
+  smarthome-influxdb-data:
