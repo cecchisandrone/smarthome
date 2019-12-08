@@ -10,6 +10,7 @@ import Login from 'src/components/Login/Login.vue'
 import Configuration from 'src/components/Dashboard/Views/Configuration.vue'
 import Cameras from 'src/components/Dashboard/Views/Cameras.vue'
 import WebRadio from 'src/components/Dashboard/Views/WebRadio.vue'
+import Metrics from 'src/components/Dashboard/Views/Metrics.vue'
 
 const routes = [
   {
@@ -57,6 +58,11 @@ const routes = [
         path: 'webradio',
         name: 'webradio',
         component: WebRadio
+      },
+      {
+        path: 'metrics',
+        name: 'metrics',
+        component: Metrics
       }
     ]
   },
