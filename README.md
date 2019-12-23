@@ -5,6 +5,8 @@ SmartHome is a complete web application to manage different IoT devices
 
 # SmartHome UI
 
-![smarthome-ui](https://image.prntscr.com/image/rm7NNH4gTUOeceLxASES7w.png "Dashboard")
+![smarthome-ui](http://prntscr.com/qemrn3 "Dashboard")
 
 ![smarthome-ui](https://image.prntscr.com/image/1Q3OFMYXQraOAi_dIO9kyA.png "Cameras")
+
+![smarthome-ui](http://prntscr.com/qemt3e "Metrics")
