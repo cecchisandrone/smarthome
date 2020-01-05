@@ -11,6 +11,7 @@
     </div>
     <div class="stats" slot="footer">
       <i v-if="messages" class="ti-info"></i> {{messages}}
+      <i class="ti-reload"></i> {{footerText}}
     </div>
   </stats-card>
 </template>
@@ -26,7 +27,8 @@
       return {
         messages: '',
         inverters: null,
-        invertersMetrics: {}
+        invertersMetrics: {},
+        footerText: ''
       }
     },
     methods: {
@@ -39,6 +41,7 @@
             let id = data.Inverters[i].ID
             inverterService.getInverterMetrics(id).then((data2) => {
               that.$set(that.invertersMetrics, name, data2.metrics)
+              that.footerText = new Date().toLocaleString()
             })
             .catch((err) => {
               that.$set(that.invertersMetrics, name, null)
@@ -52,7 +55,7 @@
       },
       getInverterMetric: function (inverterName, metric) {
         if (this.invertersMetrics[inverterName]) {
-          return this.invertersMetrics[inverterName][metric].toFixed(2)
+          return this.invertersMetrics[inverterName][metric].toFixed(0)
         }
         return 'N.A.'
       }

@@ -2,6 +2,7 @@
   <div class="row">        
       <div class="col-md-12">
         <div v-if="globalErrors" class="alert alert-danger">{{globalErrors}}</div>
+        <div v-if="inverters.length == 0" class="alert alert-info">No inverters configured</div>
         <div v-for="(inverter, index) in inverters">
           <h3>{{inverter.Name}}</h3>                                    
           <div v-if="errors[inverter.ID]" class="alert alert-danger">{{errors[inverter.ID]}}</div>
