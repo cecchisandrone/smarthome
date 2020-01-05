@@ -14,7 +14,12 @@ const SidebarStore = {
       path: '/admin/cameras'
     },
     {
-      name: 'Configuration',
+      name: 'Inverters',
+      icon: 'ti-dashboard',
+      path: '/admin/inverters'
+    },
+    {
+      name: 'Config',
       icon: 'ti-settings',
       path: '/admin/configuration'
     },

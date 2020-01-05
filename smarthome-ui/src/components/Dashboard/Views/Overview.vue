@@ -25,6 +25,9 @@
         <rain-gauge></rain-gauge>
       </div>
       <div class="col-lg-2 col-sm-6">
+        <inverter></inverter>
+      </div>  
+      <div class="col-lg-2 col-sm-6">
         <humidity></humidity>
       </div>
     </div>
@@ -56,6 +59,7 @@
   import Raspsonar from 'components/Dashboard/Views/Overview/Raspsonar.vue'
   import Alarm from 'components/Dashboard/Views/Overview/Alarm.vue'
   import WellPump from 'components/Dashboard/Views/Overview/WellPump.vue'
+  import Inverter from 'components/Dashboard/Views/Overview/Inverter.vue'
   import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
   import RainGauge from 'components/Dashboard/Views/Overview/RainGauge.vue'
   import RainGaugeChart from 'components/Dashboard/Views/Overview/RainGaugeChart.vue'
@@ -73,6 +77,7 @@
       ChartCard,
       Alarm,
       WellPump,
+      Inverter,
       RainGauge,
       RainGaugeChart,
       Humidity,

@@ -10,6 +10,8 @@ services:
       - 80:80
   smarthome-db:
     image: mysql:5.7
-  influxdb:
-    image: influxdb:1.7.9
-   
+  grafana:
+    environment:
+    - GF_SERVER_ROOT_URL=http://localhost:3000
+    - GF_SECURITY_ALLOW_EMBEDDING=true
+    

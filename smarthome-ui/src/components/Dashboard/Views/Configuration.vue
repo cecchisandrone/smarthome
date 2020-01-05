@@ -6,6 +6,9 @@
     <div class="row">
       <well-pump-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></well-pump-configuration>
     </div>
+    <div class="row">
+      <inverter-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></inverter-configuration>
+    </div>
     <div class="row">    
       <div class="col-sm-4">
         <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
@@ -36,6 +39,7 @@
   import * as TemperatureConfiguration from 'src/components/Dashboard/Views/Configuration/Temperature.vue'
   import * as AlarmConfiguration from 'src/components/Dashboard/Views/Configuration/Alarm.vue'
   import * as WellPumpConfiguration from 'src/components/Dashboard/Views/Configuration/WellPump.vue'
+  import * as InverterConfiguration from 'src/components/Dashboard/Views/Configuration/Inverter.vue'
   import * as RainGaugeConfiguration from 'src/components/Dashboard/Views/Configuration/RainGauge.vue'
   import * as HumidityConfiguration from 'src/components/Dashboard/Views/Configuration/Humidity.vue'
 
@@ -49,11 +53,12 @@
       'alarm-configuration': AlarmConfiguration,
       'well-pump-configuration': WellPumpConfiguration,
       'rain-gauge-configuration': RainGaugeConfiguration,
-      'humidity-configuration': HumidityConfiguration
+      'humidity-configuration': HumidityConfiguration,
+      'inverter-configuration': InverterConfiguration
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}},
+        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}},
         errors: null,
         saveButtonEnabled: false
       }

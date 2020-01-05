@@ -10,6 +10,7 @@ import Login from 'src/components/Login/Login.vue'
 import Configuration from 'src/components/Dashboard/Views/Configuration.vue'
 import Cameras from 'src/components/Dashboard/Views/Cameras.vue'
 import WebRadio from 'src/components/Dashboard/Views/WebRadio.vue'
+import Inverters from 'src/components/Dashboard/Views/Inverters.vue'
 import Metrics from 'src/components/Dashboard/Views/Metrics.vue'
 
 const routes = [
@@ -43,6 +44,11 @@ const routes = [
         path: 'cameras',
         name: 'cameras',
         component: Cameras
+      },
+      {
+        path: 'inverters',
+        name: 'inverters',
+        component: Inverters
       },
       {
         path: 'stats',
