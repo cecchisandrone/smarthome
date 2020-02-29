@@ -37,7 +37,7 @@ services:
   grafana:
     image: grafana/grafana:6.5.1
     environment:
-    - GF_SERVER_ROOT_URL=http://smarthome.cecchisandrone.tk/grafana/
+    - GF_SERVER_ROOT_URL=http://smarthome.cecchisandrone.net/grafana/
     - GF_SECURITY_ALLOW_EMBEDDING=true
     ports:
     - 3000:3000
