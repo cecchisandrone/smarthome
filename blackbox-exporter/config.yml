@@ -1,0 +1,13 @@
+modules:
+  http_2xx:
+    prober: http
+    timeout: 20s
+    http:
+      valid_status_codes:
+      - 200
+      preferred_ip_protocol: ip4
+      no_follow_redirects: false
+  ping:
+    prober: icmp
+    icmp:
+      preferred_ip_protocol: ip4

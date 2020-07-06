@@ -1,0 +1,12 @@
+route:
+  receiver: 'slack'
+receivers:
+  - name: 'slack'
+    slack_configs:
+    - send_resolved: true
+      username: 'Prometheus'
+      channel: '#alarm'
+      api_url: 'https://hooks.slack.com/services/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'
+      icon_url: 'http://voverc-grafana.s3.amazonaws.com/monitoring.png'
+      title: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}"
+      text: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"

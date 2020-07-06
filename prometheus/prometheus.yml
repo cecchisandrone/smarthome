@@ -1,0 +1,120 @@
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+  scrape_timeout:      10s
+
+rule_files:
+  - 'alert.rules'
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: "icmp"
+    scrape_interval: "10s"
+    scrape_timeout: 10s
+    metrics_path: "/probe"
+    params:
+      module: [ping]
+    static_configs:
+      # Router
+      - targets: ['192.168.1.1']
+        labels:
+          role: 'router'
+          name: 'Fritz 7590'
+      - targets: ['192.168.1.2']
+        labels:
+          role: 'router'
+          name: 'Netgear N300'
+      - targets: ['192.168.1.3']
+        labels:
+          role: 'router'
+          name: 'Tp-Link TL-WR841N'
+      - targets: ['192.168.1.4']
+        labels:
+          role: 'router'
+          name: 'Tp-Link'
+      - targets: ['192.168.1.5']
+        labels:
+          role: 'router'
+          name: 'Fritz Box 7170'
+      - targets: ['192.168.1.6']
+        labels:
+          role: 'router'
+          name: 'Netgear R6220'
+      - targets: ['192.168.1.7']
+        labels:
+          role: 'router'
+          name: 'dd-wrt2'
+      - targets: ['192.168.1.8']
+        labels:
+          role: 'router'
+          name: 'WAVLINK'
+      - targets: ['192.168.1.9']
+        labels:
+          role: 'router'
+          name: 'ZyXEL 650H'
+      # Camera
+      - targets: ['192.168.1.10']
+        labels:
+          role: 'camera'
+          name: 'Garage'
+      - targets: ['192.168.1.11']
+        labels:
+          role: 'camera'
+          name: 'Entrance'
+      - targets: ['192.168.1.12']
+        labels:
+          role: 'camera'
+          name: 'External'
+      - targets: ['192.168.1.14']
+        labels:
+          role: 'camera'
+          name: 'Basement'
+      - targets: ['192.168.1.15']
+        labels:
+          role: 'camera'
+          name: 'Living'
+      - targets: ['192.168.1.17']
+        labels:
+          role: 'camera'
+          name: 'Gate'
+      - targets: ['192.168.1.16']
+        labels:
+          role: 'camera'
+          name: 'Parkway'
+      # IOT
+      - targets: ['192.168.1.110']
+        labels:
+          role: 'iot'
+          name: 'RaspberryPi Zero W'
+      - targets: ['192.168.1.112']
+        labels:
+          role: 'iot'
+          name: 'WDTVLive'
+      - targets: ['192.168.1.105']
+        labels:
+          role: 'iot'
+          name: 'Inverter monitor' 
+      - targets: ['192.168.1.120']
+        labels:
+          role: 'iot'
+          name: 'Weather station'
+      - targets: ['192.168.1.124']
+        labels:
+          role: 'iot'
+          name: 'Well pump'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115  # Blackbox exporter.
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets:
+      - "alertmanager:9093"

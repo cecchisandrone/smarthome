@@ -44,7 +44,27 @@ services:
     volumes:  
     - smarthome-grafana-data:/var/lib/grafana
     restart: always
+  prometheus:
+    build: prometheus
+    restart: always
+    command: --storage.tsdb.retention.time=60d --config.file=/etc/prometheus/prometheus.yml
+    ports:
+    - 9090:9090
+    volumes:
+    - smarthome-prometheus-data:/prometheus
+  alertmanager:
+    build: alertmanager
+    command: --config.file=/etc/alertmanager/config.yml
+    ports:
+    - 9093:9093
+    restart: always
+  blackbox-exporter:
+    build: blackbox-exporter
+    ports:
+    - 9115:9115
+    restart: always
 volumes:
   smarthome-mysql-data:
   smarthome-grafana-data:
   smarthome-influxdb-data:
+  smarthome-prometheus-data:
