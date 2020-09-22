@@ -3,16 +3,13 @@ groups:
   rules:
   - alert: RouterDown
     expr: probe_success{role="router"} == 0
-    for: 60s
     annotations:
       summary: "Router {{ $labels.name }} ({{ $labels.instance }}) is not reachable"
   - alert: CameraDown
     expr: probe_success{role="camera"} == 0
-    for: 60s
     annotations:
       summary: "Camera {{ $labels.name }} ({{ $labels.instance }}) is not reachable"
   - alert: IotDown
     expr: probe_success{role="iot"} == 0
-    for: 60s
     annotations:
       summary: "IOT device {{ $labels.name }} ({{ $labels.instance }}) is not reachable"

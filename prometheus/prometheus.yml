@@ -11,8 +11,8 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
   - job_name: "icmp"
-    scrape_interval: "10s"
-    scrape_timeout: 10s
+    scrape_interval: 3600s
+    scrape_timeout: 20s
     metrics_path: "/probe"
     params:
       module: [ping]
@@ -46,10 +46,6 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'dd-wrt2'
-      - targets: ['192.168.1.8']
-        labels:
-          role: 'router'
-          name: 'WAVLINK'
       - targets: ['192.168.1.9']
         labels:
           role: 'router'
