@@ -42,10 +42,6 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Netgear R6220'
-      - targets: ['192.168.1.7']
-        labels:
-          role: 'router'
-          name: 'dd-wrt2'
       - targets: ['192.168.1.9']
         labels:
           role: 'router'
