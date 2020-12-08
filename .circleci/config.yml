@@ -69,6 +69,7 @@ workflows:
       - build_server:
           requires:
             - build_ui
+      - build_images
       - deploy:
           requires:
             - build_ui
