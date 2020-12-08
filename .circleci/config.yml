@@ -40,6 +40,8 @@ jobs:
       enabled: true
     working_directory: /tmp/project
     steps:
+      - attach_workspace:
+          at: /tmp
       - run:
           command: ls -al
       - run:
