@@ -14,4 +14,10 @@ services:
     environment:
     - GF_SERVER_ROOT_URL=http://localhost:3000
     - GF_SECURITY_ALLOW_EMBEDDING=true
+  prometheus:
+    build: prometheus
+  alertmanager:
+    build: alertmanager
+  blackbox-exporter:
+    build: blackbox-exporter
     

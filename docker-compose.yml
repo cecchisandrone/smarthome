@@ -5,6 +5,7 @@ services:
     - SMARTHOME_ENV=${SMARTHOME_ENV}
     - MYSQL_SMARTHOME_USER=${MYSQL_SMARTHOME_USER}
     - MYSQL_SMARTHOME_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
+    - 
     - TZ=Europe/Rome
     image: repo.treescale.com/cecchisandrone/smarthome-server:latest    
     ports:
@@ -45,7 +46,7 @@ services:
     - smarthome-grafana-data:/var/lib/grafana
     restart: always
   prometheus:
-    build: prometheus
+    image: repo.treescale.com/cecchisandrone/prometheus:latest
     restart: always
     command: --storage.tsdb.retention.time=60d --config.file=/etc/prometheus/prometheus.yml
     ports:
@@ -53,14 +54,14 @@ services:
     volumes:
     - smarthome-prometheus-data:/prometheus
   alertmanager:
-    build: alertmanager
+    image: repo.treescale.com/cecchisandrone/alertmanager:latest
     command: --config.file=/etc/alertmanager/config.yml
     ports:
     - 9093:9093
     restart: always
   blackbox-exporter:
     command: --log.level=info --config.file=/etc/blackbox_exporter/config.yml
-    build: blackbox-exporter
+    image: repo.treescale.com/cecchisandrone/blackbox-exporter:latest
     ports:
     - 9115:9115
     restart: always

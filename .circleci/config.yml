@@ -35,6 +35,12 @@ jobs:
           docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-server:latest . 
           docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push repo.treescale.com/cecchisandrone/smarthome-server:latest
+          docker build -t repo.treescale.com/cecchisandrone/prometheus:latest ./prometheus
+          docker build -t repo.treescale.com/cecchisandrone/alertmanager:latest ./alertmanager
+          docker build -t repo.treescale.com/cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
+          docker push repo.treescale.com/cecchisandrone/prometheus:latest
+          docker push repo.treescale.com/cecchisandrone/alertmanager:latest
+          docker push repo.treescale.com/cecchisandrone/blackbox-exporter:latest          
   deploy:
     machine:
       enabled: true
@@ -42,8 +48,6 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp
-      - run:
-          command: ls -al
       - run:
           command: scp -v -o StrictHostKeyChecking=no -P $SMARTHOME_SSH_PORT docker-compose.yml pi@$SMARTHOME_SSH_HOST:/home/pi
       - run:
