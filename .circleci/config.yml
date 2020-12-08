@@ -45,7 +45,7 @@ jobs:
       - run:
           command: ls -al
       - run:
-          command: scp docker-compose.yml -o StrictHostKeyChecking=no pi@$SMARTHOME_SSH_HOST:/home/pi -P $SMARTHOME_SSH_PORT
+          command: scp -v -o StrictHostKeyChecking=no -P $SMARTHOME_SSH_PORT docker-compose.yml pi@$SMARTHOME_SSH_HOST:/home/pi
       - run:
           command: ssh -o StrictHostKeyChecking=no -l pi $SMARTHOME_SSH_HOST -p $SMARTHOME_SSH_PORT "docker-compose stop && docker-compose pull && docker-compose up -d"
           no_output_timeout: 30m
