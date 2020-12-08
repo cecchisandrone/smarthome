@@ -43,7 +43,7 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run: |
-          ls -al
+          docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker build -t repo.treescale.com/cecchisandrone/prometheus:latest ./prometheus
           docker build -t repo.treescale.com/cecchisandrone/alertmanager:latest ./alertmanager
           docker build -t repo.treescale.com/cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
