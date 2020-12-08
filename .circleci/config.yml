@@ -70,7 +70,7 @@ workflows:
       - build_server:
           requires:
             - build_ui
-      - build_images
+      - build_images:
           requires:
             - build_ui
       - deploy:
