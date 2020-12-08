@@ -43,9 +43,10 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run: |
-          docker build -t repo.treescale.com/cecchisandrone/prometheus:latest prometheus
-          docker build -t repo.treescale.com/cecchisandrone/alertmanager:latest alertmanager
-          docker build -t repo.treescale.com/cecchisandrone/blackbox-exporter:latest blackbox-exporter
+          ls -al
+          docker build -t repo.treescale.com/cecchisandrone/prometheus:latest ./prometheus
+          docker build -t repo.treescale.com/cecchisandrone/alertmanager:latest ./alertmanager
+          docker build -t repo.treescale.com/cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
           docker push repo.treescale.com/cecchisandrone/prometheus:latest
           docker push repo.treescale.com/cecchisandrone/alertmanager:latest
           docker push repo.treescale.com/cecchisandrone/blackbox-exporter:latest     
