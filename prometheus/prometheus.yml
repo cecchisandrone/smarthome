@@ -49,11 +49,7 @@ scrape_configs:
       - targets: ['192.168.1.13']
         labels:
           role: 'router'
-          name: 'Pirelli'
-      - targets: ['192.168.1.18']
-        labels:
-          role: 'router'
-          name: 'ADB'
+          name: 'bbox'      
       # Camera
       - targets: ['192.168.1.10']
         labels:
@@ -84,7 +80,7 @@ scrape_configs:
           role: 'camera'
           name: 'Parkway'
       # IOT
-      - targets: ['192.168.1.110']
+      - targets: ['192.168.1.19']
         labels:
           role: 'iot'
           name: 'RaspberryPi Zero W'
