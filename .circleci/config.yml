@@ -12,9 +12,9 @@ jobs:
           docker build -t smarthome-ui:build .
           id=$(docker create smarthome-ui:build)
           docker cp $id:/build/dist .
-          docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-ui:latest . 
-          docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker push repo.treescale.com/cecchisandrone/smarthome-ui:latest
+          docker build -f Dockerfile-runtime -t cecchisandrone/smarthome-ui:latest . 
+          docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+          docker push cecchisandrone/smarthome-ui:latest
       - persist_to_workspace:
           root: /home/circleci
           paths:
@@ -32,9 +32,9 @@ jobs:
           id=$(docker create smarthome-server:build)
           docker cp $id:/go/src/github.com/cecchisandrone/smarthome-server/smarthome-server .
           docker run --rm --privileged multiarch/qemu-user-static:register --reset 
-          docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-server:latest . 
-          docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker push repo.treescale.com/cecchisandrone/smarthome-server:latest       
+          docker build -f Dockerfile-runtime -t cecchisandrone/smarthome-server:latest . 
+          docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+          docker push cecchisandrone/smarthome-server:latest       
   build_images:
     machine: 
       enabled: true
@@ -43,13 +43,13 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run: |
-          docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker build -t repo.treescale.com/cecchisandrone/prometheus:latest ./prometheus
-          docker build -t repo.treescale.com/cecchisandrone/alertmanager:latest ./alertmanager
-          docker build -t repo.treescale.com/cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
-          docker push repo.treescale.com/cecchisandrone/prometheus:latest
-          docker push repo.treescale.com/cecchisandrone/alertmanager:latest
-          docker push repo.treescale.com/cecchisandrone/blackbox-exporter:latest     
+          docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+          docker build -t cecchisandrone/prometheus:latest ./prometheus
+          docker build -t cecchisandrone/alertmanager:latest ./alertmanager
+          docker build -t cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
+          docker push cecchisandrone/prometheus:latest
+          docker push cecchisandrone/alertmanager:latest
+          docker push cecchisandrone/blackbox-exporter:latest     
   deploy:
     machine:
       enabled: true
