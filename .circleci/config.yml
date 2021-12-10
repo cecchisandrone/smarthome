@@ -9,7 +9,7 @@ jobs:
       - run: git submodule update --init
       - run: |
           cd smarthome-ui
-          docker build -t smarthome-ui:build .
+          docker build -t cecchisandrone/smarthome-ui:latest .
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push cecchisandrone/smarthome-ui:latest
       - persist_to_workspace:
@@ -25,7 +25,7 @@ jobs:
           at: /tmp
       - run: |
           docker run --rm --privileged multiarch/qemu-user-static:register --reset 
-          docker build -t smarthome-server:build .
+          docker build -t cecchisandrone/smarthome-server:latest .
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push cecchisandrone/smarthome-server:latest
   build_images:
