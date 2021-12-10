@@ -9,7 +9,6 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - run: |
-          docker buildx ls
           cd smarthome-ui
           docker build -t cecchisandrone/smarthome-ui:latest .
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
@@ -40,9 +39,10 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run: |
-          docker build -t cecchisandrone/prometheus:latest ./prometheus
-          docker build -t cecchisandrone/alertmanager:latest ./alertmanager
-          docker build -t cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
+          docker buildx ls
+          docker buildx build --platform linux/arm/v7 -t cecchisandrone/prometheus:latest ./prometheus
+          docker buildx build --platform linux/arm/v7 -t cecchisandrone/alertmanager:latest ./alertmanager
+          docker buildx build --platform linux/arm/v7 -t cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push cecchisandrone/prometheus:latest
           docker push cecchisandrone/alertmanager:latest
