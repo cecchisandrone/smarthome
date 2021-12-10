@@ -39,7 +39,6 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run: |
-          docker run --rm --privileged multiarch/qemu-user-static:register --reset
           docker build -t cecchisandrone/prometheus:latest ./prometheus
           docker build -t cecchisandrone/alertmanager:latest ./alertmanager
           docker build -t cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
