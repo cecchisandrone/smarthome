@@ -3,7 +3,7 @@ jobs:
   build_ui:
     machine:
       image: ubuntu-2004:202111-01
-    resource_class: arm.medium
+    resource_class: medium
     steps:
       - checkout
       - run: git submodule sync
@@ -20,7 +20,7 @@ jobs:
   build_server:
     machine:
       image: ubuntu-2004:202111-01
-    resource_class: arm.medium
+    resource_class: medium
     working_directory: /tmp/project/smarthome-server
     steps:
       - attach_workspace:
