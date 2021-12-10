@@ -10,9 +10,6 @@ jobs:
       - run: |
           cd smarthome-ui
           docker build -t smarthome-ui:build .
-          id=$(docker create smarthome-ui:build)
-          docker cp $id:/build/dist .
-          docker build -f Dockerfile-runtime -t cecchisandrone/smarthome-ui:latest . 
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push cecchisandrone/smarthome-ui:latest
       - persist_to_workspace:
@@ -27,14 +24,10 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run: |
-          docker build -t smarthome-server:build .
-          docker images
-          id=$(docker create smarthome-server:build)
-          docker cp $id:/go/src/github.com/cecchisandrone/smarthome-server/smarthome-server .
           docker run --rm --privileged multiarch/qemu-user-static:register --reset 
-          docker build -f Dockerfile-runtime -t cecchisandrone/smarthome-server:latest . 
+          docker build -t smarthome-server:build .
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker push cecchisandrone/smarthome-server:latest       
+          docker push cecchisandrone/smarthome-server:latest
   build_images:
     machine: 
       enabled: true
