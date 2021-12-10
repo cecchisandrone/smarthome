@@ -36,13 +36,14 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run: |
-          docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+          docker run --rm --privileged multiarch/qemu-user-static:register --reset
           docker build -t cecchisandrone/prometheus:latest ./prometheus
           docker build -t cecchisandrone/alertmanager:latest ./alertmanager
           docker build -t cecchisandrone/blackbox-exporter:latest ./blackbox-exporter
+          docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push cecchisandrone/prometheus:latest
           docker push cecchisandrone/alertmanager:latest
-          docker push cecchisandrone/blackbox-exporter:latest     
+          docker push cecchisandrone/blackbox-exporter:latest
   deploy:
     machine:
       enabled: true
