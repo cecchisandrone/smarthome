@@ -40,7 +40,6 @@ jobs:
           at: /tmp
       - run: |
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker buildx ls
           docker buildx build --platform linux/arm/v7 -t cecchisandrone/prometheus:latest --push ./prometheus
           docker buildx build --platform linux/arm/v7 -t cecchisandrone/alertmanager:latest --push ./alertmanager
           docker buildx build --platform linux/arm/v7 -t cecchisandrone/blackbox-exporter:latest --push ./blackbox-exporter
