@@ -9,6 +9,7 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - run: |
+          docker buildx ls
           cd smarthome-ui
           docker build -t cecchisandrone/smarthome-ui:latest .
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
