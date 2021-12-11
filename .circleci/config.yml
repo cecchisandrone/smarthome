@@ -3,14 +3,15 @@ jobs:
   build_ui:
     machine:
       image: ubuntu-2004:202111-01
-    resource_class: arm.medium
+    resource_class: medium
     steps:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - run: |
+          docker build -t cecchisandrone/smarthome-ui:latest ./smarthome-ui
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker buildx build --platform linux/arm/v7 -t cecchisandrone/smarthome-ui:latest --push ./smarthome-ui
+          docker push cecchisandrone/smarthome-ui:latest
       - persist_to_workspace:
           root: /home/circleci
           paths:
