@@ -18,11 +18,12 @@
         <gate-configuration :gate="configuration.Gate" @gateModified="gateModified" @loadConfiguration="loadConfiguration"></gate-configuration>
         <temperature-configuration :temperature="configuration.Temperature" @temperatureModified="temperatureModified" @loadConfiguration="loadConfiguration"></temperature-configuration>
         <humidity-configuration :humidity="configuration.Humidity" @humidityModified="humidityModified" @loadConfiguration="loadConfiguration"></humidity-configuration>
+        <heater-configuration :heater="configuration.Heater" @heaterModified="heaterModified" @loadConfiguration="loadConfiguration"></heater-configuration>
       </div>
       <div class="col-sm-4">
         <slack-configuration :slack="configuration.Slack" @slackModified="slackModified" @loadConfiguration="loadConfiguration"></slack-configuration>
         <alarm-configuration :alarm="configuration.Alarm" @alarmModified="alarmModified" @loadConfiguration="loadConfiguration"></alarm-configuration>
-      </div>      
+      </div>
     </div>
     <button v-if="saveButtonEnabled" style="margin: 10px" class="btn btn-success" v-on:click="saveConfiguration">
       Save
@@ -42,6 +43,7 @@
   import * as InverterConfiguration from 'src/components/Dashboard/Views/Configuration/Inverter.vue'
   import * as RainGaugeConfiguration from 'src/components/Dashboard/Views/Configuration/RainGauge.vue'
   import * as HumidityConfiguration from 'src/components/Dashboard/Views/Configuration/Humidity.vue'
+  import * as HeaterConfiguration from 'src/components/Dashboard/Views/Configuration/Heater.vue'
 
   export default {
     components: {
@@ -54,11 +56,12 @@
       'well-pump-configuration': WellPumpConfiguration,
       'rain-gauge-configuration': RainGaugeConfiguration,
       'humidity-configuration': HumidityConfiguration,
-      'inverter-configuration': InverterConfiguration
+      'inverter-configuration': InverterConfiguration,
+      'heater-configuration': HeaterConfiguration
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}},
+        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}, Heater: {}},
         errors: null,
         saveButtonEnabled: false
       }
@@ -112,6 +115,10 @@
       humidityModified: function (humidity) {
         this.saveButtonEnabled = true
         this.configuration.Humidity = humidity
+      },
+      heaterModified: function (heater) {
+        this.saveButtonEnabled = true
+        this.configuration.Heater = heater
       }
     },
     created () {

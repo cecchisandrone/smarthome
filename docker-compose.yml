@@ -28,14 +28,14 @@ services:
     - smarthome-mysql-data:/var/lib/mysql
     restart: always
   influxdb:
-    image: arm32v7/influxdb:1.7.9
+    image: arm32v7/influxdb:1.8.10
     ports:  
     - 8086:8086
     volumes:
     - smarthome-influxdb-data:/var/lib/influxdb
     restart: always
   grafana:
-    image: grafana/grafana:6.5.1
+    image: grafana/grafana:6.7.6
     environment:
     - GF_SERVER_ROOT_URL=http://smarthome.cecchisandrone.net/grafana/
     - GF_SECURITY_ALLOW_EMBEDDING=true
