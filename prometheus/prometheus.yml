@@ -11,8 +11,8 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
   - job_name: "icmp"
-    scrape_interval: 3600s
-    scrape_timeout: 20s
+    scrape_interval: 7200s
+    scrape_timeout: 10s
     metrics_path: "/probe"
     params:
       module: [ping]
@@ -21,7 +21,7 @@ scrape_configs:
       - targets: ['192.168.1.1']
         labels:
           role: 'router'
-          name: 'Fritz 7590'
+          name: 'Fritz Box 7590'
       - targets: ['192.168.1.2']
         labels:
           role: 'router'
@@ -30,10 +30,6 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Tp-Link TL-WR841N'
-      - targets: ['192.168.1.4']
-        labels:
-          role: 'router'
-          name: 'Tp-Link'
       - targets: ['192.168.1.5']
         labels:
           role: 'router'
@@ -42,6 +38,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Netgear R6220'
+      - targets: ['192.168.1.7']
+        labels:
+          role: 'router'
+          name: 'Tp-Link TL-WR841N'
       - targets: ['192.168.1.9']
         labels:
           role: 'router'
@@ -49,11 +49,11 @@ scrape_configs:
       - targets: ['192.168.1.13']
         labels:
           role: 'router'
-          name: 'Pirelli'
-      - targets: ['192.168.1.18']
+          name: 'BBOX'
+      - targets: ['192.168.1.136']
         labels:
           role: 'router'
-          name: 'ADB'
+          name: 'Tp-Link TL-WA850RE'
       # Camera
       - targets: ['192.168.1.10']
         labels:
@@ -100,6 +100,14 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Weather station'
+      - targets: ['192.168.1.124']
+        labels:
+          role: 'iot'
+          name: 'Well pump'
+      - targets: ['192.168.1.101']
+        labels:
+          role: 'iot'
+          name: 'Roborock S5 Max'
       - targets: ['192.168.1.124']
         labels:
           role: 'iot'
