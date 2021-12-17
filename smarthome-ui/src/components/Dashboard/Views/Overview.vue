@@ -26,9 +26,14 @@
       </div>
       <div class="col-lg-2 col-sm-6">
         <inverter></inverter>
-      </div>  
+      </div>
+      <!--
       <div class="col-lg-2 col-sm-6">
         <humidity></humidity>
+      </div>
+      -->
+      <div class="col-lg-2 col-sm-6">
+        <heater></heater>
       </div>
     </div>
 
@@ -37,14 +42,19 @@
       <div class="col-md-6">
         <temperature-chart></temperature-chart>
       </div>
+      <!--
       <div class="col-md-6">
         <humidity-chart></humidity-chart>
       </div>
+      -->
       <div class="col-md-6">
         <rain-gauge-chart></rain-gauge-chart>
       </div>
       <div class="col-md-6">
         <raspsonar-chart></raspsonar-chart>
+      </div>
+      <div class="col-md-12">
+        <heater-chart></heater-chart>
       </div>
     </div>
 
@@ -65,7 +75,9 @@
   import RainGaugeChart from 'components/Dashboard/Views/Overview/RainGaugeChart.vue'
   import Humidity from 'components/Dashboard/Views/Overview/Humidity.vue'
   import HumidityChart from 'components/Dashboard/Views/Overview/HumidityChart.vue'
-  
+  import Heater from 'components/Dashboard/Views/Overview/Heater.vue'
+  import HeaterChart from 'components/Dashboard/Views/Overview/HeaterChart.vue'
+
   export default {
     components: {
       Gate,
@@ -81,7 +93,9 @@
       RainGauge,
       RainGaugeChart,
       Humidity,
-      HumidityChart
+      HumidityChart,
+      Heater,
+      HeaterChart
     }
   }
 </script>

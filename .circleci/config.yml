@@ -2,46 +2,55 @@ version: 2
 jobs:
   build_ui:
     machine:
-      enabled: true
+      image: ubuntu-2004:202111-01
+    resource_class: medium
     steps:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - run: |
-          cd smarthome-ui
-          docker build -t smarthome-ui:build .
-          id=$(docker create smarthome-ui:build)
-          docker cp $id:/build/dist .
-          docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-ui:latest . 
-          docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker push repo.treescale.com/cecchisandrone/smarthome-ui:latest
+          docker build -t cecchisandrone/smarthome-ui:latest ./smarthome-ui
+          docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+          docker push cecchisandrone/smarthome-ui:latest
       - persist_to_workspace:
           root: /home/circleci
           paths:
             - project/*
   build_server:
-    machine: 
-      enabled: true
+    machine:
+      image: ubuntu-2004:202111-01
+    resource_class: arm.medium
     working_directory: /tmp/project/smarthome-server
     steps:
       - attach_workspace:
           at: /tmp
       - run: |
-          docker build -t smarthome-server:build .
-          docker images
-          id=$(docker create smarthome-server:build)
-          docker cp $id:/go/src/github.com/cecchisandrone/smarthome-server/smarthome-server .
-          docker run --rm --privileged multiarch/qemu-user-static:register --reset 
-          docker build -f Dockerfile-runtime -t repo.treescale.com/cecchisandrone/smarthome-server:latest . 
-          docker login repo.treescale.com -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-          docker push repo.treescale.com/cecchisandrone/smarthome-server:latest
-  deploy:
+          docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+          docker buildx build --platform linux/arm/v7 -t cecchisandrone/smarthome-server:latest --push .
+  build_images:
     machine:
-      enabled: true
+      image: ubuntu-2004:202111-01
+    resource_class: arm.medium
     working_directory: /tmp/project
     steps:
+      - attach_workspace:
+          at: /tmp
+      - run: |
+          docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+          docker buildx build --platform linux/arm/v7 -t cecchisandrone/prometheus:latest --push ./prometheus
+          docker buildx build --platform linux/arm/v7 -t cecchisandrone/alertmanager:latest --push ./alertmanager
+          docker buildx build --platform linux/arm/v7 -t cecchisandrone/blackbox-exporter:latest --push ./blackbox-exporter
+  deploy:
+    machine:
+      image: ubuntu-2004:202111-01
+    working_directory: /tmp/project
+    steps:
+      - attach_workspace:
+          at: /tmp
       - run:
-          command: ssh -o StrictHostKeyChecking=no -l pi $SMARTHOME_SSH_HOST -p $SMARTHOME_SSH_PORT "docker-compose stop && docker-compose pull && docker-compose up -d"
+          command: scp -v -o StrictHostKeyChecking=no -P $SMARTHOME_SSH_PORT docker-compose.yml pi@$SMARTHOME_SSH_HOST:/home/pi
+      - run:
+          command: ssh -o StrictHostKeyChecking=no -l pi $SMARTHOME_SSH_HOST -p $SMARTHOME_SSH_PORT "mv docker-compose.yml docker-compose-smarthome.yml && docker-compose -f docker-compose-smarthome.yml -p pi stop && docker-compose -f docker-compose-smarthome.yml pull && docker-compose -f docker-compose-smarthome.yml -p pi up -d"
           no_output_timeout: 30m
 workflows:
   version: 2
@@ -51,7 +60,11 @@ workflows:
       - build_server:
           requires:
             - build_ui
+      - build_images:
+          requires:
+            - build_ui
       - deploy:
           requires:
             - build_ui
             - build_server
+            - build_images

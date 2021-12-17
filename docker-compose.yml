@@ -6,12 +6,12 @@ services:
     - MYSQL_SMARTHOME_USER=${MYSQL_SMARTHOME_USER}
     - MYSQL_SMARTHOME_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
     - TZ=Europe/Rome
-    image: repo.treescale.com/cecchisandrone/smarthome-server:latest    
+    image: cecchisandrone/smarthome-server:latest    
     ports:
     - 8080:8080
     restart: always
   smarthome-ui:
-    image: repo.treescale.com/cecchisandrone/smarthome-ui:latest
+    image: cecchisandrone/smarthome-ui:latest
     ports:
     - 80:80
     restart: always
@@ -28,14 +28,14 @@ services:
     - smarthome-mysql-data:/var/lib/mysql
     restart: always
   influxdb:
-    image: arm32v7/influxdb:1.7.9
+    image: arm32v7/influxdb:1.8.10
     ports:  
     - 8086:8086
     volumes:
     - smarthome-influxdb-data:/var/lib/influxdb
     restart: always
   grafana:
-    image: grafana/grafana:6.5.1
+    image: grafana/grafana:6.7.6
     environment:
     - GF_SERVER_ROOT_URL=http://smarthome.cecchisandrone.net/grafana/
     - GF_SECURITY_ALLOW_EMBEDDING=true
@@ -45,7 +45,7 @@ services:
     - smarthome-grafana-data:/var/lib/grafana
     restart: always
   prometheus:
-    build: prometheus
+    image: cecchisandrone/prometheus:latest
     restart: always
     command: --storage.tsdb.retention.time=60d --config.file=/etc/prometheus/prometheus.yml
     ports:
@@ -53,14 +53,14 @@ services:
     volumes:
     - smarthome-prometheus-data:/prometheus
   alertmanager:
-    build: alertmanager
+    image: cecchisandrone/alertmanager:latest
     command: --config.file=/etc/alertmanager/config.yml
     ports:
     - 9093:9093
     restart: always
   blackbox-exporter:
     command: --log.level=info --config.file=/etc/blackbox_exporter/config.yml
-    build: blackbox-exporter
+    image: cecchisandrone/blackbox-exporter:latest
     ports:
     - 9115:9115
     restart: always

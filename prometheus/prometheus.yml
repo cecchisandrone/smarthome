@@ -49,11 +49,15 @@ scrape_configs:
       - targets: ['192.168.1.13']
         labels:
           role: 'router'
+<<<<<<< HEAD
           name: 'BBOX'
       - targets: ['192.168.1.136']
         labels:
           role: 'router'
           name: 'Tp-Link TL-WA850RE'
+=======
+          name: 'bbox'      
+>>>>>>> ce6c7ab72f9ef35d76fb3d062ea9d229bf753750
       # Camera
       - targets: ['192.168.1.10']
         labels:
@@ -84,7 +88,7 @@ scrape_configs:
           role: 'camera'
           name: 'Parkway'
       # IOT
-      - targets: ['192.168.1.110']
+      - targets: ['192.168.1.19']
         labels:
           role: 'iot'
           name: 'RaspberryPi Zero W'

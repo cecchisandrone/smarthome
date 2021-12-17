@@ -1,6 +1,0 @@
-FROM tobi312/rpi-nginx
-#FROM nginx
-ADD dist /var/www/html
-ADD nginx/default /etc/nginx/sites-available/default
-#RUN rm /etc/nginx/conf.d/default.conf
-#ADD nginx/default /etc/nginx/conf.d/default.conf
