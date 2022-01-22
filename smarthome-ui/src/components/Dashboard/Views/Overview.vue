@@ -27,11 +27,9 @@
       <div class="col-lg-2 col-sm-6">
         <inverter></inverter>
       </div>
-      <!--
       <div class="col-lg-2 col-sm-6">
         <humidity></humidity>
       </div>
-      -->
       <div class="col-lg-2 col-sm-6">
         <heater></heater>
       </div>
@@ -42,11 +40,9 @@
       <div class="col-md-6">
         <temperature-chart></temperature-chart>
       </div>
-      <!--
       <div class="col-md-6">
         <humidity-chart></humidity-chart>
       </div>
-      -->
       <div class="col-md-6">
         <rain-gauge-chart></rain-gauge-chart>
       </div>
