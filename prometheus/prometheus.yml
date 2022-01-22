@@ -50,10 +50,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'BBOX'
-      - targets: ['192.168.1.136']
+      - targets: ['192.168.1.147']
         labels:
           role: 'router'
-          name: 'Tp-Link TL-WA850RE'
+          name: 'Xiaomi Repeater 2'
       # Camera
       - targets: ['192.168.1.10']
         labels:
