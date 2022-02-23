@@ -31,6 +31,9 @@
         <humidity></humidity>
       </div>
       <div class="col-lg-2 col-sm-6">
+        <power-meter></power-meter>
+      </div>
+      <div class="col-lg-2 col-sm-6">
         <heater></heater>
       </div>
     </div>
@@ -49,8 +52,11 @@
       <div class="col-md-6">
         <raspsonar-chart></raspsonar-chart>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-6">
         <heater-chart></heater-chart>
+      </div>
+      <div class="col-md-6">
+        <power-meter-chart></power-meter-chart>
       </div>
     </div>
 
@@ -73,6 +79,8 @@
   import HumidityChart from 'components/Dashboard/Views/Overview/HumidityChart.vue'
   import Heater from 'components/Dashboard/Views/Overview/Heater.vue'
   import HeaterChart from 'components/Dashboard/Views/Overview/HeaterChart.vue'
+  import PowerMeter from 'components/Dashboard/Views/Overview/PowerMeter.vue'
+  import PowerMeterChart from 'components/Dashboard/Views/Overview/PowerMeterChart.vue'
 
   export default {
     components: {
@@ -91,7 +99,9 @@
       Humidity,
       HumidityChart,
       Heater,
-      HeaterChart
+      HeaterChart,
+      PowerMeter,
+      PowerMeterChart
     }
   }
 </script>
