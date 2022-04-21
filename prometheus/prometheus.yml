@@ -26,10 +26,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Netgear N300'
-      - targets: ['192.168.1.3']
+      - targets: ['192.168.1.4']
         labels:
           role: 'router'
-          name: 'Tp-Link TL-WR841N'
+          name: 'Tp-Link TD-W8901G'
       - targets: ['192.168.1.5']
         labels:
           role: 'router'
@@ -42,18 +42,14 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Tp-Link TL-WR841N'
-      - targets: ['192.168.1.9']
-        labels:
-          role: 'router'
-          name: 'ZyXEL 650H'
       - targets: ['192.168.1.13']
         labels:
           role: 'router'
           name: 'BBOX'
-      - targets: ['192.168.1.136']
+      - targets: ['192.168.1.147']
         labels:
           role: 'router'
-          name: 'Tp-Link TL-WA850RE'
+          name: 'Xiaomi Repeater 2'
       # Camera
       - targets: ['192.168.1.10']
         labels:
