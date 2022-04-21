@@ -23,6 +23,7 @@
       <div class="col-sm-4">
         <slack-configuration :slack="configuration.Slack" @slackModified="slackModified" @loadConfiguration="loadConfiguration"></slack-configuration>
         <alarm-configuration :alarm="configuration.Alarm" @alarmModified="alarmModified" @loadConfiguration="loadConfiguration"></alarm-configuration>
+        <power-meter-configuration :powerMeter="configuration.PowerMeter" @powerMeterModified="powerMeterModified" @loadConfiguration="loadConfiguration"></power-meter-configuration>
       </div>
     </div>
     <button v-if="saveButtonEnabled" style="margin: 10px" class="btn btn-success" v-on:click="saveConfiguration">
@@ -44,6 +45,7 @@
   import * as RainGaugeConfiguration from 'src/components/Dashboard/Views/Configuration/RainGauge.vue'
   import * as HumidityConfiguration from 'src/components/Dashboard/Views/Configuration/Humidity.vue'
   import * as HeaterConfiguration from 'src/components/Dashboard/Views/Configuration/Heater.vue'
+  import * as PowerMeterConfiguration from 'src/components/Dashboard/Views/Configuration/PowerMeter.vue'
 
   export default {
     components: {
@@ -57,11 +59,12 @@
       'rain-gauge-configuration': RainGaugeConfiguration,
       'humidity-configuration': HumidityConfiguration,
       'inverter-configuration': InverterConfiguration,
-      'heater-configuration': HeaterConfiguration
+      'heater-configuration': HeaterConfiguration,
+      'power-meter-configuration': PowerMeterConfiguration
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}, Heater: {}},
+        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}, Heater: {}, PowerMeter: {}},
         errors: null,
         saveButtonEnabled: false
       }
@@ -119,6 +122,10 @@
       heaterModified: function (heater) {
         this.saveButtonEnabled = true
         this.configuration.Heater = heater
+      },
+      powerMeterModified: function (powerMeter) {
+        this.saveButtonEnabled = true
+        this.configuration.PowerMeter = powerMeter
       }
     },
     created () {
