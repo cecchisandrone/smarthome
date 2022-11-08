@@ -38,18 +38,22 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Netgear R6220'
-      - targets: ['192.168.1.7']
+#      - targets: ['192.168.1.7']
+#        labels:
+#          role: 'router'
+#          name: 'Tp-Link TL-WR841N'
+      - targets: ['192.168.1.23']
         labels:
           role: 'router'
-          name: 'Tp-Link TL-WR841N'
+          name: 'Technicolor'
+      - targets: ['192.168.1.24']
+        labels:
+          role: 'router'
+          name: 'Router TIM'
       - targets: ['192.168.1.136']
         labels:
           role: 'router'
           name: 'TP-Link Extender'
-      - targets: ['192.168.1.147']
-        labels:
-          role: 'router'
-          name: 'Xiaomi Repeater 2'
       # Camera
       - targets: ['192.168.1.10']
         labels:
@@ -108,6 +112,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Well pump'
+      - targets: ['192.168.1.132']
+        labels:
+          role: 'iot'
+          name: 'Power monitor'
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
