@@ -1,7 +1,7 @@
 <template>
   <chart-card ref="heaterChart" :chart-data="heaterChart.data" :chart-options="heaterChart.options">
     <h4 class="title" slot="title">Heater Temperature (°C)</h4>
-    <span slot="subTitle"> Measured every 30 minutes</span>
+    <span slot="subTitle"> Measured every 15 minutes</span>
   </chart-card>  
 </template>
 

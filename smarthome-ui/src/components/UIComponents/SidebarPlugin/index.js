@@ -24,11 +24,6 @@ const SidebarStore = {
       path: '/admin/configuration'
     },
     {
-      name: 'Web Radio',
-      icon: 'ti-volume',
-      path: '/admin/webradio'
-    },
-    {
       name: 'Metrics',
       icon: 'ti-bar-chart',
       path: '/admin/metrics'
