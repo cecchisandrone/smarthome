@@ -116,6 +116,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Power monitor'
+      - targets: ['192.168.1.141']
+        labels:
+          role: 'iot'
+          name: 'Basement pump'
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
