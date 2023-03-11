@@ -53,7 +53,9 @@ server {
   location /webdav {                        
     auth_basic "Restricted Content";                            
     auth_basic_user_file /etc/nginx/.htpasswd; 
-                                                                
+    access_log off;
+    error_log off;
+    autoindex on;                                                           
     dav_methods PUT DELETE MKCOL COPY MOVE;   
     dav_access user:rw group:rw all:r;
     create_full_put_path on;               
