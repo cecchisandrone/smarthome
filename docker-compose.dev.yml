@@ -20,4 +20,5 @@ services:
     build: alertmanager
   blackbox-exporter:
     build: blackbox-exporter
-    
+  influxdb:
+    build: influxdb    
