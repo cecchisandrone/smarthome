@@ -42,6 +42,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Tp-Link TL-WR841N'
+      - targets: ['192.168.1.21']
+        labels:
+          role: 'router'
+          name: 'Technicolor'
       - targets: ['192.168.1.23']
         labels:
           role: 'router'
@@ -54,11 +58,11 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'TP-Link Extender'
-      # Camera
-      - targets: ['192.168.1.10']
+      - targets: ['192.168.1.142']
         labels:
-          role: 'camera'
-          name: 'Garage'
+          role: 'router'
+          name: 'TP-Link Extender'
+      # Camera
       - targets: ['192.168.1.11']
         labels:
           role: 'camera'
