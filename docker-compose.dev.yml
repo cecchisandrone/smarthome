@@ -21,4 +21,8 @@ services:
   blackbox-exporter:
     build: blackbox-exporter
   influxdb:
-    build: influxdb    
+    build: influxdb
+    ports:  
+    - 8086:8086
+    volumes:
+    - smarthome-influxdb-data:/var/lib/influxdb

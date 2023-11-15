@@ -9,6 +9,9 @@
     <div class="row">
       <inverter-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></inverter-configuration>
     </div>
+    <div class="row">
+      <relay-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></relay-configuration>
+    </div>
     <div class="row">    
       <div class="col-sm-4">
         <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
@@ -46,6 +49,7 @@
   import * as HumidityConfiguration from 'src/components/Dashboard/Views/Configuration/Humidity.vue'
   import * as HeaterConfiguration from 'src/components/Dashboard/Views/Configuration/Heater.vue'
   import * as PowerMeterConfiguration from 'src/components/Dashboard/Views/Configuration/PowerMeter.vue'
+  import * as RelayConfiguration from 'src/components/Dashboard/Views/Configuration/Relay.vue'
 
   export default {
     components: {
@@ -60,7 +64,8 @@
       'humidity-configuration': HumidityConfiguration,
       'inverter-configuration': InverterConfiguration,
       'heater-configuration': HeaterConfiguration,
-      'power-meter-configuration': PowerMeterConfiguration
+      'power-meter-configuration': PowerMeterConfiguration,
+      'relay-configuration': RelayConfiguration
     },
     data () {
       return {

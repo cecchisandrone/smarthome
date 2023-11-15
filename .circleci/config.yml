@@ -64,6 +64,9 @@ workflows:
           requires:
             - build_ui
       - deploy:
+          filters:
+            branches:
+              only: master
           requires:
             - build_ui
             - build_server
