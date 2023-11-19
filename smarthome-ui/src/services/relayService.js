@@ -75,7 +75,7 @@ function toggleRelay (relayId, status, manuallyActivated) {
   var user = authService.getCurrentUser()
   var configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relayId + '/relay', null, {params: {status: status, manuallyActivated: manuallyActivated}, headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relayId + '/relay', status, {params: {manuallyActivated: manuallyActivated}, headers: { Authorization: `Bearer ${user.token}` }})
       .then(function (res) {
         resolve(res.data)
       })

@@ -36,6 +36,9 @@
       <div class="col-lg-2 col-sm-6">
         <heater></heater>
       </div>
+      <div class="col-lg-2 col-sm-6">
+        <relay></relay>
+      </div>
     </div>
 
     <!--Charts-->
@@ -81,6 +84,7 @@
   import HeaterChart from 'components/Dashboard/Views/Overview/HeaterChart.vue'
   import PowerMeter from 'components/Dashboard/Views/Overview/PowerMeter.vue'
   import PowerMeterChart from 'components/Dashboard/Views/Overview/PowerMeterChart.vue'
+  import Relay from 'components/Dashboard/Views/Overview/Relay.vue'
 
   export default {
     components: {
@@ -101,7 +105,8 @@
       Heater,
       HeaterChart,
       PowerMeter,
-      PowerMeterChart
+      PowerMeterChart,
+      Relay
     }
   }
 </script>
