@@ -5,6 +5,11 @@ jobs:
       image: ubuntu-2204:current
     resource_class: medium
     steps:
+      - run:
+          name: "Switch to Python v3.7"
+          command: |
+            pyenv versions
+            pyenv global 3.7.0
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
