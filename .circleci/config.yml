@@ -5,13 +5,6 @@ jobs:
       image: ubuntu-2204:current
     resource_class: medium
     steps:
-      - run:
-          name: "Switch to Python 3.6.0"
-          command: |
-            pyenv install 3.6.0
-            pyenv versions
-            pyenv global 3.6.0
-            sudo ln -s $(pyenv which python) /usr/local/bin/python3
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
@@ -25,7 +18,7 @@ jobs:
             - project/*
   build_server:
     machine:
-      image: ubuntu-2004:202111-01
+      image: ubuntu-2204:current
     resource_class: arm.medium
     working_directory: /tmp/project/smarthome-server
     steps:
@@ -36,7 +29,7 @@ jobs:
           docker buildx build --platform linux/arm/v7 -t cecchisandrone/smarthome-server:latest --push .
   build_images:
     machine:
-      image: ubuntu-2004:202111-01
+      image: ubuntu-2204:current
     resource_class: arm.medium
     working_directory: /tmp/project
     steps:
@@ -49,7 +42,7 @@ jobs:
           docker buildx build --platform linux/arm/v7 -t cecchisandrone/blackbox-exporter:latest --push ./blackbox-exporter
   deploy:
     machine:
-      image: ubuntu-2004:202111-01
+      image: ubuntu-2204:current
     working_directory: /tmp/project
     steps:
       - attach_workspace:
