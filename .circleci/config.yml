@@ -2,7 +2,7 @@ version: 2
 jobs:
   build_ui:
     machine:
-      image: ubuntu-2004:202111-01
+      image: ubuntu-2204:current
     resource_class: medium
     steps:
       - checkout
