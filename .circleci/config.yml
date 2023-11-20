@@ -6,10 +6,12 @@ jobs:
     resource_class: medium
     steps:
       - run:
-          name: "Switch to Python 3.11.5"
+          name: "Switch to Python 3.6.0"
           command: |
+            pyenv install 3.6.0
             pyenv versions
-            pyenv global 3.11.5
+            pyenv global 3.6.0
+            sudo ln -s $(pyenv which python) /usr/local/bin/python3
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
