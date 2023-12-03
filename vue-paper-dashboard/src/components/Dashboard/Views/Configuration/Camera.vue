@@ -134,7 +134,7 @@
 </template>
 <script>
   import * as cameraService from '@/services/cameraService.js'
-  import Simplert from 'vue2-simplert'
+  import * as Simplert from 'vue2-simplert'
   export default {
     components: {
       Simplert

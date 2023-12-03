@@ -29,6 +29,3 @@ new Vue({
   router,
   render: (h) => h(App),
 }).$mount("#app");
-
-require('dotenv').config()
-console.log(process.env)

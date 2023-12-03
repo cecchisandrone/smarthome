@@ -37,19 +37,19 @@
 </template>
 <script>
   import * as configurationService from '@/services/configurationService.js'
-  import * as SlackConfiguration from './Configuration/Slack.vue'
-  import * as CameraConfiguration from './Configuration/Camera.vue'
-  import * as GateConfiguration from './Configuration/Gate.vue'
-  import * as RaspsonarConfiguration from './Configuration/Raspsonar.vue'
-  import * as TemperatureConfiguration from './Configuration/Temperature.vue'
-  import * as AlarmConfiguration from './Configuration/Alarm.vue'
-  import * as WellPumpConfiguration from './Configuration/WellPump.vue'
-  import * as InverterConfiguration from './Configuration/Inverter.vue'
-  import * as RainGaugeConfiguration from './Configuration/RainGauge.vue'
-  import * as HumidityConfiguration from './Configuration/Humidity.vue'
-  import * as HeaterConfiguration from './Configuration/Heater.vue'
-  import * as PowerMeterConfiguration from './Configuration/PowerMeter.vue'
-  import * as RelayConfiguration from './Configuration/Relay.vue'
+  import SlackConfiguration from '@/components/Dashboard/Views/Configuration/Slack.vue'
+  import CameraConfiguration from '@/components/Dashboard/Views/Configuration/Camera.vue'
+  import GateConfiguration from '@/components/Dashboard/Views/Configuration/Gate.vue'
+  import RaspsonarConfiguration from '@/components/Dashboard/Views/Configuration/Raspsonar.vue'
+  import TemperatureConfiguration from '@/components/Dashboard/Views/Configuration/Temperature.vue'
+  import AlarmConfiguration from '@/components/Dashboard/Views/Configuration/Alarm.vue'
+  import WellPumpConfiguration from '@/components/Dashboard/Views/Configuration/WellPump.vue'
+  import InverterConfiguration from '@/components/Dashboard/Views/Configuration/Inverter.vue'
+  import RainGaugeConfiguration from '@/components/Dashboard/Views/Configuration/RainGauge.vue'
+  import HumidityConfiguration from '@/components/Dashboard/Views/Configuration/Humidity.vue'
+  import HeaterConfiguration from '@/components/Dashboard/Views/Configuration/Heater.vue'
+  import PowerMeterConfiguration from '@/components/Dashboard/Views/Configuration/PowerMeter.vue'
+  import RelayConfiguration from '@/components/Dashboard/Views/Configuration/Relay.vue'
 
   export default {
     components: {

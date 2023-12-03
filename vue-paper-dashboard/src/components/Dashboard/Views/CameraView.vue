@@ -7,7 +7,7 @@
   export default {
     data: function () {
       return {
-        imageSrc: 'static/img/loading_icon.gif'
+        imageSrc: 'assets/img/loading_icon.gif'
       }
     },
     props: ['camera'],
