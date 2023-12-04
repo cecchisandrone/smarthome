@@ -10,6 +10,7 @@
           <button v-if="getGlobalStatus(relay.Name) == 'Ok'" class="btn btn-default btn-sm" v-bind:class="{ active: getStatus(relay.Name, channel) == true }" v-on:click="toggleRelay(relay.ID, relay.Name, channel)">
             <span>{{ channel}}</span>
           </button>
+          <span> </span>
         </span>
       </div>
     </div>
