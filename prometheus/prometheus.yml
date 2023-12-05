@@ -54,10 +54,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Router TIM'
-      - targets: ['192.168.1.136']
-        labels:
-          role: 'router'
-          name: 'TP-Link Extender'
+#     - targets: ['192.168.1.136']
+#       labels:
+#         role: 'router'
+#         name: 'TP-Link Extender'
       - targets: ['192.168.1.142']
         labels:
           role: 'router'
@@ -120,6 +120,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Basement pump'
+      - targets: ['192.168.1.166']
+        labels:
+          role: 'iot'
+          name: 'Lights Relay'
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
