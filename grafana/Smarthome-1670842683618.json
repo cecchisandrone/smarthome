@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:8",
         "builtIn": 1,
         "datasource": "-- Grafana --",
         "enable": true,
@@ -358,7 +357,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:91",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -367,7 +365,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:92",
           "format": "short",
           "label": "MΩ",
           "logBase": 1,
@@ -606,7 +603,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:89",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -615,7 +611,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:90",
           "format": "celsius",
           "label": "°C",
           "logBase": 1,
@@ -730,7 +725,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:222",
           "decimals": 0,
           "format": "short",
           "label": null,
@@ -740,7 +734,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:223",
           "decimals": 2,
           "format": "percent",
           "label": "%",
@@ -896,7 +889,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 6,
         "x": 12,
         "y": 16
       },
@@ -990,6 +983,122 @@
         }
       ],
       "valueName": "total"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "InfluxDB",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 16
+      },
+      "id": 16,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT count(value)/4 FROM temperature WHERE $timeFilter AND location='heater' AND value > 30\n",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Heater Powered on hours",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
     },
     {
       "aliasColors": {},
@@ -1093,7 +1202,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:89",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1102,7 +1210,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:90",
           "format": "celsius",
           "label": "°C",
           "logBase": 1,
@@ -1135,5 +1242,5 @@
   "variables": {
     "list": []
   },
-  "version": 31
+  "version": 33
 }
