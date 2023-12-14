@@ -2,10 +2,8 @@ global:
   scrape_interval:     10s
   evaluation_interval: 10s
   scrape_timeout:      10s
-
 rule_files:
   - 'alert.rules'
-
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
@@ -54,10 +52,6 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Router TIM'
-#     - targets: ['192.168.1.136']
-#       labels:
-#         role: 'router'
-#         name: 'TP-Link Extender'
       - targets: ['192.168.1.142']
         labels:
           role: 'router'
