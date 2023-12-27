@@ -56,15 +56,15 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Router TIM'
-     - targets: ['192.168.1.25']
+      - targets: ['192.168.1.25']
         labels:
           role: 'router'
           name: 'TP-Link CPE210 AP'
-     - targets: ['192.168.1.26']
+      - targets: ['192.168.1.26']
         labels:
           role: 'router'
           name: 'TP-Link CPE210 Client'  
-     - targets: ['192.168.1.142']
+      - targets: ['192.168.1.142']
         labels:
           role: 'router'
           name: 'TP-Link Extender'
