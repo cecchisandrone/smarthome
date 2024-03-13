@@ -63,7 +63,7 @@ scrape_configs:
       - targets: ['192.168.1.26']
         labels:
           role: 'router'
-          name: 'TP-Link CPE210 Client'  
+          name: 'TP-Link CPE210 Client'
       - targets: ['192.168.1.142']
         labels:
           role: 'router'
