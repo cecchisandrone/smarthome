@@ -48,7 +48,7 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run:
-          command: scp -v -o StrictHostKeyChecking=no -P $SMARTHOME_SSH_PORT docker-compose.yml @SMARTHOME_USER@$SMARTHOME_SSH_HOST:/home/$SMARTHOME_USER
+          command: scp -v -o StrictHostKeyChecking=no -P $SMARTHOME_SSH_PORT docker-compose.yml $SMARTHOME_USER@$SMARTHOME_SSH_HOST:/home/$SMARTHOME_USER
       - run:
           command: ssh -o StrictHostKeyChecking=no -l $SMARTHOME_USER $SMARTHOME_SSH_HOST -p $SMARTHOME_SSH_PORT "mv docker-compose.yml docker-compose-smarthome.yml && docker compose -f docker-compose-smarthome.yml -p pi stop && docker compose -f docker-compose-smarthome.yml pull && docker compose -f docker-compose-smarthome.yml -p pi up -d"
           no_output_timeout: 30m
