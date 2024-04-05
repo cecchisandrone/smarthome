@@ -44,10 +44,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Huawei DN8245f2'
-#      - targets: ['192.168.1.13']
-#        labels:
-#          role: 'router'
-#          name: 'BBOX'
+      - targets: ['192.168.1.13']
+        labels:
+          role: 'router'
+          name: 'BBOX'
       - targets: ['192.168.1.21']
         labels:
           role: 'router'
