@@ -67,6 +67,7 @@
                 <option value="adj">ADJ</option>
                 <option value="microcam">Microcam</option>
                 <option value="sv3c">SV3C</option>
+                <option value="iframe">iframe</option>
               </select>
             </div>
           </div>
