@@ -6,7 +6,7 @@ services:
     - MYSQL_SMARTHOME_USER=${MYSQL_SMARTHOME_USER}
     - MYSQL_SMARTHOME_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
     - TZ=Europe/Rome
-    image: cecchisandrone/smarthome-server:latest    
+    image: cecchisandrone/smarthome-server:latest
     ports:
     - 8080:8080
     restart: always
@@ -31,7 +31,7 @@ services:
     restart: always
   influxdb:
     image: arm32v7/influxdb:1.8.10
-    ports:  
+    ports:
     - 8086:8086
     volumes:
     - smarthome-influxdb-data:/var/lib/influxdb
@@ -43,7 +43,7 @@ services:
     - GF_SECURITY_ALLOW_EMBEDDING=true
     ports:
     - 3000:3000
-    volumes:  
+    volumes:
     - smarthome-grafana-data:/var/lib/grafana
     restart: always
   prometheus:
@@ -68,6 +68,18 @@ services:
     restart: always
     sysctls:
       net.ipv4.ping_group_range: "0 2147483647"
+  restreamer:
+    image: datarhei/restreamer:2.10.0
+    restart: always
+    volumes:
+      - /opt/restreamer/config:/core/config
+      - /opt/restreamer/data:/core/data
+    ports:
+      - 9091:8080
+      - 9092:8181
+      - 1935:1935
+      - 1936:1936
+      - 6000:6000/udp
 volumes:
   smarthome-mysql-data:
   smarthome-grafana-data:
