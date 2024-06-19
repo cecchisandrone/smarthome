@@ -130,10 +130,6 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Weather station'
-      - targets: ['192.168.1.124']
-        labels:
-          role: 'iot'
-          name: 'Well pump'
       - targets: ['192.168.1.125']
         labels:
           role: 'camera'
@@ -150,6 +146,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Lights Relay'
+      - targets: ['192.168.1.196']
+        labels:
+          role: 'iot'
+          name: 'Well pump'
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
