@@ -43,11 +43,11 @@ scrape_configs:
       - targets: ['192.168.1.10']
         labels:
           role: 'router'
-          name: 'Huawei DN8245f2'
-      - targets: ['192.168.1.13']
-        labels:
-          role: 'router'
-          name: 'BBOX'
+          name: 'Huawei DN8245F2'
+      #- targets: ['192.168.1.13']
+      #  labels:
+      #    role: 'router'
+      #    name: 'BBOX'
       - targets: ['192.168.1.21']
         labels:
           role: 'router'
@@ -68,10 +68,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'TP-Link CPE210 Client'
-      - targets: ['192.168.1.142']
+      - targets: ['192.168.1.28']
         labels:
           role: 'router'
-          name: 'TP-Link Extender'
+          name: 'Huawei DN8245F'
       # Camera
       - targets: ['192.168.1.11']
         labels:
@@ -122,10 +122,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Raspberry IOT'
-      - targets: ['192.168.1.112']
-        labels:
-          role: 'iot'
-          name: 'WDTVLive'
+      #- targets: ['192.168.1.112']
+      #  labels:
+      #    role: 'iot'
+      #    name: 'WDTVLive'
       - targets: ['192.168.1.120']
         labels:
           role: 'iot'
