@@ -20,10 +20,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Fritz Box 7590'
-      - targets: ['192.168.1.2']
-        labels:
-          role: 'router'
-          name: 'Netgear N300'
+     #- targets: ['192.168.1.2']
+     #  labels:
+     #   role: 'router'
+     #   name: 'Netgear N300'
       - targets: ['192.168.1.4']
         labels:
           role: 'router'
@@ -105,6 +105,10 @@ scrape_configs:
         labels:
           role: 'camera'
           name: 'Parking'
+      - targets: ['192.168.1.186']
+        labels:
+          role: 'camera'
+          name: 'Porch'
       # IOT
       - targets: ['192.168.1.19']
         labels:
