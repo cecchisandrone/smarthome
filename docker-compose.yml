@@ -5,6 +5,7 @@ services:
     - SMARTHOME_ENV=${SMARTHOME_ENV}
     - MYSQL_SMARTHOME_USER=${MYSQL_SMARTHOME_USER}
     - MYSQL_SMARTHOME_PASSWORD=${MYSQL_SMARTHOME_PASSWORD}
+    - SMARTHOME_CRYPTO_KEY=${SMARTHOME_CRYPTO_KEY}
     - TZ=Europe/Rome
     image: cecchisandrone/smarthome-server:latest
     ports:

@@ -12,8 +12,14 @@ import Cameras from 'src/components/Dashboard/Views/Cameras.vue'
 import WebRadio from 'src/components/Dashboard/Views/WebRadio.vue'
 import Inverters from 'src/components/Dashboard/Views/Inverters.vue'
 import Metrics from 'src/components/Dashboard/Views/Metrics.vue'
+import Rental from 'src/components/Dashboard/Views/Rental.vue'
 
 const routes = [
+  {
+    name: 'rental',
+    path: '/rental',
+    component: Rental
+  },
   {
     name: 'login',
     path: '/login',
@@ -69,6 +75,11 @@ const routes = [
         path: 'metrics',
         name: 'metrics',
         component: Metrics
+      },
+      {
+        path: 'rental',
+        name: 'rental',
+        component: Rental
       }
     ]
   },

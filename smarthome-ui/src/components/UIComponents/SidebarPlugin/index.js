@@ -29,6 +29,11 @@ const SidebarStore = {
       path: '/admin/metrics'
     },
     {
+      name: 'Rental',
+      icon: 'ti-home',
+      path: '/admin/rental'
+    },
+    {
       name: 'Notifications',
       icon: 'ti-bell',
       path: '/admin/notifications'
