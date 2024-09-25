@@ -20,7 +20,8 @@
                           placeholder="email@domain.tld"
                           v-model="booking.Email">
                   </fg-input>
-                    <fg-input :read-only="true" type="text" v-model="booking.AccessLink"></fg-input>
+                  <label>Access link</label>
+                  <div class="bordered-div">{{ booking.AccessLink }}</div>
                 </form>
           </div>
         </div>
@@ -50,11 +51,7 @@ export default {
       var app = this
       rentalService.generateAccessLink(this.booking).then((data) => {
         app.booking.AccessLink = data.link
-        navigator.clipboard.writeText(this.booking.AccessLink).then(() => {
-          this.$notifications.notify({message: 'Link generated and copied to the clipboard', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
-        }).catch(err => {
-          console.error('Failed to copy access link: ', err)
-        })
+        this.$notifications.notify({message: 'Link generated', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
       })
       .catch((err) => {
         app.errors = err.message
@@ -77,3 +74,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.bordered-div {
+  border: 1px solid black;
+  padding: 10px;
+  overflow: hidden; /* Hide overflow content */
+  word-wrap: break-word; /* Allow long words to break and wrap to the next line */
+  overflow-wrap: break-word; /* Ensure compatibility with different browsers */
+}
+</style>
