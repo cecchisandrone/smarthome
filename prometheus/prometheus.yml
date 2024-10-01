@@ -36,10 +36,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Netgear R6220'
-      - targets: ['192.168.1.7']
-        labels:
-          role: 'router'
-          name: 'Tp-Link TL-WR841N'
+      #- targets: ['192.168.1.7']
+      #  labels:
+      #    role: 'router'
+      #    name: 'Tp-Link TL-WR841N'
       - targets: ['192.168.1.10']
         labels:
           role: 'router'
@@ -56,10 +56,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Technicolor'
-      - targets: ['192.168.1.24']
-        labels:
-          role: 'router'
-          name: 'Router TIM'
+      #- targets: ['192.168.1.24']
+      #  labels:
+      #    role: 'router'
+      #    name: 'Router TIM'
       - targets: ['192.168.1.25']
         labels:
           role: 'router'
@@ -68,10 +68,18 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'TP-Link CPE210 Client'
+      #- targets: ['192.168.1.27']
+      #  labels:
+      #    role: 'router'
+      #    name: 'Router Vodafone'
       - targets: ['192.168.1.28']
         labels:
           role: 'router'
           name: 'Huawei DN8245F'
+      - targets: ['192.168.1.29']
+        labels:
+          role: 'router'
+          name: 'Tenda'
       # Camera
       - targets: ['192.168.1.11']
         labels:
@@ -85,10 +93,10 @@ scrape_configs:
         labels:
           role: 'camera'
           name: 'Basement'
-      - targets: ['192.168.1.15']
-        labels:
-          role: 'camera'
-          name: 'Living'
+      #- targets: ['192.168.1.15']
+      #  labels:
+      #    role: 'camera'
+      #    name: 'Living'
       - targets: ['192.168.1.17']
         labels:
           role: 'camera'
@@ -106,6 +114,10 @@ scrape_configs:
           role: 'camera'
           name: 'Parking'
       - targets: ['192.168.1.186']
+        labels:
+          role: 'camera'
+          name: 'Rear'
+      - targets: ['192.168.1.137']
         labels:
           role: 'camera'
           name: 'Porch'
@@ -126,10 +138,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Raspberry IOT'
-      #- targets: ['192.168.1.112']
-      #  labels:
-      #    role: 'iot'
-      #    name: 'WDTVLive'
+      - targets: ['192.168.1.112']
+        labels:
+          role: 'iot'
+          name: 'WDTVLive'
       - targets: ['192.168.1.120']
         labels:
           role: 'iot'
@@ -150,6 +162,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Lights Relay'
+      - targets: ['192.168.1.173']
+        labels:
+          role: 'iot'
+          name: 'Raspberrypi'
       - targets: ['192.168.1.196']
         labels:
           role: 'iot'
