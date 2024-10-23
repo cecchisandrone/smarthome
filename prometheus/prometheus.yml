@@ -56,10 +56,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Technicolor'
-      #- targets: ['192.168.1.24']
-      #  labels:
-      #    role: 'router'
-      #    name: 'Router TIM'
+      - targets: ['192.168.1.24']
+        labels:
+          role: 'router'
+          name: 'Router TIM'
       - targets: ['192.168.1.25']
         labels:
           role: 'router'
@@ -76,10 +76,14 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Huawei DN8245F'
-      - targets: ['192.168.1.29']
-        labels:
-          role: 'router'
-          name: 'Tenda'
+      #- targets: ['192.168.1.29']
+      #  labels:
+      #    role: 'router'
+      #    name: 'Tenda White'      
+      #- targets: ['192.168.1.31']
+      #  labels:
+      #    role: 'router'
+      #    name: 'Tenda Black'
       # Camera
       - targets: ['192.168.1.11']
         labels:
@@ -166,7 +170,27 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Raspberrypi'
-      - targets: ['192.168.1.196']
+      #- targets: ['192.168.1.180']
+      #  labels:
+      #    role: 'iot'
+      #    name: 'Air Conditioner Home'
+      #- targets: ['192.168.1.180']
+      #  labels:
+      #    role: 'iot'
+      #    name: 'Air Conditioner Piccola Provenza Living Room'
+      #- targets: ['192.168.1.181']
+      #  labels:
+      #    role: 'iot'
+      #    name: 'Air Conditioner Piccola Provenza Room 1'
+      #- targets: ['192.168.1.191']
+      #  labels:
+      #    role: 'iot'
+      #    name: 'Air Conditioner Piccola Provenza Room 2'
+      #- targets: ['192.168.1.190']
+      #  labels:
+      #    role: 'iot'
+      #    name: 'Air Conditioner Piccola Provenza Room 3'
+      - targets: ['192.168.1.192']
         labels:
           role: 'iot'
           name: 'Well pump'
