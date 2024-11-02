@@ -190,7 +190,7 @@ scrape_configs:
       #  labels:
       #    role: 'iot'
       #    name: 'Air Conditioner Piccola Provenza Room 3'
-      - targets: ['192.168.1.192']
+      - targets: ['192.168.1.196']
         labels:
           role: 'iot'
           name: 'Well pump'
