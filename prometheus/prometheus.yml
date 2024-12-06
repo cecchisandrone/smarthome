@@ -162,6 +162,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Basement pump'
+      - targets: ['192.168.1.147']
+        labels:
+          role: 'iot'
+          name: 'Xiaomi Repeater'
       - targets: ['192.168.1.166']
         labels:
           role: 'iot'
