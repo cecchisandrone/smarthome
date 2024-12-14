@@ -84,6 +84,10 @@ scrape_configs:
       #   labels:
       #    role: 'router'
       #    name: 'Tenda White'
+      - targets: ['192.168.1.32']
+        labels:
+          role: 'router'
+          name: 'TL-WA854RE'
       # Camera
       - targets: ['192.168.1.11']
         labels:
