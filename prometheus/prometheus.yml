@@ -113,14 +113,14 @@ scrape_configs:
         labels:
           role: 'camera'
           name: 'Parkway'
-      - targets: ['192.168.1.111']
-        labels:
-          role: 'camera'
-          name: 'Entrance'
       - targets: ['192.168.1.100']
         labels:
           role: 'camera'
           name: 'Parking'
+      - targets: ['192.168.1.111']
+        labels:
+          role: 'camera'
+          name: 'Entrance'
       - targets: ['192.168.1.137']
         labels:
           role: 'camera'
