@@ -121,14 +121,18 @@ scrape_configs:
         labels:
           role: 'camera'
           name: 'Parking'
-      - targets: ['192.168.1.186']
-        labels:
-          role: 'camera'
-          name: 'Rear'
       - targets: ['192.168.1.137']
         labels:
           role: 'camera'
           name: 'Porch'
+      - targets: ['192.168.1.186']
+        labels:
+          role: 'camera'
+          name: 'Rear'
+      - targets: ['192.168.1.200']
+        labels:
+          role: 'camera'
+          name: 'Gate'
       # IOT
       - targets: ['192.168.1.19']
         labels:
