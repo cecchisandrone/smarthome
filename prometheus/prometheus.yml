@@ -108,7 +108,7 @@ scrape_configs:
       - targets: ['192.168.1.17']
         labels:
           role: 'camera'
-          name: 'Gate'
+          name: 'Garage'
       - targets: ['192.168.1.16']
         labels:
           role: 'camera'
