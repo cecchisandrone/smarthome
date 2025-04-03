@@ -56,10 +56,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Technicolor'
-      - targets: ['192.168.1.24']
-        labels:
-          role: 'router'
-          name: 'Router TIM'
+      #- targets: ['192.168.1.24']
+      #  labels:
+      #    role: 'router'
+      #    name: 'Router TIM'
       - targets: ['192.168.1.25']
         labels:
           role: 'router'
@@ -76,10 +76,10 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Huawei DN8245F2'
-      #- targets: ['192.168.1.29']
-      #  labels:
-      #    role: 'router'
-      #    name: 'Tenda Black'
+      - targets: ['192.168.1.29']
+        labels:
+          role: 'router'
+          name: 'Tenda Black'
       # - targets: ['192.168.1.31']
       #   labels:
       #    role: 'router'
