@@ -92,19 +92,15 @@ scrape_configs:
       - targets: ['192.168.1.11']
         labels:
           role: 'camera'
-          name: 'Entrance'
+          name: 'Parkway 1'
       - targets: ['192.168.1.12']
         labels:
           role: 'camera'
-          name: 'External'
+          name: 'Living'
       - targets: ['192.168.1.14']
         labels:
           role: 'camera'
           name: 'Basement'
-      #- targets: ['192.168.1.15']
-      #  labels:
-      #    role: 'camera'
-      #    name: 'Living'
       - targets: ['192.168.1.17']
         labels:
           role: 'camera'
@@ -112,7 +108,7 @@ scrape_configs:
       - targets: ['192.168.1.16']
         labels:
           role: 'camera'
-          name: 'Parkway'
+          name: 'Parkway 2'
       - targets: ['192.168.1.100']
         labels:
           role: 'camera'
@@ -138,10 +134,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'RaspberryPi Zero W'
-      - targets: ['192.168.1.101']
-        labels:
-          role: 'iot'
-          name: 'Roborock S5 Max'
+      #- targets: ['192.168.1.101']
+      #  labels:
+      #    role: 'iot'
+      #    name: 'Roborock S5 Max'
       - targets: ['192.168.1.105']
         labels:
           role: 'iot'
