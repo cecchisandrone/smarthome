@@ -107,7 +107,7 @@ services:
       - smarthome-traefik-data:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
   n8n:
-    image: docker.n8n.io/n8nio/n8n:1.90.2
+    image: docker.n8n.io/n8nio/n8n:1.107.3
     restart: always
     ports:
       - "127.0.0.1:5678:5678"
@@ -134,6 +134,10 @@ services:
       - WEBHOOK_URL=https://${N8N_SUBDOMAIN}.${N8N_DOMAIN_NAME}:${TRAEFIK_SSL_PORT}/
       - N8N_EDITOR_BASE_URL=https://${N8N_SUBDOMAIN}.${N8N_DOMAIN_NAME}:${TRAEFIK_SSL_PORT}/
       - GENERIC_TIMEZONE=${N8N_GENERIC_TIMEZONE}
+      - N8N_RUNNERS_ENABLED=true
+      - DB_SQLITE_POOL_SIZE=5
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_PROXY_HOPS=1
     volumes:
       - smarthome-n8n-data:/home/node/.n8n
       - ./local-files:/files
