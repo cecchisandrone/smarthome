@@ -76,14 +76,18 @@ scrape_configs:
         labels:
           role: 'router'
           name: 'Huawei DN8245F2'
-      - targets: ['192.168.1.29']
-        labels:
-          role: 'router'
-          name: 'Tenda Black'
+      #- targets: ['192.168.1.29']
+      #  labels:
+      #    role: 'router'
+      #    name: 'Tenda Black'
       # - targets: ['192.168.1.31']
       #   labels:
       #    role: 'router'
       #    name: 'Tenda White'
+      - targets: ['192.168.1.31']
+        labels:
+          role: 'router'
+          name: 'Tp-Link Archer D50'
       - targets: ['192.168.1.32']
         labels:
           role: 'router'
