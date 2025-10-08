@@ -125,6 +125,11 @@ services:
       - traefik.http.middlewares.n8n.headers.SSLHost=${N8N_DOMAIN_NAME}
       - traefik.http.middlewares.n8n.headers.STSIncludeSubdomains=true
       - traefik.http.middlewares.n8n.headers.STSPreload=true
+      - traefik.http.middlewares.n8n.headers.accessControlAllowMethods=GET,OPTIONS,POST
+      - traefik.http.middlewares.n8n.headers.accessControlAllowHeaders=*
+      - traefik.http.middlewares.n8n.headers.accessControlAllowOriginList=https://fuenrc3b45yfcnzqt3v7y4swui0wwviy.lambda-url.eu-west-1.on.aws
+      - traefik.http.middlewares.n8n.headers.accessControlMaxAge=100
+      - traefik.http.middlewares.n8n.headers.addvaryheader=true
       - traefik.http.routers.n8n.middlewares=n8n@docker
     environment:
       - N8N_HOST=${N8N_SUBDOMAIN}.${N8N_DOMAIN_NAME}
@@ -138,6 +143,9 @@ services:
       - DB_SQLITE_POOL_SIZE=5
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_PROXY_HOPS=1
+      - N8N_CORS_ORIGIN=https://fuenrc3b45yfcnzqt3v7y4swui0wwviy.lambda-url.eu-west-1.on.aws
+      - N8N_CORS_ALLOW_HEADERS=Authorization,Content-Type
+      - N8N_CORS_METHODS=GET,POST,OPTIONS
     volumes:
       - smarthome-n8n-data:/home/node/.n8n
       - ./local-files:/files
