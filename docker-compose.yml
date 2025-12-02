@@ -81,7 +81,7 @@ services:
       - 1936:1936
       - 6000:6000/udp
   traefik:
-    image: traefik:3.3.4
+    image: traefik:3.6.2
     restart: always
     command:
       - "--log.level=info"
