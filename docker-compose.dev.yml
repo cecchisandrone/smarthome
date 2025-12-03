@@ -10,6 +10,7 @@ services:
   smarthome-db:
     image: mariadb:10.2
   grafana:
+    build: grafana
     environment:
     - GF_SERVER_ROOT_URL=http://localhost:3000
     - GF_SECURITY_ALLOW_EMBEDDING=true
