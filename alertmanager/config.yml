@@ -6,7 +6,7 @@ receivers:
     - send_resolved: true
       username: 'Prometheus'
       channel: '#alarm'
-      api_url: 'https://tinyurl.com/mu8c8vt8'
+      api_url: 'https://tinyurl.com/53y4hmrh'
       icon_url: 'http://voverc-grafana.s3.amazonaws.com/monitoring.png'
       title: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}"
       text: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
