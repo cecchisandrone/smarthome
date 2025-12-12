@@ -43,8 +43,7 @@
         for (const prop in data) {
           that.powerMeterChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}))
           let value = data[prop]
-          that.powerMeterChart.data.series[0].push(Math.abs(value))
-          that.powerMeterChart.data.series[1].push(value < 0 ? -value : 0)
+          that.powerMeterChart.data.series[0].push(-value)
         }
         that.$refs.powerMeterChart.initChart()
       })

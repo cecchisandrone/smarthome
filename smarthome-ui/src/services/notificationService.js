@@ -5,7 +5,7 @@ function testSlackNotification () {
   var user = authService.getCurrentUser()
   var configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.post(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/notification/slack/test', null, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.post(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/notification/slack?message=Test message', null, {headers: { Authorization: `Bearer ${user.token}` }})
       .then(function (res) {
         resolve(res.data)
       })
