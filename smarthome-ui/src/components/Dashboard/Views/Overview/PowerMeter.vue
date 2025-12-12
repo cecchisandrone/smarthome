@@ -34,7 +34,7 @@
     created () {
       var that = this
       powerMeterService.getLastMeasurement().then((data) => {
-        that.power.decoration = 'text-decoration-color: ' + (data.value.toFixed(2) < 0 ? 'green' : 'red')
+        that.power.decoration = 'text-decoration-color: ' + (data.value.toFixed(2) > 0 ? 'green' : 'red')
         that.power.value = Math.abs(data.value.toFixed(2)) + ' W'
         that.power.footerText = new Date(data.timestamp).toLocaleString()
       })
