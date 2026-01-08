@@ -107,7 +107,7 @@ services:
       - smarthome-traefik-data:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
   n8n:
-    image: docker.n8n.io/n8nio/n8n:1.123.10
+    image: docker.n8n.io/n8nio/n8n:2.2.5
     restart: always
     ports:
       - "127.0.0.1:5678:5678"
