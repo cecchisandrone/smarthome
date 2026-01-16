@@ -11,6 +11,26 @@ services:
     - 8080:8080
     restart: always
   smarthome-ui:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.smarthome.rule=Host(`smarthome.cecchisandrone.net`)
+      - traefik.http.routers.smarthome.tls=true
+      - traefik.http.routers.smarthome.entrypoints=web,websecure
+      - traefik.http.routers.smarthome.tls.certresolver=myresolver
+      - traefik.http.middlewares.smarthome.headers.SSLRedirect=true
+      - traefik.http.middlewares.smarthome.headers.STSSeconds=315360000
+      - traefik.http.middlewares.smarthome.headers.browserXSSFilter=true
+      - traefik.http.middlewares.smarthome.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.smarthome.headers.forceSTSHeader=true
+      - traefik.http.middlewares.smarthome.headers.SSLHost=smarthome.cecchisandrone.net
+      - traefik.http.middlewares.smarthome.headers.STSIncludeSubdomains=true
+      - traefik.http.middlewares.smarthome.headers.STSPreload=true
+      - traefik.http.middlewares.smarthome.headers.accessControlAllowMethods=GET,OPTIONS,POST
+      - traefik.http.middlewares.smarthome.headers.accessControlAllowHeaders=*
+      - traefik.http.middlewares.smarthome.headers.accessControlAllowOriginList=https://fuenrc3b45yfcnzqt3v7y4swui0wwviy.lambda-url.eu-west-1.on.aws
+      - traefik.http.middlewares.smarthome.headers.accessControlMaxAge=100
+      - traefik.http.middlewares.smarthome.headers.addvaryheader=true
+      - traefik.http.routers.smarthome.middlewares=smarthome@docker
     image: cecchisandrone/smarthome-ui:latest
     ports:
     - 80:80
@@ -69,7 +89,7 @@ services:
     sysctls:
       net.ipv4.ping_group_range: "0 2147483647"
   restreamer:
-    image: datarhei/restreamer:2.10.0
+    image: datarhei/restreamer:2.12.0
     restart: always
     volumes:
       - /opt/restreamer/config:/core/config
@@ -132,6 +152,7 @@ services:
       - traefik.http.middlewares.n8n.headers.addvaryheader=true
       - traefik.http.routers.n8n.middlewares=n8n@docker
     environment:
+      - N8N_COMMUNITY_PACKAGES_ENABLED=true
       - N8N_HOST=${N8N_SUBDOMAIN}.${N8N_DOMAIN_NAME}
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
