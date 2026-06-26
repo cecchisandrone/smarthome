@@ -205,7 +205,11 @@ scrape_configs:
       - targets: ['192.168.1.196']
         labels:
           role: 'iot'
-          name: 'Well pump'
+          name: 'Well pump Old'
+      - targets: ['192.168.1.203']
+        labels:
+          role: 'iot'
+          name: 'Well pump Ale'
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
