@@ -1,4 +1,4 @@
-FROM node:14.21.3 as builder
+FROM node:22.23.2 AS builder
 ADD . /build
 WORKDIR /build
 RUN npm install --legacy-peer-deps
