@@ -7,7 +7,10 @@ RUN npm install --legacy-peer-deps
 ARG GIT_VERSION=unknown
 ENV GIT_VERSION=$GIT_VERSION
 RUN npm run build
-FROM arm32v7/nginx:1.21.4-alpine
+# arm64v8 rather than the multi-arch nginx tag on purpose: build_ui runs a plain
+# `docker build` on an x86 runner, which would resolve a multi-arch tag to amd64
+# and push an image the Pi cannot run. The arch has to be pinned here.
+FROM arm64v8/nginx:1.29-alpine
 COPY --from=builder /build/dist /usr/share/nginx/html/
 ADD nginx/default /etc/nginx/conf.d/default.conf
 ADD nginx/.htpasswd /etc/nginx/.htpasswd
