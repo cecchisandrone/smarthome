@@ -6,20 +6,11 @@ var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-var child_process = require('child_process')
 
-var getGitVersion = function () {
-  try {
-    return child_process.execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim()
-  } catch (e) {
-    return 'unknown'
-  }
-}
-
-var env = process.env.NODE_ENV === 'testing'
+var env = Object.assign({}, process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
-  : config.build.env
-env.GIT_VERSION = '"' + getGitVersion() + '"'
+  : config.build.env)
+env.GIT_VERSION = JSON.stringify(utils.gitVersion())
 
 var webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',

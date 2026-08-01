@@ -1,6 +1,25 @@
 var path = require('path')
+var childProcess = require('child_process')
 var config = require('../config')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+// Short commit of the build. GIT_VERSION is preferred so the Docker build can
+// be told the revision: the image is built with `smarthome-ui` as the context,
+// which puts the repo's .git one level above it and out of reach of `git` in
+// the container. Falls back to asking git directly for local builds.
+exports.gitVersion = function () {
+  if (process.env.GIT_VERSION) {
+    return process.env.GIT_VERSION.trim().slice(0, 7)
+  }
+  try {
+    return childProcess.execSync('git rev-parse --short HEAD', {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore']
+    }).trim()
+  } catch (e) {
+    return 'unknown'
+  }
+}
 
 exports.assetsPath = function (_path) {
   var assetsSubDirectory = process.env.NODE_ENV === 'production'
