@@ -1,4 +1,7 @@
-FROM node:22.23.2 AS builder
+# Pinned to the build host's own platform so npm/webpack run natively on the
+# x86 CI runner instead of being emulated. Everything this stage produces is
+# static assets, so none of it is architecture specific.
+FROM --platform=$BUILDPLATFORM node:22.23.2 AS builder
 ADD . /build
 WORKDIR /build
 RUN npm install --legacy-peer-deps
@@ -7,10 +10,11 @@ RUN npm install --legacy-peer-deps
 ARG GIT_VERSION=unknown
 ENV GIT_VERSION=$GIT_VERSION
 RUN npm run build
-# arm64v8 rather than the multi-arch nginx tag on purpose: build_ui runs a plain
-# `docker build` on an x86 runner, which would resolve a multi-arch tag to amd64
-# and push an image the Pi cannot run. The arch has to be pinned here.
-FROM arm64v8/nginx:1.29-alpine
+# Plain multi-arch tag: the architecture comes from the build's target platform,
+# which build_ui sets with `--platform`. Do not pin an arch-prefixed tag here
+# (arm64v8/..., arm32v7/...) - those publish a single-platform OCI index, which
+# BuildKit fails to match against the x86 runner's default target platform.
+FROM nginx:1.29-alpine
 COPY --from=builder /build/dist /usr/share/nginx/html/
 ADD nginx/default /etc/nginx/conf.d/default.conf
 ADD nginx/.htpasswd /etc/nginx/.htpasswd

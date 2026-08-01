@@ -9,7 +9,7 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - run: |
-          docker build --build-arg GIT_VERSION=$CIRCLE_SHA1 -t cecchisandrone/smarthome-ui:latest ./smarthome-ui
+          docker build --platform linux/arm64 --build-arg GIT_VERSION=$CIRCLE_SHA1 -t cecchisandrone/smarthome-ui:latest ./smarthome-ui
           docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
           docker push cecchisandrone/smarthome-ui:latest
       - persist_to_workspace:
