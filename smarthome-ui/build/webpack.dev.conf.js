@@ -1,35 +1,56 @@
+var path = require('path')
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
-var merge = require('webpack-merge')
+var merge = require('webpack-merge').merge
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
-// add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
+// http-proxy-middleware style table -> webpack-dev-server 5 proxy array
+var proxy = Object.keys(config.dev.proxyTable).map(function (context) {
+  var entry = config.dev.proxyTable[context]
+  var options = typeof entry === 'string' ? { target: entry } : Object.assign({}, entry)
+  options.context = options.filter || context
+  delete options.filter
+  return options
 })
 
 module.exports = merge(baseWebpackConfig, {
+  mode: 'development',
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
-  // cheap-module-eval-source-map is faster for development
-  devtool: '#cheap-module-eval-source-map',
+  // eval-cheap-module-source-map is faster for development
+  devtool: 'eval-cheap-module-source-map',
   plugins: [
     new webpack.DefinePlugin({
       'process.env': config.dev.env
     }),
-    // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
       inject: true
-    }),
-    new FriendlyErrorsPlugin()
-  ]
+    })
+  ],
+  devServer: {
+    port: process.env.PORT || config.dev.port,
+    open: config.dev.autoOpenBrowser,
+    // HotModuleReplacementPlugin is added by the dev server itself
+    hot: true,
+    historyApiFallback: true,
+    client: {
+      // warnings are reported in the terminal; only errors are worth
+      // covering the app with a full-screen overlay
+      overlay: {
+        errors: true,
+        warnings: false
+      }
+    },
+    // serve pure static assets
+    static: {
+      directory: path.resolve(__dirname, '../static'),
+      publicPath: path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
+    },
+    proxy: proxy.length ? proxy : undefined
+  }
 })

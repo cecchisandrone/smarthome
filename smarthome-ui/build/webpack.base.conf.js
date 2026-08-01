@@ -1,14 +1,13 @@
 var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
-var vueLoaderConfig = require('./vue-loader.conf')
-var webpack = require('webpack')
+var VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-var webpackConfig = {
+module.exports = {
   entry: {
     app: './src/main.js'
   },
@@ -19,13 +18,9 @@ var webpackConfig = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
- /* plugins: [
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      jquery: "jquery"
-    })
-  ],*/
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     modules: [
@@ -33,7 +28,10 @@ var webpackConfig = {
       resolve('node_modules')
     ],
     alias: {
-      'vue$': 'vue/dist/vue.common.js',
+      // no component compiles a template at runtime (no `template:` strings
+      // anywhere in src, and vue2-simplert ships precompiled render
+      // functions), so the runtime-only build is enough
+      'vue$': 'vue/dist/vue.runtime.esm.js',
       'src': resolve('src'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components')
@@ -43,8 +41,7 @@ var webpackConfig = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
+        loader: 'vue-loader'
       },
       {
         test: /\.js$/,
@@ -53,36 +50,24 @@ var webpackConfig = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        type: 'asset',
+        parser: {
+          dataUrlCondition: { maxSize: 10000 }
+        },
+        generator: {
+          filename: utils.assetsPath('img/[name].[hash:7][ext]')
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+        type: 'asset',
+        parser: {
+          dataUrlCondition: { maxSize: 10000 }
+        },
+        generator: {
+          filename: utils.assetsPath('fonts/[name].[hash:7][ext]')
         }
       }
     ]
   }
 }
-
-var esLintRule = {
-  test: /\.(js|vue)$/,
-  loader: 'eslint-loader',
-  enforce: 'pre',
-  include: [resolve('src'), resolve('test')],
-  options: {
-    formatter: require('eslint-friendly-formatter')
-  }
-}
-
-if(process.env.ENABLE_ESLINT && process.env.ENABLE_ESLINT === 'true'){
-  webpackConfig.module.rules.unshift(esLintRule) //add eslint
-}
-
-module.exports = webpackConfig

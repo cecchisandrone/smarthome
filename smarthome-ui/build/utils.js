@@ -1,6 +1,6 @@
 var path = require('path')
 var config = require('../config')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 exports.assetsPath = function (_path) {
   var assetsSubDirectory = process.env.NODE_ENV === 'production'
@@ -11,53 +11,73 @@ exports.assetsPath = function (_path) {
 
 exports.cssLoaders = function (options) {
   options = options || {}
-  // generate loader string to be used with extract text plugin
-  function generateLoaders (loaders) {
-    var sourceLoader = loaders.map(function (loader) {
-      var extraParamChar
-      if (/\?/.test(loader)) {
-        loader = loader.replace(/\?/, '-loader?')
-        extraParamChar = '&'
-      } else {
-        loader = loader + '-loader'
-        extraParamChar = '?'
-      }
-      return loader + (options.sourceMap ? extraParamChar + 'sourceMap' : '')
-    }).join('!')
 
-    // Extract CSS when that option is specified
-    // (which is the case during production build)
-    if (options.extract) {
-      return ExtractTextPlugin.extract({
-        use: sourceLoader,
-        fallback: 'vue-style-loader'
-      })
-    } else {
-      return ['vue-style-loader', sourceLoader].join('!')
+  function cssLoader (importLoaders) {
+    return {
+      loader: 'css-loader',
+      options: {
+        sourceMap: options.sourceMap,
+        importLoaders: importLoaders
+      }
     }
   }
 
-  // http://vuejs.github.io/vue-loader/en/configurations/extract-css.html
+  var postcssLoader = {
+    loader: 'postcss-loader',
+    options: {
+      sourceMap: options.sourceMap
+    }
+  }
+
+  // generate the loader chain used for a given preprocessor
+  function generateLoaders (loader, loaderOptions) {
+    // css-loader has to know how many loaders run before it so that
+    // `@import`ed files get piped back through the same chain
+    var loaders = [cssLoader(loader ? 2 : 1), postcssLoader]
+
+    if (loader) {
+      loaders.push({
+        loader: loader + '-loader',
+        options: Object.assign({}, loaderOptions, {
+          sourceMap: options.sourceMap
+        })
+      })
+    }
+
+    // Extract CSS into its own file when that option is specified
+    // (which is the case during production build). In development the
+    // styles are injected at runtime so HMR can swap them out.
+    if (options.extract) {
+      return [MiniCssExtractPlugin.loader].concat(loaders)
+    }
+    return ['vue-style-loader'].concat(loaders)
+  }
+
+  // sass-loader still defaults to Dart Sass' legacy JS API, which is slated
+  // for removal in Dart Sass 2.0 - opt into the modern one. It derives the
+  // indented syntax from the file extension, so `.sass` needs nothing extra.
+  var sassOptions = { api: 'modern-compiler' }
+
   return {
-    css: generateLoaders(['css']),
-    postcss: generateLoaders(['css']),
-    less: generateLoaders(['css', 'less']),
-    sass: generateLoaders(['css', 'sass?indentedSyntax']),
-    scss: generateLoaders(['css', 'sass']),
-    stylus: generateLoaders(['css', 'stylus']),
-    styl: generateLoaders(['css', 'stylus'])
+    css: generateLoaders(),
+    postcss: generateLoaders(),
+    less: generateLoaders('less'),
+    sass: generateLoaders('sass', sassOptions),
+    scss: generateLoaders('sass', sassOptions),
+    stylus: generateLoaders('stylus'),
+    styl: generateLoaders('stylus')
   }
 }
 
-// Generate loaders for standalone style files (outside of .vue)
+// Generate loaders for standalone style files (outside of .vue).
+// vue-loader routes <style> blocks through these same rules.
 exports.styleLoaders = function (options) {
   var output = []
   var loaders = exports.cssLoaders(options)
   for (var extension in loaders) {
-    var loader = loaders[extension]
     output.push({
       test: new RegExp('\\.' + extension + '$'),
-      loader: loader
+      use: loaders[extension]
     })
   }
   return output
