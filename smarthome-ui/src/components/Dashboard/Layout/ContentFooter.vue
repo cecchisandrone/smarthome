@@ -13,13 +13,19 @@
         <i class="fa fa-heart heart"></i> by
         <a href="https://github.com/cecchisandrone" target="_blank">Alessandro Dionisi</a>.
         Design by <a href="https://www.creative-tim.com/?ref=pdf-vuejs" target="_blank">Creative Tim</a>.
+        <span v-if="gitVersion" class="git-version">Git Version: {{ gitVersion }}</span>
       </div>
     </div>
   </footer>
 </template>
 <script>
-  export default {}
-
+  export default {
+    computed: {
+      gitVersion () {
+        return process.env.GIT_VERSION
+      }
+    }
+  }
 </script>
 <style>
 

@@ -5,6 +5,18 @@ var config = require('../config')
 var merge = require('webpack-merge').merge
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var child_process = require('child_process')
+
+var getGitVersion = function () {
+  try {
+    return child_process.execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim()
+  } catch (e) {
+    return 'unknown'
+  }
+}
+
+var devEnv = Object.assign({}, config.dev.env)
+devEnv.GIT_VERSION = '"' + getGitVersion() + '"'
 
 // http-proxy-middleware style table -> webpack-dev-server 5 proxy array
 var proxy = Object.keys(config.dev.proxyTable).map(function (context) {
@@ -24,7 +36,7 @@ module.exports = merge(baseWebpackConfig, {
   devtool: 'eval-cheap-module-source-map',
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': config.dev.env
+      'process.env': devEnv
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
