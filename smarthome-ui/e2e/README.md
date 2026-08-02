@@ -101,5 +101,5 @@ for like. Search the specs for "Known defect".
 - `navigation.spec.js` pins the behaviour of `SidebarPlugin` (`Vue.mixin` +
   `Vue.prototype.$sidebar`) and of `@click.native`, all of which phase 3
   rewrites.
-- `configuration.spec.js` exercises `Modal.vue` slots and the `vue2-simplert`
-  confirm dialog - the two things phase 2 replaces.
+- `configuration.spec.js` exercises `Modal.vue` slots and `ConfirmDialog.vue`
+  (which replaced `vue2-simplert` in phase 2).

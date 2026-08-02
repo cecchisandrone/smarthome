@@ -127,18 +127,15 @@
         </button>
       </div>      
     </modal>
-    <simplert :useRadius="true"
-              :useIcon="true"
-              ref="simplert">
-    </simplert>
+    <confirm-dialog ref="confirmDialog"></confirm-dialog>
   </div>
 </template>
 <script>
   import * as cameraService from 'src/services/cameraService.js'
-  import Simplert from 'vue2-simplert'
+  import ConfirmDialog from 'src/components/UIComponents/Modal/ConfirmDialog.vue'
   export default {
     components: {
-      Simplert
+      ConfirmDialog
     },
     props: ['configuration'],
     data () {
@@ -201,7 +198,7 @@
           useConfirmBtn: true,
           onConfirm: confirmFn
         }
-        this.$refs.simplert.openSimplert(obj)
+        this.$refs.confirmDialog.open(obj)
       }
     }
   }

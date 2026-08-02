@@ -15,13 +15,9 @@
 </template>
 
 <script>
-  import Simplert from 'vue2-simplert'
   import * as inverterService from 'src/services/inverterService.js'
 
   export default {
-    components: {
-      Simplert
-    },
     data () {
       return {
         title: 'Inverter metrics',

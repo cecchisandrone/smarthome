@@ -57,7 +57,6 @@ export default {
           app.$router.push('/')
         })
         .catch(function (err) {
-          app.$store.commit('setLoggedIn', false)
           app.errors = err.message
         })
     }

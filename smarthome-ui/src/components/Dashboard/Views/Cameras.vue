@@ -18,13 +18,11 @@
 </template>
 
 <script>
-  import Simplert from 'vue2-simplert'
   import * as cameraService from 'src/services/cameraService.js'
   import CameraView from 'components/Dashboard/Views/CameraView.vue'
 
   export default {
     components: {
-      Simplert,
       CameraView
     },
     data () {

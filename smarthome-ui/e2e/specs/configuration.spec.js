@@ -8,6 +8,14 @@ const section = (page, heading) =>
 const field = (scope, label) =>
   scope.locator('.form-group').filter({ hasText: label }).locator('input')
 
+/**
+ * ConfirmDialog reuses Modal.vue, so it is a `.modal-container` like the edit
+ * form. Its Confirm button is what tells the two apart. (Before phase 2 this
+ * was vue2-simplert's `.simplert--shown`.)
+ */
+const confirmDialog = page =>
+  page.locator('.modal-container').filter({ has: page.getByRole('button', { name: 'Confirm' }) })
+
 test.describe('configuration', () => {
   test.beforeEach(async ({ page }) => {
     await gotoAuthenticated(page, '/admin/configuration')
@@ -87,25 +95,41 @@ test.describe('configuration', () => {
     const relays = section(page, 'Relays')
     await relays.getByRole('row').filter({ hasText: 'Garden' }).getByRole('button', { name: 'Delete' }).click()
 
-    const confirm = page.locator('.simplert--shown')
+    const confirm = confirmDialog(page)
     await expect(confirm).toBeVisible()
-    await expect(confirm.locator('.simplert__title')).toHaveText('Delete relay Garden?')
+    await expect(confirm.getByRole('heading', { name: 'Delete relay Garden?' })).toBeVisible()
     // Nothing is deleted until the dialog is confirmed.
     expect(api.configuration.Relays).toHaveLength(2)
 
-    await confirm.locator('.simplert__confirm').click()
+    await confirm.getByRole('button', { name: 'Confirm' }).click()
 
     await expect(page.locator('.notifications')).toContainText('Relay deleted successfully')
     await expect(relays.getByRole('row')).toHaveCount(1)
     expect(api.configuration.Relays.map(r => r.Name)).toEqual(['Lights'])
   })
 
+  // Camera, Inverter, WellPump and Relay each mount their own ConfirmDialog.
+  // Relay is covered above; this proves a second one is wired up too.
+  test('deleting a camera asks for confirmation first', async ({ page, api }) => {
+    const cameras = section(page, 'Cameras')
+    await cameras.getByRole('row').filter({ hasText: 'Front' }).getByRole('button', { name: 'Delete' }).click()
+
+    const confirm = confirmDialog(page)
+    await expect(confirm.getByRole('heading', { name: 'Delete camera Front?' })).toBeVisible()
+    expect(api.configuration.Cameras).toHaveLength(3)
+
+    await confirm.getByRole('button', { name: 'Confirm' }).click()
+
+    await expect(page.locator('.notifications')).toContainText('Camera deleted successfully')
+    expect(api.configuration.Cameras.map(c => c.Name)).toEqual(['Backyard', 'Disabled'])
+  })
+
   test('dismissing the delete confirmation leaves the relay alone', async ({ page, api }) => {
     const relays = section(page, 'Relays')
     await relays.getByRole('row').filter({ hasText: 'Garden' }).getByRole('button', { name: 'Delete' }).click()
 
-    const confirm = page.locator('.simplert--shown')
-    await confirm.locator('.simplert__close').click()
+    const confirm = confirmDialog(page)
+    await confirm.getByRole('button', { name: 'Cancel' }).click()
 
     await expect(confirm).toHaveCount(0)
     await expect(relays.getByRole('row')).toHaveCount(2)

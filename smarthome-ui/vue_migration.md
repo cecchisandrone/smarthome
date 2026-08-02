@@ -1,6 +1,6 @@
 # Vue 3 Migration Plan
 
-Status: **phases 0 and 1 complete**, phases 2-4 not started. Written 2026-08-02
+Status: **phases 0, 1 and 2 complete**, phases 3-4 not started. Written 2026-08-02
 against commit `fe13150` (branch `master`).
 
 This document is written to be picked up cold. It records the decision, the
@@ -84,9 +84,9 @@ What remains is mechanical:
 | --- | --- | --- | --- |
 | `vue` | 2.7.16 | bumped from 2.6.14 in phase 1 | → 3.x (phase 3) |
 | `vue-router` | 2.2.0 | two majors behind | → 4.x. Rewrite router init; `path: '*'` → `/:pathMatch(.*)*` |
-| `vuex` | 3.6.2 | store holds one boolean | **Delete.** Replace with `reactive()` in `authService` |
-| `vue2-simplert` | 0.5.8 | Vue 2 only, unmaintained | **Blocker.** Replace with in-repo `Modal.vue` (phase 2) |
-| `v-click-outside` | 0.0.8 | Vue 2 only | Imported in `main.js`, **used in zero templates** — just delete the import |
+| `vuex` | — | held one boolean that nothing read | **removed** in phase 2 |
+| `vue2-simplert` | — | Vue 2 only, unmaintained | **removed** in phase 2, replaced by in-repo `ConfirmDialog.vue` |
+| `v-click-outside` | — | Vue 2 only, used in zero templates | **removed** in phase 2 |
 | `chartist` | 0.10.1 | framework-agnostic, works | Keep at 0.10 through the migration. Bump to 1.x as separate work |
 | `bootstrap` | 3.3.7 | EOL 2019 | **Leave alone.** Not a Vue 3 blocker. Separate project |
 | `axios` | 0.24.0 | old but fine | → 1.x in phase 4 |
@@ -112,7 +112,7 @@ it must pass identically after every phase. See `e2e/README.md`.
 - [x] Relay channel toggle round-trips against the mock (and toggles back)
 - [x] Well pump, alarm, gate and basement pump round-trips
 - [x] Configuration form save; relay create/edit/delete through `Modal.vue` and
-      the `vue2-simplert` confirm dialog (confirm **and** dismiss)
+      the confirm dialog (confirm **and** dismiss)
 - [x] Sidebar navigation, active-link marking, moving arrow, and the mobile
       off-canvas sidebar open/close
 - [x] Chartist renders one chart per scheduled series
@@ -268,27 +268,68 @@ full `docker build` + `docker run` with nginx serving the bundle and
 
 ---
 
-## Phase 2 — remove Vue-2-locked dependencies (still Vue 2)
+## Phase 2 — remove Vue-2-locked dependencies (still Vue 2) — **DONE**
 
 Goal: reach a state where nothing in `package.json` blocks a Vue 3 bump.
+**Playwright: 35/35 green** (one test added, see below).
 
-- [ ] Delete the `v-click-outside` import and `Vue.use(vClickOutside)` from
-      `src/main.js:3,27` — the directive is used nowhere. Remove the dependency
-- [ ] Build `src/components/UIComponents/Modal/ConfirmDialog.vue` on top of the
+- [x] Deleted the `v-click-outside` import and `Vue.use(vClickOutside)` from
+      `src/main.js` — the directive was used nowhere. Dependency removed
+- [x] Built `src/components/UIComponents/Modal/ConfirmDialog.vue` on top of the
       existing `Modal.vue`
-- [ ] Replace `vue2-simplert` in all 6 files:
-  - [ ] `src/components/Dashboard/Views/Cameras.vue`
-  - [ ] `src/components/Dashboard/Views/Inverters.vue`
-  - [ ] `src/components/Dashboard/Views/Configuration/Camera.vue` (`$refs.simplert.openSimplert` at :204)
-  - [ ] `src/components/Dashboard/Views/Configuration/Inverter.vue` (:159)
-  - [ ] `src/components/Dashboard/Views/Configuration/Relay.vue` (:183)
-  - [ ] `src/components/Dashboard/Views/Configuration/WellPump.vue` (:183)
-  - [ ] Remove the dependency
-- [ ] Delete `src/components/store.js` and the `vuex` dependency. Move
-      `isLoggedIn` into `src/services/authService.js` as a `reactive({loggedIn})`
-      export. Update the consumers of `store.commit('setLoggedIn', …)`
+- [x] Replaced `vue2-simplert` everywhere and removed the dependency:
+  - [x] `Views/Cameras.vue` and `Views/Inverters.vue` — imported and registered
+        `Simplert` but never used it in their templates. Dead imports, deleted
+  - [x] `Configuration/Camera.vue`, `Inverter.vue`, `Relay.vue`, `WellPump.vue`
+        — real users, all four migrated to `ConfirmDialog`
+- [x] Deleted `src/components/store.js` and the `vuex` dependency
 
-**Exit criteria:** Playwright green, zero Vue-2-only packages installed.
+### Vuex was deleted outright, not ported
+
+The plan said to move `isLoggedIn` into `authService` as a `reactive({loggedIn})`
+export. That turned out to be unnecessary: `isLoggedIn` is **written twice and
+read nowhere**. `Login.vue` and `Logout.vue` each called
+`$store.commit('setLoggedIn', false)`, and no component, computed or template
+ever consumed the value. Auth state is already derived from localStorage by
+`authService.checkAuth()`, which is what the router guard uses.
+
+Porting it would have created a second source of truth for something nothing
+reads. The two `commit` calls were deleted with the store.
+
+### ConfirmDialog keeps an imperative API
+
+`ConfirmDialog.open(options)` mirrors `simplert.openSimplert(obj)` — same option
+keys (`title`, `message`, `type`, `onConfirm`) — so each of the four delete
+handlers changed by one line instead of being restructured. An event-based API
+would be more idiomatic, but this phase is about removing a dependency, not
+redesigning the call sites; phase 3 can revisit it.
+
+It is written with Vue 2.7's `<template #header>` slot syntax rather than the
+deprecated `slot="header"`, so it needs no work in phase 3.
+
+### Test changes
+
+The confirm dialog is a different component, so its selectors necessarily
+changed — but the *behaviour* assertions are unchanged: confirmation is still
+required before deletion, dismissing still leaves the data alone, and the
+notification text is identical. `.simplert--shown` / `.simplert__confirm` /
+`.simplert__close` became accessible-role queries against `.modal-container`.
+
+One test was added. The four `Configuration/*.vue` files were edited by script,
+and only `Relay.vue`'s dialog was covered, so a camera-delete test now proves a
+second wiring works end to end.
+
+### Results
+
+Runtime dependencies are down to six, of which only two are Vue-coupled:
+
+```
+axios, bootstrap, chartist, es6-promise, vue, vue-router
+```
+
+Bundle drops from 291 kB to 265 kB. `npm audit` from 11 to 10.
+
+**Exit criteria:** met — Playwright green, zero Vue-2-only packages installed.
 
 ---
 

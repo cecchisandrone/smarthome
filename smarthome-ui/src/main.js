@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import vClickOutside from 'v-click-outside'
-import {store} from 'components/store.js'
 import * as authService from 'src/services/authService.js'
 
 // Plugins
@@ -24,7 +22,6 @@ window['environment'] = process.env
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(GlobalComponents)
-Vue.use(vClickOutside)
 Vue.use(Notifications)
 Vue.use(SideBar)
 
@@ -53,7 +50,6 @@ new Vue({
   el: '#app',
   render: h => h(App),
   router,
-  store,
   data: {
     Chartist: Chartist
   }
