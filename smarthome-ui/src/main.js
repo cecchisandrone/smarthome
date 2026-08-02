@@ -8,7 +8,7 @@ import * as authService from 'src/services/authService.js'
 import GlobalComponents from './globalComponents'
 import Notifications from './components/UIComponents/NotificationPlugin'
 import SideBar from './components/UIComponents/SidebarPlugin'
-import App from './App'
+import App from './App.vue'
 
 // router setup
 import routes from './routes/routes'

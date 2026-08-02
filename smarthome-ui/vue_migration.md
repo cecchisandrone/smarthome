@@ -1,6 +1,6 @@
 # Vue 3 Migration Plan
 
-Status: **phase 0 complete**, phases 1-4 not started. Written 2026-08-02
+Status: **phases 0 and 1 complete**, phases 2-4 not started. Written 2026-08-02
 against commit `fe13150` (branch `master`).
 
 This document is written to be picked up cold. It records the decision, the
@@ -82,7 +82,7 @@ What remains is mechanical:
 
 | Dependency | Current | Status | Action |
 | --- | --- | --- | --- |
-| `vue` | 2.6.14 | — | → 3.x (phase 3) |
+| `vue` | 2.7.16 | bumped from 2.6.14 in phase 1 | → 3.x (phase 3) |
 | `vue-router` | 2.2.0 | two majors behind | → 4.x. Rewrite router init; `path: '*'` → `/:pathMatch(.*)*` |
 | `vuex` | 3.6.2 | store holds one boolean | **Delete.** Replace with `reactive()` in `authService` |
 | `vue2-simplert` | 0.5.8 | Vue 2 only, unmaintained | **Blocker.** Replace with in-repo `Modal.vue` (phase 2) |
@@ -191,28 +191,80 @@ Scripts are now `e2e` (Playwright), `e2e:ui`, and `test` as an alias for `e2e`.
 
 ---
 
-## Phase 1 — replace the build (still Vue 2)
+## Phase 1 — replace the build (still Vue 2) — **DONE**
 
-Swap webpack for Vite *while still on Vue 2*, via `@vitejs/plugin-vue2`. One
-variable moves at a time.
+Webpack swapped for Vite 7 while staying on Vue 2. **Playwright: 34/34 green.**
 
-- [ ] Add `vite`, `@vitejs/plugin-vue2`
-- [ ] `vite.config.js`: port aliases `src`, `assets`, `components` from
-      `build/webpack.base.conf.js:32-37`
-- [ ] Port the sass pipeline (`src/assets/sass/paper-dashboard.scss`)
-- [ ] Env vars: 47 uses of `process.env.API_ENDPOINT` / `process.env.GIT_VERSION`
-      across `src/`. Use Vite's `define` to keep the `process.env.*` strings
-      working so the 16 service files stay untouched this phase. Convert to
-      `import.meta.env` in phase 4 if desired
-- [ ] Keep `GIT_VERSION` injection working (currently `build/utils.js` +
-      `Dockerfile` `ARG GIT_VERSION`)
-- [ ] Move `index.html` to Vite's root-entry convention
-- [ ] `Dockerfile`: builder stage still runs `npm run build` and still emits
-      `dist/` — nginx stage unchanged
-- [ ] Delete `build/`, `config/`, `babel.config.js`, `postcss.config.js`
-- [ ] Drop babel deps from `package.json`
+- [x] Add `vite@7`, `@vitejs/plugin-vue2@2`
+- [x] `vite.config.js`: aliases `src`, `assets`, `components` ported
+- [x] Sass pipeline via Vite's built-in support (`api: 'modern-compiler'`);
+      no deprecation warnings on Dart Sass 1.79
+- [x] Env vars: `define` replaces the whole `process.env` expression, exactly
+      as webpack's `DefinePlugin` did. All 47 `process.env.*` reads and
+      `window['environment'] = process.env` in `main.js` still work untouched
+- [x] `GIT_VERSION` injection ported from `build/utils.js` into
+      `vite.config.js`; `Dockerfile` `ARG GIT_VERSION` still flows through
+- [x] `index.html` moved to Vite's root-entry convention
+- [x] `Dockerfile` builds and the image serves correctly
+- [x] Deleted `build/`, `config/`, `babel.config.js`
+- [x] Dropped the whole babel + webpack toolchain
 
-**Exit criteria:** Playwright green, `docker build` produces a working image.
+### Deviations from the original plan
+
+**Vue 2.6.14 → 2.7.16 was mandatory.** `@vitejs/plugin-vue2` declares
+`peerDependencies.vue: ^2.7.0-0` — it needs `@vue/compiler-sfc`, which only
+ships from 2.7. This was not in the plan but is a hard requirement, and 2.7 is
+the right place to be: it is the terminal 2.x release and is semantically
+closer to 3.x. `vue-template-compiler` was removed with it. The suite caught
+nothing, so the bump was clean.
+
+**`postcss.config.js` was kept, not deleted.** The plan said "Vite handles
+postcss". Vite *loads* a postcss config but does not add autoprefixer of its
+own, so deleting the file would have silently dropped vendor prefixing.
+`postcss.config.js` and `autoprefixer` both stay.
+
+**`transformAssetUrls` had to be disabled.** vue-loader 15 only rewrote asset
+URLs starting with `./`, `~` or `@`, so it left this app's five bare
+`static/img/...` references alone. `@vitejs/plugin-vue2` is less conservative
+and tried to bundle them, failing the build. Turned off in `vite.config.js`;
+nothing in `src/` imports an image, so nothing is lost.
+
+**`static/` moved to `public/static/`.** Vite copies `publicDir` to the *root*
+of `outDir`. Pointing it at `static/` would have emitted `dist/img/...` and
+broken every `static/img/...` template reference. Nesting it one level deeper
+keeps the emitted paths byte-identical.
+
+**One `src/` change:** `main.js` now imports `./App.vue` instead of `./App`.
+Vite deliberately does not resolve extensionless `.vue` specifiers. It was the
+only such import in the codebase.
+
+**A `.dockerignore` was added.** Rollup and esbuild resolve platform-specific
+optional binaries, so a host `node_modules` copied into the linux builder
+leaves the wrong ones in place. The Dockerfile also now uses `npm ci` rather
+than `npm install`, for the same reason.
+
+### Known behaviour change
+
+Babel used to transpile to the `browserslist` targets (`> 1%, last 2 versions,
+not dead`). Vite's default build target is modern browsers, so the bundle is
+now ES2020+ modules and no longer runs on older engines. Acceptable for this
+app; `@vitejs/plugin-legacy` is the escape hatch if that ever changes. The
+`browserslist` key is still honoured by autoprefixer for CSS.
+
+### Results
+
+| | webpack | Vite |
+| --- | --- | --- |
+| production build | ~4.2 s | ~1.4 s |
+| bundle | 473 kB app + vendor + manifest | 291 kB JS + 192 kB CSS |
+| devDependencies | 35 | 14 |
+
+Verified: `npm run build`, `npm run lint`, `npm ci --dry-run`, the Playwright
+suite against the dev server, `vite preview` serving every static asset, and a
+full `docker build` + `docker run` with nginx serving the bundle and
+`GIT_VERSION` correctly substituted.
+
+**Exit criteria:** met.
 
 ---
 
@@ -245,7 +297,10 @@ Goal: reach a state where nothing in `package.json` blocks a Vue 3 bump.
 The app is broken mid-phase; that is expected. Land it as one reviewed change.
 
 1. [ ] `vue@3`, `vue-router@4`, `@vitejs/plugin-vue`. Remove
-       `vue-template-compiler` and `@vitejs/plugin-vue2`
+       `@vitejs/plugin-vue2` (`vue-template-compiler` already went in phase 1).
+       Drop `template: { transformAssetUrls: false }` from `vite.config.js` only
+       if the five bare `static/img/...` template references are rewritten too —
+       otherwise keep it
 2. [ ] Rewrite `src/main.js`:
    - `createApp(App)` instead of `new Vue({el: '#app'})`
    - `createRouter({history: createWebHistory(), routes, linkActiveClass: 'active'})`
