@@ -48,10 +48,10 @@
         app.inverters = inverters
         inverters.forEach(inverter => {
           inverterService.getInverterMetrics(inverter.ID).then((data) => {
-            app.$set(app.metrics, inverter.ID, data.metrics)
+            app.metrics[inverter.ID] = data.metrics
           })
           .catch((err) => {
-            app.$set(app.errors, inverter.ID, err.message)
+            app.errors[inverter.ID] = err.message
           })
         })
       })

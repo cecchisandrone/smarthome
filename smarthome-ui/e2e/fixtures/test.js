@@ -26,25 +26,20 @@ const IGNORED_CONSOLE_ERRORS = [
 ]
 
 /**
- * Defects that already exist on Vue 2 at the start of the migration. They are
- * baselined here so the console guard is usable, NOT because they are
- * acceptable - each one is a real bug and each will still be a bug on Vue 3.
- * Patterns are pinned to the offending component so a new error in the same
- * file is still caught.
+ * Defects that already exist at the start of the migration. They are baselined
+ * here so the console guard is usable, NOT because they are acceptable.
  *
- * 1. Overview/Relay.vue: getGlobalStatus() returns 'Ok' while relaysStatus is
- *    still undefined (the per-relay GET has not resolved yet), so getStatus()
- *    dereferences undefined on the first render pass.
- * 2. NotificationPlugin/Notifications.vue: v-for uses the notification object
- *    itself as :key.
+ * The two Overview/Relay.vue entries went with phase 3: Vue 2 caught that
+ * render TypeError and logged it, Vue 3 rethrows it as an uncaught exception,
+ * so it had to be fixed rather than baselined.
  *
  * Delete an entry here as soon as its bug is fixed; the guard will then start
  * enforcing it.
  */
 const KNOWN_PRE_EXISTING_ERRORS = [
-  /Error in render[\s\S]*Overview\/Relay\.vue/,
-  /Cannot read properties of undefined \(reading '0'\)[\s\S]*Overview\/Relay\.vue/,
-  /Avoid using non-primitive value as key[\s\S]*NotificationPlugin\/Notifications\.vue/
+  // NotificationPlugin/Notifications.vue uses the notification object itself
+  // as the v-for :key.
+  /non-primitive value as key/
 ]
 
 const isIgnorableConsoleError = text =>
@@ -60,9 +55,14 @@ const test = base.test.extend({
     const consoleErrors = []
     const pageErrors = []
 
+    // Vue 2 raised its framework warnings through console.error; Vue 3 raises
+    // them through console.warn. Both are watched, so '[Vue warn]' keeps
+    // failing tests exactly as it did before the flip while ordinary
+    // console.warn noise stays ignored.
     page.on('console', message => {
-      if (message.type() !== 'error') return
+      const type = message.type()
       const text = message.text()
+      if (type !== 'error' && !(type === 'warning' && text.includes('[Vue warn]'))) return
       if (!isIgnorableConsoleError(text)) consoleErrors.push(text)
     })
     page.on('pageerror', error => pageErrors.push(error.message))
@@ -89,9 +89,10 @@ const test = base.test.extend({
 })
 
 /**
- * main.js builds the router without a `mode`, so vue-router 2 defaults to hash
- * mode and every route lives behind '/#'. Phase 3 swaps this for
- * createWebHistory(); routeUrl() is the single place that has to change.
+ * main.js builds the router with createWebHashHistory(), matching the hash mode
+ * vue-router 2 defaulted to, so every route lives behind '/#'. If the app ever
+ * moves to createWebHistory(), routeUrl() is the single place that changes -
+ * along with a try_files rule in nginx/default.
  */
 const routeUrl = path => `/#${path}`
 

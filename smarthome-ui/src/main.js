@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createApp } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import * as authService from 'src/services/authService.js'
 
 // Plugins
@@ -15,19 +15,18 @@ import routes from './routes/routes'
 import Chartist from 'chartist'
 import 'bootstrap/dist/css/bootstrap.css'
 import './assets/sass/paper-dashboard.scss'
-import 'es6-promise/auto'
 
 window['environment'] = process.env
 
-// plugin setup
-Vue.use(VueRouter)
-Vue.use(GlobalComponents)
-Vue.use(Notifications)
-Vue.use(SideBar)
-
 // configure router
-const router = new VueRouter({
-  routes, // short for routes: routes
+//
+// Hash history, because vue-router 2 defaulted to it and every deployed link,
+// e2e helper and nginx rule assumes '#/...'. Moving to createWebHistory() is a
+// deployment change (nginx needs a try_files fallback), not a framework one, so
+// it is deliberately kept out of this phase.
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes,
   linkActiveClass: 'active'
 })
 router.beforeEach((to, from, next) => {
@@ -38,19 +37,16 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-// global library setup
-Object.defineProperty(Vue.prototype, '$Chartist', {
-  get () {
-    return this.$root.Chartist
-  }
-})
+const app = createApp(App)
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  render: h => h(App),
-  router,
-  data: {
-    Chartist: Chartist
-  }
-})
+// plugin setup
+app.use(router)
+app.use(GlobalComponents)
+app.use(Notifications)
+app.use(SideBar)
+
+// global library setup. Vue 2 reached Chartist through a $root data property
+// and a prototype getter; a global property is the direct equivalent.
+app.config.globalProperties.$Chartist = Chartist
+
+app.mount('#app')

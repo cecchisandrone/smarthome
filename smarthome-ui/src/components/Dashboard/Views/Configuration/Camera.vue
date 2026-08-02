@@ -31,101 +31,107 @@
       </div>
     </div>
     <modal v-if="showModal" @close="showModal = false">            
-      <h3 slot="header">
-        Camera: {{ selectedCamera.Name }}    
-      </h3>
-      <div slot="body">
-        <h5 v-show="modalErrors !==''" class="text-danger">
-          {{ modalErrors }}
-        </h5>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="ID"
-                      placeholder="ID"
-                      v-model="selectedCamera.ID"
-                      :disabled="true">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Name"                      
-                      placeholder="Name"
-                      v-model="selectedCamera.Name">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">  
-            <div class="form-group">        
-              <label>Type</label>
-              <select label="asd" class="form-control border-input" v-model="selectedCamera.Type">
-                <option disabled value="">Please select camera type</option>
-                <option value="foscam">Foscam</option>
-                <option value="adj">ADJ</option>
-                <option value="microcam">Microcam</option>
-                <option value="sv3c">SV3C</option>
-                <option value="iframe">iframe</option>
-              </select>
+      <template #header>
+        <h3>
+          Camera: {{ selectedCamera.Name }}    
+        </h3>
+      </template>
+      <template #body>
+        <div>
+          <h5 v-show="modalErrors !==''" class="text-danger">
+            {{ modalErrors }}
+          </h5>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="ID"
+                        placeholder="ID"
+                        v-model="selectedCamera.ID"
+                        :disabled="true">
+              </fg-input>
             </div>
           </div>
-        </div>  
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Host"
-                      placeholder="Host"
-                      v-model="selectedCamera.Host">
-            </fg-input>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Name"                      
+                        placeholder="Name"
+                        v-model="selectedCamera.Name">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">  
+              <div class="form-group">        
+                <label>Type</label>
+                <select label="asd" class="form-control border-input" v-model="selectedCamera.Type">
+                  <option disabled value="">Please select camera type</option>
+                  <option value="foscam">Foscam</option>
+                  <option value="adj">ADJ</option>
+                  <option value="microcam">Microcam</option>
+                  <option value="sv3c">SV3C</option>
+                  <option value="iframe">iframe</option>
+                </select>
+              </div>
+            </div>
+          </div>  
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Host"
+                        placeholder="Host"
+                        v-model="selectedCamera.Host">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="number"
+                        label="Port"
+                        placeholder="Port"
+                        v-model.number="selectedCamera.Port">
+              </fg-input>
+            </div>
+          </div>  
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Username"
+                        placeholder="Username"
+                        v-model="selectedCamera.Username">
+              </fg-input>
+            </div>
+          </div>  
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="password"
+                        label="Password"
+                        placeholder="Password"
+                        v-model="selectedCamera.Password">
+              </fg-input>
+            </div>
+          </div>
+          <div>
+            <label>
+              <input type='checkbox' v-model="selectedCamera.Enabled"/>
+              Enabled
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type='checkbox' v-model="selectedCamera.AlarmEnabled"/>
+              Alarm Enabled
+            </label>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="number"
-                      label="Port"
-                      placeholder="Port"
-                      v-model.number="selectedCamera.Port">
-            </fg-input>
-          </div>
-        </div>  
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Username"
-                      placeholder="Username"
-                      v-model="selectedCamera.Username">
-            </fg-input>
-          </div>
-        </div>  
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="password"
-                      label="Password"
-                      placeholder="Password"
-                      v-model="selectedCamera.Password">
-            </fg-input>
-          </div>
-        </div>
+      </template>
+      <template #footer>
         <div>
-          <label>
-            <input type='checkbox' v-model="selectedCamera.Enabled"/>
-            Enabled
-          </label>
+          <button class="btn btn-info" v-on:click="createOrUpdateCamera()">
+            Save
+          </button>
         </div>
-        <div>
-          <label>
-            <input type='checkbox' v-model="selectedCamera.AlarmEnabled"/>
-            Alarm Enabled
-          </label>
-        </div>
-      </div>
-      <div slot="footer">
-        <button class="btn btn-info" v-on:click="createOrUpdateCamera()">
-          Save
-        </button>
-      </div>      
+      </template>      
     </modal>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>
   </div>

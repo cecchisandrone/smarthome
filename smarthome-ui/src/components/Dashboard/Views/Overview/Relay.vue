@@ -1,22 +1,28 @@
 <template>
   <stats-card>
-    <div class="icon-success" slot="header">
-      <h3>Relays</h3>
-    </div>
-    <div class="numbers" slot="content">
-      <div v-for='relay in relays' v-bind:key='relay.name'>
-        <div>{{ relay.Name }} ({{ getGlobalStatus(relay.Name) }})</div>
-        <span v-for="channel in relay.Channels" :key="channel">
-          <button v-if="getGlobalStatus(relay.Name) == 'Ok'" class="btn btn-default btn-sm" v-bind:class="{ active: getStatus(relay.Name, channel) == true }" v-on:click="toggleRelay(relay.ID, relay.Name, channel)">
-            <span>{{ channel}}</span>
-          </button>
-          <span> </span>
-        </span>
+    <template #header>
+      <div class="icon-success">
+        <h3>Relays</h3>
       </div>
-    </div>
-    <div class="stats" slot="footer">
-      <i v-if="messages" class="ti-info"></i> {{messages}}
-    </div>
+    </template>
+    <template #content>
+      <div class="numbers">
+        <div v-for='relay in relays' v-bind:key='relay.name'>
+          <div>{{ relay.Name }} ({{ getGlobalStatus(relay.Name) }})</div>
+          <span v-for="channel in relay.Channels" :key="channel">
+            <button v-if="getGlobalStatus(relay.Name) == 'Ok'" class="btn btn-default btn-sm" v-bind:class="{ active: getStatus(relay.Name, channel) == true }" v-on:click="toggleRelay(relay.ID, relay.Name, channel)">
+              <span>{{ channel}}</span>
+            </button>
+            <span> </span>
+          </span>
+        </div>
+      </div>
+    </template>
+    <template #footer>
+      <div class="stats">
+        <i v-if="messages" class="ti-info"></i> {{messages}}
+      </div>
+    </template>
   </stats-card>
 </template>
 <script>
@@ -43,10 +49,10 @@
             let name = data.Relays[i].Name
             let id = data.Relays[i].ID
             relayService.getRelay(id).then((data2) => {
-              that.$set(that.relaysStatus, name, data2.status)
+              that.relaysStatus[name] = data2.status
             })
             .catch((err) => {
-              that.$set(that.relaysStatus, name, -1)
+              that.relaysStatus[name] = -1
               that.messages += name + ': ' + err.message
             })
           }
@@ -74,13 +80,17 @@
           that.init()
         })
         .catch((err) => {
-          that.$set(that.relaysStatus, name, -1)
+          that.relaysStatus[name] = -1
           that.messages += name + ': ' + err.message
         })
       },
       getStatus: function (relayName, channel) {
-        if (this.getGlobalStatus(relayName) === 'Ok') {
-          return this.relaysStatus[relayName][channel - 1]
+        // getGlobalStatus() reports 'Ok' before the per-relay GET has resolved,
+        // so the status has to be checked here too. Vue 2 caught the resulting
+        // TypeError and logged it; Vue 3 rethrows it as an uncaught exception.
+        let status = this.relaysStatus[relayName]
+        if (status !== undefined && status !== -1) {
+          return status[channel - 1]
         }
       },
       getGlobalStatus: function (relayName) {

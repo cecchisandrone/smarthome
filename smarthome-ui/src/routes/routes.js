@@ -84,7 +84,7 @@ const routes = [
     ]
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     component: NotFound
   }
 ]

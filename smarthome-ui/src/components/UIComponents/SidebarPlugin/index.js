@@ -1,6 +1,12 @@
+import { reactive } from 'vue'
 import Sidebar from './SideBar.vue'
 
-const SidebarStore = {
+/**
+ * Vue 2 made this reactive by injecting it into every component's data() via a
+ * global mixin. Vue 3 drops the mixin: the store is reactive in its own right
+ * and reaches templates through a single global property.
+ */
+const SidebarStore = reactive({
   showSidebar: false,
   sidebarLinks: [
     {
@@ -42,25 +48,13 @@ const SidebarStore = {
   displaySidebar (value) {
     this.showSidebar = value
   }
-}
+})
 
 const SidebarPlugin = {
 
-  install (Vue) {
-    Vue.mixin({
-      data () {
-        return {
-          sidebarStore: SidebarStore
-        }
-      }
-    })
-
-    Object.defineProperty(Vue.prototype, '$sidebar', {
-      get () {
-        return this.$root.sidebarStore
-      }
-    })
-    Vue.component('side-bar', Sidebar)
+  install (app) {
+    app.config.globalProperties.$sidebar = SidebarStore
+    app.component('side-bar', Sidebar)
   }
 }
 

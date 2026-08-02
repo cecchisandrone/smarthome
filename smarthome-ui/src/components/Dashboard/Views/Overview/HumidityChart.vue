@@ -1,7 +1,11 @@
 <template>
   <chart-card ref="humidityChart" :chart-data="humidityChart.data" :chart-options="humidityChart.options">
-    <h4 class="title" slot="title">Outdoor Humidity (%)</h4>
-    <span slot="subTitle"> Measured every 2 hours</span>
+    <template #title>
+      <h4 class="title">Outdoor Humidity (%)</h4>
+    </template>
+    <template #subTitle>
+      <span> Measured every 2 hours</span>
+    </template>
   </chart-card>  
 </template>
 

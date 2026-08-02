@@ -1,14 +1,20 @@
 <template>
     <stats-card>
-        <div class="text-center" :class="`icon-${temperature.type}`" slot="header">
-        <h3>Outdoor Temperature</h3>
-        </div>
-        <div class="numbers" slot="content">
-        {{temperature.value}}
-        </div>
-        <div class="stats" slot="footer">
-        <i :class="temperature.footerIcon"></i> {{temperature.footerText}}
-        </div>
+        <template #header>
+          <div class="text-center" :class="`icon-${temperature.type}`">
+          <h3>Outdoor Temperature</h3>
+          </div>
+        </template>
+        <template #content>
+          <div class="numbers">
+          {{temperature.value}}
+          </div>
+        </template>
+        <template #footer>
+          <div class="stats">
+          <i :class="temperature.footerIcon"></i> {{temperature.footerText}}
+          </div>
+        </template>
     </stats-card>
 </template>
 <script>

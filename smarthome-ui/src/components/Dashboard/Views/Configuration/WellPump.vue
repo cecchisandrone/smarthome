@@ -31,80 +31,86 @@
       </div>
     </div>
     <modal v-if="showModal" @close="showModal = false">            
-      <h3 slot="header">
-        WellPump: {{ selectedWellPump.Name }}    
-      </h3>
-      <div slot="body">
-        <h5 v-show="modalErrors !==''" class="text-danger">
-          {{ modalErrors }}
-        </h5>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="ID"
-                      placeholder="ID"
-                      v-model="selectedWellPump.ID"
-                      :disabled="true">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Name"                      
-                      placeholder="Name"
-                      v-model="selectedWellPump.Name">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Host"
-                      placeholder="Host"
-                      v-model="selectedWellPump.Host">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="number"
-                      label="Port"
-                      placeholder="Port"
-                      v-model.number="selectedWellPump.Port">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Activation intervals"
-                      placeholder="Activation intervals"
-                      v-model="selectedWellPump.ActivationIntervals">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="number"
-                      label="RainfallThreshold"
-                      placeholder="RainfallThreshold"
-                      v-model.number="selectedWellPump.RainfallThreshold">
-            </fg-input>
-          </div>
-        </div>
+      <template #header>
+        <h3>
+          WellPump: {{ selectedWellPump.Name }}    
+        </h3>
+      </template>
+      <template #body>
         <div>
-          <label>
-            <input type='checkbox' v-model="selectedWellPump.AutomaticActivationEnabled"/>
-            Automatic activation enabled
-          </label>
+          <h5 v-show="modalErrors !==''" class="text-danger">
+            {{ modalErrors }}
+          </h5>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="ID"
+                        placeholder="ID"
+                        v-model="selectedWellPump.ID"
+                        :disabled="true">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Name"                      
+                        placeholder="Name"
+                        v-model="selectedWellPump.Name">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Host"
+                        placeholder="Host"
+                        v-model="selectedWellPump.Host">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="number"
+                        label="Port"
+                        placeholder="Port"
+                        v-model.number="selectedWellPump.Port">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Activation intervals"
+                        placeholder="Activation intervals"
+                        v-model="selectedWellPump.ActivationIntervals">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="number"
+                        label="RainfallThreshold"
+                        placeholder="RainfallThreshold"
+                        v-model.number="selectedWellPump.RainfallThreshold">
+              </fg-input>
+            </div>
+          </div>
+          <div>
+            <label>
+              <input type='checkbox' v-model="selectedWellPump.AutomaticActivationEnabled"/>
+              Automatic activation enabled
+            </label>
+          </div>
         </div>
-      </div>
-      <div slot="footer">
-        <button class="btn btn-info" v-on:click="createOrUpdateWellPump()">
-          Save
-        </button>
-      </div>      
+      </template>
+      <template #footer>
+        <div>
+          <button class="btn btn-info" v-on:click="createOrUpdateWellPump()">
+            Save
+          </button>
+        </div>
+      </template>      
     </modal>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>
   </div>

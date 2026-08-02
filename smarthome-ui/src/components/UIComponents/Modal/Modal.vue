@@ -92,7 +92,7 @@
  * these styles.
  */
 
-.modal-enter {
+.modal-enter-from {
   opacity: 0;
 }
 
@@ -100,7 +100,7 @@
   opacity: 0;
 }
 
-.modal-enter .modal-container,
+.modal-enter-from .modal-container,
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);

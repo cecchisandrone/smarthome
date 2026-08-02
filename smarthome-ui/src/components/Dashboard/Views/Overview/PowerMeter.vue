@@ -1,14 +1,20 @@
 <template>
     <stats-card>
-        <div class="text-center" :class="`icon-${power.type}`" slot="header">
-        <h3>{{power.title}}</h3>
-        </div>
-        <div class="numbers" slot="content">
-        <u :style="power.decoration">{{power.value}}</u>
-        </div>
-        <div class="stats" slot="footer">
-        <i :class="power.footerIcon"></i> {{power.footerText}}
-        </div>
+        <template #header>
+          <div class="text-center" :class="`icon-${power.type}`">
+          <h3>{{power.title}}</h3>
+          </div>
+        </template>
+        <template #content>
+          <div class="numbers">
+          <u :style="power.decoration">{{power.value}}</u>
+          </div>
+        </template>
+        <template #footer>
+          <div class="stats">
+          <i :class="power.footerIcon"></i> {{power.footerText}}
+          </div>
+        </template>
     </stats-card>
 </template>
 <script>

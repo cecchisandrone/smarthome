@@ -1,7 +1,11 @@
 <template>
   <chart-card ref="powerMeterChart" :chart-data="powerMeterChart.data" :chart-options="powerMeterChart.options">
-    <h4 class="title" slot="title">Power (W)</h4>
-    <span slot="subTitle"> Measured every 5 minutes</span>
+    <template #title>
+      <h4 class="title">Power (W)</h4>
+    </template>
+    <template #subTitle>
+      <span> Measured every 5 minutes</span>
+    </template>
   </chart-card>  
 </template>
 

@@ -1,14 +1,20 @@
 <template>
     <stats-card>
-        <div class="text-center" :class="`icon-${humidity.type}`" slot="header">
-        <h3>Outdoor Humidity</h3>
-        </div>
-        <div class="numbers" slot="content">
-        {{humidity.value}}
-        </div>
-        <div class="stats" slot="footer">
-        <i :class="humidity.footerIcon"></i> {{humidity.footerText}}
-        </div>
+        <template #header>
+          <div class="text-center" :class="`icon-${humidity.type}`">
+          <h3>Outdoor Humidity</h3>
+          </div>
+        </template>
+        <template #content>
+          <div class="numbers">
+          {{humidity.value}}
+          </div>
+        </template>
+        <template #footer>
+          <div class="stats">
+          <i :class="humidity.footerIcon"></i> {{humidity.footerText}}
+          </div>
+        </template>
     </stats-card>
 </template>
 <script>

@@ -2,8 +2,9 @@ const { test, expect, gotoAuthenticated } = require('../fixtures/test')
 
 /**
  * The sidebar is a plugin (SidebarPlugin) that installs a global `$sidebar`
- * store via Vue.mixin + Vue.prototype - both of which phase 3 has to replace.
- * These tests pin its observable behaviour.
+ * store. Phase 3 replaced its Vue 2 wiring (Vue.mixin + Vue.prototype) with a
+ * reactive() object on app.config.globalProperties, and rewrote the sidebar
+ * router-links; these tests pin the observable behaviour either way.
  */
 test.describe('navigation', () => {
   test('the sidebar links navigate and mark the active route', async ({ page }) => {

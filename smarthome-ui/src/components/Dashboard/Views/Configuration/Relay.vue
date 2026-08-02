@@ -31,80 +31,86 @@
       </div>
     </div>
     <modal v-if="showModal" @close="showModal = false">            
-      <h3 slot="header">
-        Relay: {{ selectedRelay.Name }}    
-      </h3>
-      <div slot="body">
-        <h5 v-show="modalErrors !==''" class="text-danger">
-          {{ modalErrors }}
-        </h5>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="ID"
-                      placeholder="ID"
-                      v-model="selectedRelay.ID"
-                      :disabled="true">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Name"                      
-                      placeholder="Name"
-                      v-model="selectedRelay.Name">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Host"
-                      placeholder="Host"
-                      v-model="selectedRelay.Host">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="number"
-                      label="Port"
-                      placeholder="Port"
-                      v-model.number="selectedRelay.Port">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="number"
-                      label="Channels"
-                      placeholder="Channels"
-                      v-model.number="selectedRelay.Channels">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Activation intervals"
-                      placeholder="Activation intervals"
-                      v-model="selectedRelay.ActivationIntervals">
-            </fg-input>
-          </div>
-        </div>
+      <template #header>
+        <h3>
+          Relay: {{ selectedRelay.Name }}    
+        </h3>
+      </template>
+      <template #body>
         <div>
-          <label>
-            <input type='checkbox' v-model="selectedRelay.AutomaticActivationEnabled"/>
-            Automatic activation enabled
-          </label>
+          <h5 v-show="modalErrors !==''" class="text-danger">
+            {{ modalErrors }}
+          </h5>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="ID"
+                        placeholder="ID"
+                        v-model="selectedRelay.ID"
+                        :disabled="true">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Name"                      
+                        placeholder="Name"
+                        v-model="selectedRelay.Name">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Host"
+                        placeholder="Host"
+                        v-model="selectedRelay.Host">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="number"
+                        label="Port"
+                        placeholder="Port"
+                        v-model.number="selectedRelay.Port">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="number"
+                        label="Channels"
+                        placeholder="Channels"
+                        v-model.number="selectedRelay.Channels">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Activation intervals"
+                        placeholder="Activation intervals"
+                        v-model="selectedRelay.ActivationIntervals">
+              </fg-input>
+            </div>
+          </div>
+          <div>
+            <label>
+              <input type='checkbox' v-model="selectedRelay.AutomaticActivationEnabled"/>
+              Automatic activation enabled
+            </label>
+          </div>
         </div>
-      </div>
-      <div slot="footer">
-        <button class="btn btn-info" v-on:click="createOrUpdateRelay()">
-          Save
-        </button>
-      </div>      
+      </template>
+      <template #footer>
+        <div>
+          <button class="btn btn-info" v-on:click="createOrUpdateRelay()">
+            Save
+          </button>
+        </div>
+      </template>      
     </modal>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>
   </div>

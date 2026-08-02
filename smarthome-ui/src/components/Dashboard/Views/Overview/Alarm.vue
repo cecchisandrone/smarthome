@@ -1,16 +1,22 @@
 <template>
     <stats-card>
-        <div class="icon-success" slot="header">
-          <h3>Alarm</h3>
-        </div>
-        <div class="numbers" slot="content">        
-          <button class="btn btn-default btn-md" v-bind:class="{ active: isActive }" v-on:click="toggleAlarm">
-            {{ status }}
-          </button>
-        </div>
-        <div class="stats" slot="footer">
-        <i v-if="messages" class="ti-info"></i> {{messages}}
-        </div>
+        <template #header>
+          <div class="icon-success">
+            <h3>Alarm</h3>
+          </div>
+        </template>
+        <template #content>
+          <div class="numbers">        
+            <button class="btn btn-default btn-md" v-bind:class="{ active: isActive }" v-on:click="toggleAlarm">
+              {{ status }}
+            </button>
+          </div>
+        </template>
+        <template #footer>
+          <div class="stats">
+          <i v-if="messages" class="ti-info"></i> {{messages}}
+          </div>
+        </template>
     </stats-card>
 </template>
 <script>

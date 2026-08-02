@@ -1,6 +1,12 @@
+import { reactive } from 'vue'
 import Notifications from './Notifications.vue'
 
-const NotificationStore = {
+/**
+ * On Vue 2 this was a plain object made reactive by accident: Notifications.vue
+ * returns `state` from data(), which put it through the observer. Vue 3 has no
+ * such implicit step, so the store declares its own reactivity.
+ */
+const NotificationStore = reactive({
   state: [], // here the notifications will be added
 
   removeNotification (index) {
@@ -9,17 +15,13 @@ const NotificationStore = {
   notify (notification) {
     this.state.push(notification)
   }
-}
+})
 
 var NotificationsPlugin = {
 
-  install (Vue) {
-    Object.defineProperty(Vue.prototype, '$notifications', {
-      get () {
-        return NotificationStore
-      }
-    })
-    Vue.component('Notifications', Notifications)
+  install (app) {
+    app.config.globalProperties.$notifications = NotificationStore
+    app.component('Notifications', Notifications)
   }
 }
 

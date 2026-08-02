@@ -31,56 +31,62 @@
       </div>
     </div>
     <modal v-if="showModal" @close="showModal = false">            
-      <h3 slot="header">
-        Inverter: {{ selectedInverter.Name }}    
-      </h3>
-      <div slot="body">
-        <h5 v-show="modalErrors !==''" class="text-danger">
-          {{ modalErrors }}
-        </h5>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="ID"
-                      placeholder="ID"
-                      v-model="selectedInverter.ID"
-                      :disabled="true">
-            </fg-input>
+      <template #header>
+        <h3>
+          Inverter: {{ selectedInverter.Name }}    
+        </h3>
+      </template>
+      <template #body>
+        <div>
+          <h5 v-show="modalErrors !==''" class="text-danger">
+            {{ modalErrors }}
+          </h5>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="ID"
+                        placeholder="ID"
+                        v-model="selectedInverter.ID"
+                        :disabled="true">
+              </fg-input>
+            </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Name"                      
+                        placeholder="Name"
+                        v-model="selectedInverter.Name">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="text"
+                        label="Host"
+                        placeholder="Host"
+                        v-model="selectedInverter.Host">
+              </fg-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <fg-input type="number"
+                        label="Port"
+                        placeholder="Port"
+                        v-model.number="selectedInverter.Port">
+              </fg-input>
+            </div>
+          </div>        
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Name"                      
-                      placeholder="Name"
-                      v-model="selectedInverter.Name">
-            </fg-input>
-          </div>
+      </template>
+      <template #footer>
+        <div>
+          <button class="btn btn-info" v-on:click="createOrUpdateInverter()">
+            Save
+          </button>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="text"
-                      label="Host"
-                      placeholder="Host"
-                      v-model="selectedInverter.Host">
-            </fg-input>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <fg-input type="number"
-                      label="Port"
-                      placeholder="Port"
-                      v-model.number="selectedInverter.Port">
-            </fg-input>
-          </div>
-        </div>        
-      </div>
-      <div slot="footer">
-        <button class="btn btn-info" v-on:click="createOrUpdateInverter()">
-          Save
-        </button>
-      </div>      
+      </template>      
     </modal>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>
   </div>

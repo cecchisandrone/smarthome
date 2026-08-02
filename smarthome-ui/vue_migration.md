@@ -1,7 +1,7 @@
 # Vue 3 Migration Plan
 
-Status: **phases 0, 1 and 2 complete**, phases 3-4 not started. Written 2026-08-02
-against commit `fe13150` (branch `master`).
+Status: **phases 0-3 complete — the app runs on Vue 3**, phase 4 not started.
+Written 2026-08-02 against commit `fe13150` (branch `master`).
 
 This document is written to be picked up cold. It records the decision, the
 evidence behind it, and a phase-by-phase checklist with the exact files that
@@ -59,7 +59,9 @@ Verified by grep over `src/` at commit `fe13150`:
 | `$children` / `$listeners` / `$scopedSlots` | 0 |
 | `functional` components | 0 |
 
-What remains is mechanical:
+What remains is mechanical. Note that this table counts removed *syntax* only —
+it missed the removed component `v-model` contract, which turned out to be the
+largest single piece of phase 3. See the phase 3 deviations.
 
 | Item | Count | Fix |
 | --- | --- | --- |
@@ -82,8 +84,8 @@ What remains is mechanical:
 
 | Dependency | Current | Status | Action |
 | --- | --- | --- | --- |
-| `vue` | 2.7.16 | bumped from 2.6.14 in phase 1 | → 3.x (phase 3) |
-| `vue-router` | 2.2.0 | two majors behind | → 4.x. Rewrite router init; `path: '*'` → `/:pathMatch(.*)*` |
+| `vue` | 3.5.x | bumped 2.6.14 → 2.7.16 in phase 1, → 3.x in phase 3 | done |
+| `vue-router` | 4.6.x | was 2.2.0 | done in phase 3; hash mode kept |
 | `vuex` | — | held one boolean that nothing read | **removed** in phase 2 |
 | `vue2-simplert` | — | Vue 2 only, unmaintained | **removed** in phase 2, replaced by in-repo `ConfirmDialog.vue` |
 | `v-click-outside` | — | Vue 2 only, used in zero templates | **removed** in phase 2 |
@@ -140,9 +142,9 @@ the entry when you fix the bug and the guard starts enforcing it.
 
 | Where | Defect |
 | --- | --- |
-| `Overview/Relay.vue` | `getGlobalStatus()` returns `'Ok'` while `relaysStatus` is still `undefined`, so `getStatus()` dereferences `undefined`. A Vue render error on every overview visit. |
+| `Overview/Relay.vue` | `getGlobalStatus()` returns `'Ok'` while `relaysStatus` is still `undefined`, so `getStatus()` dereferences `undefined`. A Vue render error on every overview visit. **The dereference was fixed in phase 3** — Vue 3 rethrows it — but the premature `'Ok'` remains. |
 | `NotificationPlugin/Notifications.vue` | `v-for` uses the notification object itself as `:key`. |
-| `Logout.vue` | `<a href="#">` with no `.prevent`; the anchor default overwrites the router push, so logout lands on `#/`, not `#/login?loggedOut=true`. |
+| `Logout.vue` | `<a href="#">` with no `.prevent`; the anchor default overwrites the router push, so `?loggedOut=true` is lost. Landed on `#/` under vue-router 2, `#/login` under vue-router 4. |
 | `Configuration/Slack.vue` | The **Test** button is inside a `<form>` with no `type="button"`, so the form submits and the page reloads before the result notification is readable. |
 | device tables in `Configuration/*.vue` | `<th>` sits directly under `<thead>` with no `<tr>`; Vue builds the DOM programmatically, so no header row exists. |
 
@@ -333,64 +335,108 @@ Bundle drops from 291 kB to 265 kB. `npm audit` from 11 to 10.
 
 ---
 
-## Phase 3 — the flip
+## Phase 3 — the flip — **DONE**
 
-The app is broken mid-phase; that is expected. Land it as one reviewed change.
+Vue 2.7 → Vue 3.5, vue-router 2 → 4, in one change. **Playwright: 35/35 green,
+stable over `--repeat-each=3`.** No `@vue/compat` step was needed.
 
-1. [ ] `vue@3`, `vue-router@4`, `@vitejs/plugin-vue`. Remove
-       `@vitejs/plugin-vue2` (`vue-template-compiler` already went in phase 1).
-       Drop `template: { transformAssetUrls: false }` from `vite.config.js` only
-       if the five bare `static/img/...` template references are rewritten too —
-       otherwise keep it
-2. [ ] Rewrite `src/main.js`:
-   - `createApp(App)` instead of `new Vue({el: '#app'})`
-   - `createRouter({history: createWebHistory(), routes, linkActiveClass: 'active'})`
-   - `Vue.use(...)` × 5 → `app.use(...)`
-   - `Object.defineProperty(Vue.prototype, '$Chartist', …)` (:45) →
-     `app.config.globalProperties.$Chartist`
-   - Drop `es6-promise/auto`
-3. [ ] Rewrite the three plugins to the `install(app)` signature:
-   - [ ] `src/globalComponents.js` — `app.component(...)` × 4
-   - [ ] `src/components/UIComponents/SidebarPlugin/index.js` — the `Vue.mixin`
-         at :50 and `Vue.prototype.$sidebar` at :58 both go; make `SidebarStore`
-         a `reactive()` object and expose it via `app.config.globalProperties`
-   - [ ] `src/components/UIComponents/NotificationPlugin/index.js` — same
-         treatment for `$notifications` at :17
-4. [ ] Codemod the 60 `slot="x"` occurrences → `<template #x>`. Affected files:
-   - `Configuration/`: `Camera.vue`, `Inverter.vue`, `Relay.vue`, `WellPump.vue`
-   - `Overview/`: `Alarm.vue`, `Gate.vue`, `Heater.vue`, `HeaterChart.vue`,
-     `Humidity.vue`, `HumidityChart.vue`, `Inverter.vue`, `PowerMeter.vue`,
-     `PowerMeterChart.vue`, `Pump.vue`, `RainGauge.vue`, `RainGaugeChart.vue`,
-     `Raspsonar.vue`, `RaspsonarChart.vue`, `Relay.vue`, `Temperature.vue`,
-     `TemperatureChart.vue`, `WellPump.vue`
-5. [ ] Rename transition classes (`.x-enter` → `.x-enter-from`) in 4 files:
-   - [ ] `src/components/Dashboard/Layout/Content.vue:20` (`.fade-enter`)
-   - [ ] `src/components/UIComponents/NotificationPlugin/Notification.vue:86` (`.fade-enter`)
-   - [ ] `src/components/UIComponents/NotificationPlugin/Notifications.vue:41` (`.list-enter`)
-   - [ ] `src/components/UIComponents/Modal/Modal.vue:95,103` (`.modal-enter`)
-6. [ ] `src/components/Dashboard/Layout/DashboardLayout.vue:12` — drop
-       `.native` from `@click.native`
-7. [ ] `src/components/UIComponents/SidebarPlugin/SideBar.vue:23` — `tag="li"`
-       is removed in vue-router 4. Rewrite as `<router-link custom v-slot>`
-       wrapping an `<li>`. The `:ref="link.name"` on that element is never read
-       anywhere; drop it rather than porting it
-8. [ ] `src/routes/routes.js` — `path: '*'` → `path: '/:pathMatch(.*)*'`
-9. [ ] Replace the 10 `$set(obj, key, value)` calls with `obj[key] = value` in
-       `Views/Inverters.vue`, `Overview/Relay.vue`, `Overview/WellPump.vue`,
-       `Overview/Inverter.vue`
-10. [ ] Point `routeUrl()` in `e2e/fixtures/test.js` at history-mode paths if
-        this phase also adopts `createWebHistory()`; the dev server already has
-        `historyApiFallback` on, but `nginx/default` needs a matching
-        `try_files` rule before the built image can serve deep links
-11. [ ] Verify `$refs` on the chart components still resolve
-       (`*Chart.vue:46-48`, `$refs.xChart.initChart()`) — ref timing differs
-       slightly in Vue 3
+1. [x] `vue@3.5`, `vue-router@4.6`, `@vitejs/plugin-vue@6`; removed
+       `@vitejs/plugin-vue2` and `es6-promise`.
+       `template: { transformAssetUrls: false }` was **kept** — the five bare
+       `static/img/...` references were not rewritten
+2. [x] Rewrote `src/main.js`: `createApp(App).mount('#app')`, `createRouter`,
+       `app.use(...)` × 4 (`VueRouter` is no longer a plugin install),
+       `app.config.globalProperties.$Chartist`
+3. [x] All three plugins now take `install(app)`:
+   - [x] `src/globalComponents.js` — `app.component(...)` × 4
+   - [x] `SidebarPlugin/index.js` — `Vue.mixin` and the `$sidebar` prototype
+         getter both gone; `SidebarStore` is a `reactive()` object on
+         `app.config.globalProperties`
+   - [x] `NotificationPlugin/index.js` — same treatment for `$notifications`
+4. [x] Codemodded all 60 `slot="x"` occurrences → `<template #x>` across the
+       22 listed files
+5. [x] Renamed the transition classes (`.x-enter` → `.x-enter-from`) in the
+       4 listed files
+6. [x] Dropped `.native` from `@click.native` in `DashboardLayout.vue`
+7. [x] `SideBar.vue` — `<router-link custom v-slot>` wrapping the `<li>`;
+       `:ref="link.name"` dropped as planned
+8. [x] `src/routes/routes.js` — `path: '/:pathMatch(.*)*'`
+9. [x] Replaced all 10 `$set(obj, key, value)` calls with `obj[key] = value`
+10. [x] `routeUrl()` left alone — hash mode was kept, see below
+11. [x] Chart `$refs` still resolve; the six-chart overview assertion passes
+        unchanged
 
-**On `@vue/compat`:** given how small the breakage surface is, a straight flip
-is faster than a compat-mode intermediate step. Reach for `@vue/compat` only if
-step 3 turns out noisier than expected.
+### Deviations from the plan
 
-**Exit criteria:** Playwright green on Vue 3.
+**Hash mode was kept.** The plan sketched `createWebHistory()`. Phase 3 uses
+`createWebHashHistory()` instead, which is what vue-router 2 defaulted to. Going
+to history mode is a *deployment* change — it needs a `try_files` rule in
+`nginx/default` and invalidates every existing `#/...` link — and folding it in
+would have mixed a framework failure mode with a serving failure mode. It stays
+available as a one-line change plus an nginx rule.
+
+**`fg-input` had to be rewritten, and the plan did not list it.** The survey
+counted the removed *syntax* but missed a removed *contract*: Vue 3 renamed
+component `v-model` from `value` + `input` to `modelValue` +
+`update:modelValue`. Left alone, all ~50 `<fg-input v-model="…">` call sites
+would have gone silently read-only — the login form included.
+
+Worse, Vue 2 applied the `.number` and `.trim` v-model modifiers itself, even
+for component v-model. Vue 3 only forwards them as a `modelModifiers` prop and
+leaves the cast to the component. The 24 `v-model.number` bindings in
+`Configuration/*` would have started sending strings to the API, which no test
+would have caught. `formGroupInput.vue` now renames the prop and applies the
+modifiers itself, so every call site is untouched.
+
+**`Overview/Relay.vue`'s render crash was fixed, not baselined.** Its
+`getStatus()` dereferenced `relaysStatus[name]` before the per-relay GET
+resolved. Vue 2 caught the TypeError and logged it, so phase 0 baselined it;
+Vue 3 rethrows it as an uncaught exception, which failed 14 tests. Fixing the
+dereference was better than teaching the guard to ignore an uncaught
+`TypeError`, which would have blunted it for the rest of the migration. The
+underlying `getGlobalStatus()` reporting `'Ok'` while loading is untouched —
+it is cosmetic, and it stays a phase 4 item.
+
+**Three latent problems surfaced that the survey had not counted:**
+
+- `SideBar.vue` contained a stray `</span>` inside `<ul>`. Vue 2's parser
+  ignored it; Vue 3's rejects it and the build fails
+- `PaperTable.vue` had `v-for` and `v-if` on the same `<td>`. Vue 3 reverses
+  the precedence, so `column` would be undefined. Split into a `<template
+  v-for>`. The component is imported by nothing — worth deleting in phase 4
+- `<transition-group>` renders a fragment in Vue 3 where Vue 2 always emitted a
+  wrapper `<span>`. `tag="span"` is now explicit in `Notifications.vue`
+
+**One behaviour change, in a pre-existing defect.** `Logout.vue`'s
+un-`.prevent`ed `<a href="#">` still loses the `?loggedOut=true` query, but the
+landing URL moved from `#/` to `#/login`: vue-router 4 pushes through the
+history API, so the anchor's `#` no longer resets the whole route. The auth spec
+asserts the new observed behaviour and the defect stays on the phase 4 list.
+
+### The e2e guard had to be widened to stay as strong
+
+Vue 2 raised framework warnings through `console.error`; Vue 3 raises them
+through `console.warn`. The guard watched errors only, so after the flip it
+would have silently stopped enforcing `[Vue warn]` — the single most useful
+signal in the suite. `fixtures/test.js` now also fails on a `console.warn`
+containing `[Vue warn]`.
+
+`KNOWN_PRE_EXISTING_ERRORS` is down to one entry (the object-as-`:key` in
+`Notifications.vue`), and even that is inert: Vue 3 does not warn about it.
+
+### Results
+
+| | Vue 2.7 | Vue 3.5 |
+| --- | --- | --- |
+| production build | ~1.4 s | ~1.5 s |
+| bundle | 265 kB JS + 192 kB CSS | 259 kB JS + 192 kB CSS |
+| Playwright | 35/35 | 35/35 |
+
+Verified: `npm run build`, `npm run lint`, `npm ci --dry-run`, the Playwright
+suite at `--repeat-each=3` (105/105), and a full `docker build` with the image's
+bundle carrying the right `GIT_VERSION`.
+
+**Exit criteria:** met.
 
 ---
 
@@ -400,12 +446,20 @@ step 3 turns out noisier than expected.
       "Legacy test removal" below. Nothing was ported: all four legacy specs
       were dead. A Vitest layer can be added later if unit coverage is wanted,
       but it is no longer blocking anything
-- [ ] eslint 9 flat config + `eslint-plugin-vue` v9. Drop the eslint 3 plugin set
+- [ ] eslint 9 flat config + `eslint-plugin-vue` v9. Drop the eslint 3 plugin
+      set. eslint 3 cannot see inside `.vue` templates at all, so nothing
+      currently lints the 60 rewritten slots or the sidebar `v-slot`
 - [ ] `axios` 0.24 → 1.x (check the 16 service files for response-shape changes)
 - [ ] Optionally convert `process.env.*` → `import.meta.env.*`
 - [ ] Update `README.md` (dev/build commands changed in phase 1)
 - [ ] Revisit the pre-existing defects listed under phase 0 and clear the
-      `KNOWN_PRE_EXISTING_ERRORS` baseline in `e2e/fixtures/test.js`
+      `KNOWN_PRE_EXISTING_ERRORS` baseline in `e2e/fixtures/test.js`. One entry
+      is left and Vue 3 no longer warns about it, so the fix is unguarded
+- [ ] Delete `UIComponents/PaperTable.vue` — nothing imports it, and its last
+      test went with the karma suite
+- [ ] Optional: declare `emits` on the components that `$emit`. Undeclared
+      emits now fall through to the root element as DOM listeners. Harmless
+      here, but it is noise
 
 ---
 
@@ -425,8 +479,8 @@ Tracked separately, deliberately not part of this migration:
 | Phase | Estimate |
 | --- | --- |
 | 0 — Playwright safety net | ~~2 d~~ done |
-| 1 — Vite | 1–2 d |
-| 2 — dependency removal | 1.5 d |
-| 3 — the flip | 2–3 d |
+| 1 — Vite | ~~1–2 d~~ done |
+| 2 — dependency removal | ~~1.5 d~~ done |
+| 3 — the flip | ~~2–3 d~~ done |
 | 4 — cleanup | 1.5 d |
 | **Total** | **~8–10 d** |

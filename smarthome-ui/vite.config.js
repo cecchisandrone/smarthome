@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import { execSync } from 'node:child_process'
 import { fileURLToPath, URL } from 'node:url'
 
@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => {
       vue({
         // vue-loader 15 only rewrote asset URLs that began with './', '~' or
         // '@'. Every image reference in this app is a bare 'static/img/...'
-        // public path, which it therefore left alone. plugin-vue2 is less
+        // public path, which it therefore left alone. plugin-vue is less
         // conservative and would try to bundle them, so turn the transform off
         // to keep the old behaviour. Nothing in src/ imports an image.
         template: { transformAssetUrls: false }
