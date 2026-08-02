@@ -1,6 +1,7 @@
 # Vue 3 Migration Plan
 
-Status: **not started**. Written 2026-08-02 against commit `fe13150` (branch `master`).
+Status: **phase 0 complete**, phases 1-4 not started. Written 2026-08-02
+against commit `fe13150` (branch `master`).
 
 This document is written to be picked up cold. It records the decision, the
 evidence behind it, and a phase-by-phase checklist with the exact files that
@@ -53,7 +54,7 @@ Verified by grep over `src/` at commit `fe13150`:
 | --- | --- |
 | `filters:` | 0 |
 | Event bus (`$on` / `$off` / `$once`) | 0 |
-| `Vue.set` / `Vue.delete` / `$set` / `$delete` | 0 |
+| `Vue.set` / `Vue.delete` / `$delete` | 0 |
 | `.sync` modifier | 0 |
 | `$children` / `$listeners` / `$scopedSlots` | 0 |
 | `functional` components | 0 |
@@ -63,12 +64,17 @@ What remains is mechanical:
 | Item | Count | Fix |
 | --- | --- | --- |
 | `slot="x"` old syntax | 60 uses across 22 files | `<template #x>` |
+| `$set` | 10 uses across 4 files | plain assignment (proxy reactivity) |
 | Transition classes `.x-enter` | 4 files | `.x-enter-from` |
 | `@click.native` | 1 | drop the modifier |
 | `router-link tag="li"` + `:ref` in `v-for` | 1 | `custom` + `v-slot` |
 | `Vue.prototype` globals | 3 | `app.config.globalProperties` |
 | `Vue.use` plugin installs | 5 | `app.use` |
 | `Vue.mixin` sidebar store | 1 | shared `reactive` module |
+
+`$set` files: `Views/Inverters.vue` (2), `Overview/Relay.vue` (3),
+`Overview/WellPump.vue` (3), `Overview/Inverter.vue` (2). All of the form
+`$set(obj, key, value)` on a plain object, so each becomes `obj[key] = value`.
 
 ---
 
@@ -84,32 +90,104 @@ What remains is mechanical:
 | `chartist` | 0.10.1 | framework-agnostic, works | Keep at 0.10 through the migration. Bump to 1.x as separate work |
 | `bootstrap` | 3.3.7 | EOL 2019 | **Leave alone.** Not a Vue 3 blocker. Separate project |
 | `axios` | 0.24.0 | old but fine | → 1.x in phase 4 |
-| karma / mocha / nightwatch / sinon | — | dead | → Vitest + Playwright |
+| karma / mocha / nightwatch / sinon | — | dead, and crashing on startup | **removed**, replaced by Playwright |
 | `eslint` | 3.19.0 | ancient | → eslint 9 flat config + `eslint-plugin-vue` |
 
 ---
 
-## Phase 0 — safety net (on Vue 2)
+## Phase 0 — safety net (on Vue 2) — **DONE**
 
-Existing coverage is near zero: three karma specs (`paper-table`, `fgInput`,
-`Overview`) and one nightwatch spec. That is not enough to detect a broken
-migration.
+Existing coverage was near zero: three karma specs (`paper-table`, `fgInput`,
+`Overview`) and one nightwatch spec. Not enough to detect a broken migration.
 
-Add a Playwright suite against the running Vue 2 app. This suite is the
-migration oracle — it must pass identically before and after every phase.
+A Playwright suite now drives the Vue 2 app against a fully mocked backend.
+**34 tests, green, stable over `--repeat-each=3`.** It is the migration oracle:
+it must pass identically after every phase. See `e2e/README.md`.
 
-- [ ] Install Playwright, point it at the dev server (port 8090)
-- [ ] Login flow (valid credentials → redirect to `/admin/overview`)
-- [ ] Auth guard (unauthenticated `/admin/*` → `/login`)
-- [ ] Each of the 9 routes renders without console errors: `overview`,
-      `configuration`, `cameras`, `inverters`, `stats`, `notifications`,
-      `webradio`, `metrics`, `rental`
-- [ ] One relay toggle round-trips against a stubbed API
-- [ ] One `Configuration/*` form saves and shows the confirm dialog
-- [ ] Sidebar navigation + the mobile off-canvas sidebar open/close
-- [ ] Wire into CI (`.circleci/config.yml`)
+- [x] Install Playwright, point it at the dev server (port 8090)
+- [x] Login flow (valid credentials → `/admin/overview`), invalid credentials,
+      logout, expired-token rejection
+- [x] Auth guard (unauthenticated `/admin/*` → `/login`)
+- [x] Each of the 9 routes renders without console errors, plus the 404 route
+- [x] Relay channel toggle round-trips against the mock (and toggles back)
+- [x] Well pump, alarm, gate and basement pump round-trips
+- [x] Configuration form save; relay create/edit/delete through `Modal.vue` and
+      the `vue2-simplert` confirm dialog (confirm **and** dismiss)
+- [x] Sidebar navigation, active-link marking, moving arrow, and the mobile
+      off-canvas sidebar open/close
+- [x] Chartist renders one chart per scheduled series
+- [x] Rental access-link generation
+- [x] Wire into CI — `test_ui` job added to `.circleci/config.yml`, gating
+      `build_ui`
 
-**Exit criteria:** suite green on Vue 2, running in CI.
+Files added: `playwright.config.js`, `e2e/` (fixtures + 6 spec files),
+`e2e/README.md`. `package.json` gains `dev:test`, `e2e`, `e2e:ui` and a
+`@playwright/test` devDependency. No `src/` file was touched.
+
+**Guards.** Beyond its assertions, every test fails on an uncaught exception, a
+`console.error` (including `[Vue warn]`), or an API call the mock does not
+recognise. That last one means a service gaining a new endpoint breaks the
+suite instead of silently 404ing.
+
+**Exit criteria:** met.
+
+### Pre-existing defects found while writing the suite
+
+None were fixed — phase 0 changes no app code — but each is now pinned as
+*observed* behaviour so the migration is compared like for like. The first two
+are baselined in `KNOWN_PRE_EXISTING_ERRORS` in `e2e/fixtures/test.js`; remove
+the entry when you fix the bug and the guard starts enforcing it.
+
+| Where | Defect |
+| --- | --- |
+| `Overview/Relay.vue` | `getGlobalStatus()` returns `'Ok'` while `relaysStatus` is still `undefined`, so `getStatus()` dereferences `undefined`. A Vue render error on every overview visit. |
+| `NotificationPlugin/Notifications.vue` | `v-for` uses the notification object itself as `:key`. |
+| `Logout.vue` | `<a href="#">` with no `.prevent`; the anchor default overwrites the router push, so logout lands on `#/`, not `#/login?loggedOut=true`. |
+| `Configuration/Slack.vue` | The **Test** button is inside a `<form>` with no `type="button"`, so the form submits and the page reloads before the result notification is readable. |
+| device tables in `Configuration/*.vue` | `<th>` sits directly under `<thead>` with no `<tr>`; Vue builds the DOM programmatically, so no header row exists. |
+
+Worth fixing, but as their own change — not folded into a migration phase.
+
+### Legacy test removal (done after phase 0, before phase 1)
+
+The karma and nightwatch setups were deleted rather than migrated. They were
+not "old but working" — both crashed on startup:
+
+| Suite | Why it could not run |
+| --- | --- |
+| `npm run e2e` (nightwatch) | `test/e2e/runner.js` requires `build/dev-server.js`, which does not exist. `MODULE_NOT_FOUND` before anything starts. `nightwatch.conf.js` also requires `selenium-server`, `chromedriver` and `babel-register`, none of which are in `package.json`. |
+| `npm run unit` (karma) | `karma.conf.js` asks for the PhantomJS browser; `karma-phantomjs-launcher` is not installed, so the server throws while starting launchers. PhantomJS itself has been unmaintained since 2018. |
+
+The specs were equally stale:
+
+- `test/e2e/specs/test.js` asserted `.hello` and the text *"Welcome to Your
+  Vue.js PrettyCheckbox"* — untouched scaffolding from the original template,
+  never true of this app.
+- `Overview.spec.js` expected 4 stats cards and 1 chart card; the real overview
+  renders 12 and 6.
+- `paper-table.spec.js` tested `UIComponents/PaperTable.vue`, which nothing in
+  `src/` imports.
+- `fgInput.spec.js` was the only spec still testing live behaviour, and the
+  Playwright suite covers `fg-input` binding through the login, configuration
+  and rental forms.
+
+Removed: `test/`, `build/webpack.test.conf.js`, `config/test.env.js`, the
+`env.test` block in `babel.config.js`, and 16 devDependencies (`karma` ×6,
+`mocha`, `chai`, `sinon`, `sinon-chai`, `lolex`, `vue-unit`, `nightwatch`,
+`babel-plugin-istanbul`, `inject-loader`, `function-bind`, `cross-spawn`).
+
+`build/webpack.prod.conf.js` had a `NODE_ENV === 'testing'` branch that existed
+only for the nightwatch runner; it now always uses `config.build.env`.
+
+Scripts are now `e2e` (Playwright), `e2e:ui`, and `test` as an alias for `e2e`.
+`lint` no longer targets the deleted `test` directory.
+
+### Also corrected in this document
+
+- `$set` **is** used (10 times, 4 files). The original survey said zero; that
+  grep was wrong. Added to the mechanical-work table and to phase 3.
+- `dist/` is **not** tracked by git — it is already in `.gitignore`. The phase 4
+  item to remove it was unnecessary and has been dropped.
 
 ---
 
@@ -201,7 +279,14 @@ The app is broken mid-phase; that is expected. Land it as one reviewed change.
        wrapping an `<li>`. The `:ref="link.name"` on that element is never read
        anywhere; drop it rather than porting it
 8. [ ] `src/routes/routes.js` — `path: '*'` → `path: '/:pathMatch(.*)*'`
-9. [ ] Verify `$refs` on the chart components still resolve
+9. [ ] Replace the 10 `$set(obj, key, value)` calls with `obj[key] = value` in
+       `Views/Inverters.vue`, `Overview/Relay.vue`, `Overview/WellPump.vue`,
+       `Overview/Inverter.vue`
+10. [ ] Point `routeUrl()` in `e2e/fixtures/test.js` at history-mode paths if
+        this phase also adopts `createWebHistory()`; the dev server already has
+        `historyApiFallback` on, but `nginx/default` needs a matching
+        `try_files` rule before the built image can serve deep links
+11. [ ] Verify `$refs` on the chart components still resolve
        (`*Chart.vue:46-48`, `$refs.xChart.initChart()`) — ref timing differs
        slightly in Vue 3
 
@@ -215,16 +300,16 @@ step 3 turns out noisier than expected.
 
 ## Phase 4 — cleanup
 
-- [ ] Vitest replaces karma. Port the 3 existing specs
-      (`test/unit/specs/{paper-table,fgInput,Overview}.spec.js`), drop
-      `vue-unit`, `karma-*`, `mocha`, `chai`, `sinon`, `lolex`
-- [ ] Delete `test/e2e/` (nightwatch runner + conf), superseded by Playwright
+- [x] ~~Vitest replaces karma; delete nightwatch~~ — **done early**, see
+      "Legacy test removal" below. Nothing was ported: all four legacy specs
+      were dead. A Vitest layer can be added later if unit coverage is wanted,
+      but it is no longer blocking anything
 - [ ] eslint 9 flat config + `eslint-plugin-vue` v9. Drop the eslint 3 plugin set
 - [ ] `axios` 0.24 → 1.x (check the 16 service files for response-shape changes)
 - [ ] Optionally convert `process.env.*` → `import.meta.env.*`
-- [ ] Remove the committed `dist/` directory from the repo and add to
-      `.gitignore`
 - [ ] Update `README.md` (dev/build commands changed in phase 1)
+- [ ] Revisit the pre-existing defects listed under phase 0 and clear the
+      `KNOWN_PRE_EXISTING_ERRORS` baseline in `e2e/fixtures/test.js`
 
 ---
 
@@ -243,7 +328,7 @@ Tracked separately, deliberately not part of this migration:
 
 | Phase | Estimate |
 | --- | --- |
-| 0 — Playwright safety net | 2 d |
+| 0 — Playwright safety net | ~~2 d~~ done |
 | 1 — Vite | 1–2 d |
 | 2 — dependency removal | 1.5 d |
 | 3 — the flip | 2–3 d |

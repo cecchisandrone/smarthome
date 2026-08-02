@@ -7,13 +7,5 @@ module.exports = {
     }]
   ],
   plugins: ['@babel/plugin-transform-runtime'],
-  comments: false,
-  env: {
-    test: {
-      presets: [
-        ['@babel/preset-env', { targets: { node: 'current' } }]
-      ],
-      plugins: ['babel-plugin-istanbul']
-    }
-  }
+  comments: false
 }

@@ -7,9 +7,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
-var env = Object.assign({}, process.env.NODE_ENV === 'testing'
-  ? require('../config/test.env')
-  : config.build.env)
+// The 'testing' branch here existed only for the nightwatch runner, which set
+// NODE_ENV=testing and has since been removed along with config/test.env.js.
+var env = Object.assign({}, config.build.env)
 env.GIT_VERSION = JSON.stringify(utils.gitVersion())
 
 var webpackConfig = merge(baseWebpackConfig, {
