@@ -9,8 +9,8 @@
         <h3 class='form-signin-heading'>SmartHome Authentication</h3>
         </div>
         <fg-input type='text' label='Username' placeholder='Username' name='username' id='username' v-model='username'></fg-input>
-        <fg-input type='password' label='Password' placeholder='Password' name='password' id='password' v-model='password'></fg-input>        
-        <button v-on:click='loginUser()' type='submit' class='btn btn-info btn-fill btn-wd btn-block'>Sign in</button>                
+        <fg-input type='password' label='Password' placeholder='Password' name='password' id='password' v-model='password'></fg-input>
+        <button v-on:click='loginUser()' type='submit' class='btn btn-info btn-fill btn-wd btn-block'>Sign in</button>
         <h5 v-show="errors !==''" class="text-danger">
           {{ errors }}
         </h5>
@@ -21,7 +21,6 @@
 
 <script>
 import * as loginService from 'src/services/authService.js'
-import Notification from 'src/components/UIComponents/NotificationPlugin/Notification.vue'
 export default {
   props: {
     loggedOut: {
@@ -50,7 +49,7 @@ export default {
   methods: {
     loginUser: function () {
       this.errors = null
-      var app = this
+      const app = this
       loginService
         .login(this.username, this.password)
         .then(function (res) {
@@ -60,9 +59,6 @@ export default {
           app.errors = err.message
         })
     }
-  },
-  components: {
-    Notification
   }
 }
 </script>

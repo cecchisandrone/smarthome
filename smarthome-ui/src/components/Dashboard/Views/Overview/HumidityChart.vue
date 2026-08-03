@@ -6,7 +6,7 @@
     <template #subTitle>
       <span> Measured every 2 hours</span>
     </template>
-  </chart-card>  
+  </chart-card>
 </template>
 
 <script>
@@ -39,12 +39,12 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       humidityService.getScheduledMeasurements().then((data) => {
         that.humidityChart.data.labels = []
         that.humidityChart.data.series = [[]]
         for (const prop in data) {
-          that.humidityChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}))
+          that.humidityChart.data.labels.push(new Date(prop).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
           that.humidityChart.data.series[0].push(data[prop])
         }
         that.$refs.humidityChart.initChart()

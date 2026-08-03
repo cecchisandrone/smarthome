@@ -16,7 +16,7 @@
       </div>
       <slot>
 
-      </slot>      
+      </slot>
       <ul :class="navClasses">
         <!--vue-router 4 dropped `tag`, so the <li> is rendered here and the
             active class (linkActiveClass: 'active') is applied by hand from the
@@ -44,7 +44,7 @@
         type: String,
         default: 'sidebar',
         validator: (value) => {
-          let acceptedValues = ['sidebar', 'navbar']
+          const acceptedValues = ['sidebar', 'navbar']
           return acceptedValues.indexOf(value) !== -1
         }
       },
@@ -52,7 +52,7 @@
         type: String,
         default: 'black',
         validator: (value) => {
-          let acceptedValues = ['white', 'black', 'darkblue']
+          const acceptedValues = ['white', 'black', 'darkblue']
           return acceptedValues.indexOf(value) !== -1
         }
       },
@@ -60,7 +60,7 @@
         type: String,
         default: 'success',
         validator: (value) => {
-          let acceptedValues = ['primary', 'info', 'success', 'warning', 'danger']
+          const acceptedValues = ['primary', 'info', 'success', 'warning', 'danger']
           return acceptedValues.indexOf(value) !== -1
         }
       },
@@ -108,7 +108,7 @@
     methods: {
       findActiveLink () {
         this.sidebarLinks.find((element, index) => {
-          let found = element.path === this.$route.path
+          const found = element.path === this.$route.path
           if (found) {
             this.activeLinkIndex = index
           }

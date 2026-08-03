@@ -6,7 +6,7 @@
     <template #subTitle>
       <span> Measured every 2 hours</span>
     </template>
-  </chart-card>  
+  </chart-card>
 </template>
 
 <script>
@@ -41,12 +41,12 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       raspsonarService.getScheduledMeasurements().then((data) => {
         that.raspsonarChart.data.labels = []
         that.raspsonarChart.data.series = [[]]
         for (const prop in data) {
-          that.raspsonarChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}))
+          that.raspsonarChart.data.labels.push(new Date(prop).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
           that.raspsonarChart.data.series[0].push(data[prop])
         }
         that.$refs.raspsonarChart.initChart()

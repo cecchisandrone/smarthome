@@ -1,17 +1,17 @@
 <template>
-  <div class="row">        
+  <div class="row">
       <div class="col-md-12">
         <div v-if="globalErrors" class="alert alert-danger">{{globalErrors}}</div>
         <div v-if="inverters.length == 0" class="alert alert-info">No inverters configured</div>
-        <div v-for="(inverter, index) in inverters">
-          <h3>{{inverter.Name}}</h3>                                    
+        <div v-for="inverter in inverters" :key="inverter.ID">
+          <h3>{{inverter.Name}}</h3>
           <div v-if="errors[inverter.ID]" class="alert alert-danger">{{errors[inverter.ID]}}</div>
-          <div v-for="(metric, name) in metrics[inverter.ID]">
+          <div v-for="(metric, name) in metrics[inverter.ID]" :key="name">
              <span><b>{{metricsNames[name]}}:</b> <i>{{metric.toFixed(2)}}</i></span>
-          </div>  
+          </div>
         </div>
       </div>
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -43,7 +43,7 @@
       }
     },
     created () {
-      var app = this
+      const app = this
       inverterService.getAllInverters().then((inverters) => {
         app.inverters = inverters
         inverters.forEach(inverter => {

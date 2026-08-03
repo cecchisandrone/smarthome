@@ -40,7 +40,7 @@
        * :value separately, exactly as before.
        */
       inputProps () {
-        const {modelValue, modelModifiers, ...attrs} = this.$props
+        const { modelValue, modelModifiers, ...attrs } = this.$props
         return attrs
       }
     },

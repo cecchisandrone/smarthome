@@ -1,6 +1,6 @@
 # Vue 3 Migration Plan
 
-Status: **phases 0-3 complete — the app runs on Vue 3**, phase 4 not started.
+Status: **complete.** All five phases are done and the app runs on Vue 3.
 Written 2026-08-02 against commit `fe13150` (branch `master`).
 
 This document is written to be picked up cold. It records the decision, the
@@ -91,9 +91,9 @@ largest single piece of phase 3. See the phase 3 deviations.
 | `v-click-outside` | — | Vue 2 only, used in zero templates | **removed** in phase 2 |
 | `chartist` | 0.10.1 | framework-agnostic, works | Keep at 0.10 through the migration. Bump to 1.x as separate work |
 | `bootstrap` | 3.3.7 | EOL 2019 | **Leave alone.** Not a Vue 3 blocker. Separate project |
-| `axios` | 0.24.0 | old but fine | → 1.x in phase 4 |
+| `axios` | 1.19.x | was 0.24.0 | done in phase 4 |
 | karma / mocha / nightwatch / sinon | — | dead, and crashing on startup | **removed**, replaced by Playwright |
-| `eslint` | 3.19.0 | ancient | → eslint 9 flat config + `eslint-plugin-vue` |
+| `eslint` | 9.39.x | was 3.19.0 | done in phase 4: flat config + `eslint-plugin-vue` 10 + `neostandard` |
 
 ---
 
@@ -440,26 +440,131 @@ bundle carrying the right `GIT_VERSION`.
 
 ---
 
-## Phase 4 — cleanup
+## Phase 4 — cleanup — **DONE**
+
+**Playwright: 36/36 green** (one test added), stable over `--repeat-each=3`.
+`npm run lint`: 0 errors.
 
 - [x] ~~Vitest replaces karma; delete nightwatch~~ — **done early**, see
-      "Legacy test removal" below. Nothing was ported: all four legacy specs
+      "Legacy test removal" above. Nothing was ported: all four legacy specs
       were dead. A Vitest layer can be added later if unit coverage is wanted,
       but it is no longer blocking anything
-- [ ] eslint 9 flat config + `eslint-plugin-vue` v9. Drop the eslint 3 plugin
-      set. eslint 3 cannot see inside `.vue` templates at all, so nothing
-      currently lints the 60 rewritten slots or the sidebar `v-slot`
-- [ ] `axios` 0.24 → 1.x (check the 16 service files for response-shape changes)
-- [ ] Optionally convert `process.env.*` → `import.meta.env.*`
-- [ ] Update `README.md` (dev/build commands changed in phase 1)
-- [ ] Revisit the pre-existing defects listed under phase 0 and clear the
-      `KNOWN_PRE_EXISTING_ERRORS` baseline in `e2e/fixtures/test.js`. One entry
-      is left and Vue 3 no longer warns about it, so the fix is unguarded
-- [ ] Delete `UIComponents/PaperTable.vue` — nothing imports it, and its last
-      test went with the karma suite
-- [ ] Optional: declare `emits` on the components that `$emit`. Undeclared
-      emits now fall through to the root element as DOM listeners. Harmless
-      here, but it is noise
+- [x] eslint 9 flat config (`eslint.config.js`) + `eslint-plugin-vue` 10 +
+      `neostandard`. Dropped eslint 3 and its six plugins, deleted
+      `.eslintrc.json`
+- [x] `axios` 0.24 → 1.19. No service file needed a change: they all use
+      `res.data` and `err.message`, neither of which moved
+- [x] Converted all 47 `process.env.*` reads to `import.meta.env.*`
+- [x] Updated `README.md`
+- [x] Fixed the last four pre-existing defects and emptied
+      `KNOWN_PRE_EXISTING_ERRORS`
+- [x] Deleted `UIComponents/PaperTable.vue`
+- [x] Declared `emits` on all 16 components that `$emit`
+
+### The eslint upgrade was worth more than a version bump
+
+The old stack could not see inside a `.vue` file at all. `eslint-plugin-html`
+extracted `<script>` blocks and nothing else, so **no template had ever been
+linted** — which is exactly why phase 3 found unbalanced tags and a `v-for` /
+`v-if` clash by hand, one compiler error at a time.
+
+Turning `eslint-plugin-vue` on surfaced 55 template findings the previous 251
+commits had never had a chance to see:
+
+| Finding | Count | Outcome |
+| --- | --- | --- |
+| `vue/require-v-for-key` | 19 | fixed — every `v-for` now has a `:key` |
+| `vue/no-mutating-props` | 26 | left as warnings, see below |
+| `vue/no-unused-components` | 3 | dead imports and registrations deleted |
+| `vue/no-unused-vars` | 2 | unused `index` bindings dropped from `v-for` |
+| `vue/require-toggle-inside-transition` | 1 | `Modal.vue`, see below |
+| `vue/no-deprecated-destroyed-lifecycle` | 1 | **a live Vue 3 bug**, see below |
+
+**`CameraView.vue` had a dead lifecycle hook.** Its `beforeDestroy()` has not
+run since phase 3 — Vue 3 renamed it `beforeUnmount`. Phase 3's survey grepped
+for it and then failed to act on it; nothing failed loudly, because the hook
+only reset an image source. Renaming it exposed a second, older bug in the same
+place: the `setInterval` that refreshes an sv3c or microcam still image was
+never stored and never cleared, so every visit to the cameras page left another
+timer polling forever. The hook now clears it.
+
+**`Modal.vue`'s transition never ran.** Every call site toggles the whole
+`<modal>` with `v-if`, so the `<transition>` inside it never saw its own child
+appear or disappear — the `.modal-enter-from` rules phase 3 carefully renamed
+were dead either way. `appear` makes the enter transition run on mount, which
+is the moment the dialog opens.
+
+### What was deliberately not fixed
+
+**26 `vue/no-mutating-props`, kept as warnings.** The nine `Configuration/*`
+device forms `v-model` straight into a prop object owned by
+`Configuration.vue`. It works because the object is shared by reference, and
+the `*Modified` events exist to tell the parent to re-render. Fixing it means
+giving each component a local copy and pushing changes up — a data-flow
+redesign across nine components with real regression risk, and no user-visible
+change. `npm run lint` is error-free, and this is the only warning class left.
+
+**The stylistic layer was tuned to the code, not the other way round.**
+`@stylistic/indent` reported 1823 violations, every one of them in a `.vue`
+`<script>` block, because this codebase indents SFC scripts one level deeper
+than the default. That is a consistent house style; reformatting ~1800 lines
+would have buried the 55 real findings above. The rule is off for `.vue`.
+`vue/multi-word-component-names` (39 hits) is off for the same reason — every
+component here has been single-word since 2017.
+
+Everything else auto-fixable was fixed with `eslint --fix`: trailing
+whitespace, object-literal spacing, quoted property keys, `var` → `let`/`const`.
+That diff is whitespace and keywords only; `git diff -w` shows almost nothing.
+
+### `import.meta.env` replaced the `process.env` shim
+
+`vite.config.js` had been replacing the whole `process.env` expression, exactly
+as webpack's `DefinePlugin` did. It now defines just the two keys the app
+actually reads:
+
+```js
+define: {
+  'import.meta.env.API_ENDPOINT': JSON.stringify(...),
+  'import.meta.env.GIT_VERSION': JSON.stringify(gitVersion())
+}
+```
+
+Vite substitutes `process.env.NODE_ENV` for dependencies on its own, so nothing
+was lost. `window.environment` still exists for console debugging, but it is now
+an explicit three-key object: `define` is a *textual* substitution, so the keys
+are not real properties of `import.meta.env` and spreading the object would have
+produced an empty result.
+
+A test was added for this. `ContentFooter.vue` is the only place a build-time
+constant reaches the DOM, and nothing had ever asserted on it.
+
+### `npm ci` resolves cleanly again, and `--legacy-peer-deps` is gone
+
+Installing `@eslint/js` picked up 10.x against eslint 9, which made `npm ci`
+fail with `ERESOLVE`. Pinned to `^9`.
+
+CI would not have caught that. Both `npm ci` invocations carried
+`--legacy-peer-deps`, which silences exactly this class of error — a leftover
+from the eslint 3 stack, whose plugin set no longer exists. The flag was dropped
+from `.circleci/config.yml` and from the `Dockerfile`, so a future peer conflict
+fails the build instead of being installed around.
+
+Verified with a plain `npm ci` from the lockfile alone in an empty directory,
+and with a `docker build --no-cache`, which is the same install CI performs on
+linux.
+
+### Results
+
+| | before phase 4 | after |
+| --- | --- | --- |
+| bundle | 259 kB JS | 291 kB JS (axios 1.x is larger) |
+| lint | eslint 3, templates unchecked | eslint 9, 0 errors, 26 known warnings |
+| runtime dependencies | 5 | 5 |
+| Playwright | 35/35 | 36/36 |
+
+Verified: `npm run build`, `npm run lint`, `npm ci --dry-run`, Playwright at
+`--repeat-each=3` (108/108), and a `docker build` whose bundle carries the right
+`GIT_VERSION`.
 
 ---
 
@@ -482,5 +587,20 @@ Tracked separately, deliberately not part of this migration:
 | 1 — Vite | ~~1–2 d~~ done |
 | 2 — dependency removal | ~~1.5 d~~ done |
 | 3 — the flip | ~~2–3 d~~ done |
-| 4 — cleanup | 1.5 d |
+| 4 — cleanup | ~~1.5 d~~ done |
 | **Total** | **~8–10 d** |
+
+---
+
+## What is left
+
+Nothing in this plan. The items below were out of scope throughout and remain
+so; they are listed here so the next person does not have to re-derive them.
+
+- Bootstrap 3 → 5 / design system replacement
+- Chartist 0.10 → 1.x
+- Composition API / `<script setup>` conversion, TypeScript
+- The 26 `vue/no-mutating-props` warnings in `Configuration/*`
+- `Overview/Relay.vue`'s `getGlobalStatus()` reporting `'Ok'` while loading
+- `authService.renewToken()` is unexported, unused, and passes its headers as
+  the request *body* — delete it or fix it

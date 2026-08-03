@@ -6,7 +6,7 @@
           </div>
         </template>
         <template #content>
-          <div class="numbers">        
+          <div class="numbers">
             <button class="btn btn-default btn-md" v-bind:class="{ active: isActive }" v-on:click="toggleAlarm">
               {{ status }}
             </button>
@@ -39,7 +39,7 @@
     },
     methods: {
       toggleAlarm: function () {
-        var that = this
+        const that = this
         alarmService.toggleAlarm(!this.isActive).then((data) => {
           that.isActive = !that.isActive
           that.messages = that.getMessage(that.isActive, data.cameras)
@@ -49,7 +49,7 @@
         })
       },
       getMessage: function (enabled, cameras) {
-        var message = ''
+        let message = ''
         if (enabled && cameras.length) {
           message = 'Enabled on ' + cameras
         }
@@ -60,7 +60,7 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       alarmService.getAlarmStatus().then((data) => {
         that.isActive = data.alarmEnabled
         that.messages = that.getMessage(data.alarmEnabled, data.cameras)

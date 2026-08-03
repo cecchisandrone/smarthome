@@ -60,12 +60,23 @@ test.describe('navigation', () => {
     await page.locator('.navbar-toggle').click()
     await expect(page.locator('div.nav-open')).toHaveCount(1)
 
-    // DashboardLayout listens with @click.native on <dashboard-content>, which
-    // phase 3 has to rewrite as a plain @click. With the sidebar open the panel
+    // DashboardLayout used to listen with @click.native on <dashboard-content>;
+    // phase 3 rewrote it as a plain @click. With the sidebar open the panel
     // is slid off-canvas and covered by the overlay, so dispatch the event
     // rather than doing a real mouse click: the handler wiring is the point.
     // '.content' alone also matches every card body, hence the child selector.
     await page.locator('.main-panel > .content').dispatchEvent('click')
     await expect(page.locator('div.nav-open')).toHaveCount(0)
+  })
+
+  /**
+   * The footer is the only place a build-time constant reaches the DOM, so it
+   * is what proves the vite `define` wiring still works. Phase 4 moved these
+   * from process.env.* to import.meta.env.*.
+   */
+  test('the footer shows the git version baked in at build time', async ({ page }) => {
+    await gotoAuthenticated(page, '/admin/overview')
+
+    await expect(page.locator('.footer .git-version')).toHaveText(/^Git Version: \S+$/)
   })
 })

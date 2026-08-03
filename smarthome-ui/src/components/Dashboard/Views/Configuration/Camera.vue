@@ -1,17 +1,19 @@
 <template>
-  <div>    
-    <div class="row">        
+  <div>
+    <div class="row">
       <div class="col-md-12">
         <h3>Cameras</h3>
-        <div class="card">          
+        <div class="card">
           <div class="content table-responsive table-full-width">
             <table class="table table-Striped">
               <thead>
-                <th v-for="column in cameraTable.columns">{{column}}</th>
+                <tr>
+                  <th v-for="column in cameraTable.columns" :key="column">{{column}}</th>
+                </tr>
               </thead>
               <tbody>
-                <tr v-for="item in cameraTable.data">
-                  <td v-for="column in cameraTable.columns" >{{ item[column] }}</td>
+                <tr v-for="item in cameraTable.data" :key="item.ID">
+                  <td v-for="column in cameraTable.columns" :key="column">{{ item[column] }}</td>
                   <td>
                     <button class="btn btn-sm" v-on:click="editCamera(item)">
                       Edit
@@ -19,21 +21,21 @@
                     <button class="btn btn-danger btn-sm" v-on:click="deleteCamera(item)">
                       Delete
                     </button>
-                  </td>                  
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <button style="margin: 10px" class="btn btn-success" v-on:click="editCamera({})">
             Create
-          </button>  
+          </button>
         </div>
       </div>
     </div>
-    <modal v-if="showModal" @close="showModal = false">            
+    <modal v-if="showModal" @close="showModal = false">
       <template #header>
         <h3>
-          Camera: {{ selectedCamera.Name }}    
+          Camera: {{ selectedCamera.Name }}
         </h3>
       </template>
       <template #body>
@@ -54,15 +56,15 @@
           <div class="row">
             <div class="col-md-12">
               <fg-input type="text"
-                        label="Name"                      
+                        label="Name"
                         placeholder="Name"
                         v-model="selectedCamera.Name">
               </fg-input>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">  
-              <div class="form-group">        
+            <div class="col-md-12">
+              <div class="form-group">
                 <label>Type</label>
                 <select label="asd" class="form-control border-input" v-model="selectedCamera.Type">
                   <option disabled value="">Please select camera type</option>
@@ -74,7 +76,7 @@
                 </select>
               </div>
             </div>
-          </div>  
+          </div>
           <div class="row">
             <div class="col-md-12">
               <fg-input type="text"
@@ -92,7 +94,7 @@
                         v-model.number="selectedCamera.Port">
               </fg-input>
             </div>
-          </div>  
+          </div>
           <div class="row">
             <div class="col-md-12">
               <fg-input type="text"
@@ -101,7 +103,7 @@
                         v-model="selectedCamera.Username">
               </fg-input>
             </div>
-          </div>  
+          </div>
           <div class="row">
             <div class="col-md-12">
               <fg-input type="password"
@@ -131,7 +133,7 @@
             Save
           </button>
         </div>
-      </template>      
+      </template>
     </modal>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>
   </div>
@@ -140,6 +142,7 @@
   import * as cameraService from 'src/services/cameraService.js'
   import ConfirmDialog from 'src/components/UIComponents/Modal/ConfirmDialog.vue'
   export default {
+    emits: ['loadConfiguration'],
     components: {
       ConfirmDialog
     },
@@ -153,7 +156,7 @@
     },
     computed: {
       cameraTable: function () {
-        var cameras = []
+        let cameras = []
         if (this.configuration.Cameras) {
           cameras = this.configuration.Cameras
         }
@@ -173,31 +176,31 @@
         if (this.selectedCamera.ID) {
           cameraService.updateCamera(this.selectedCamera).then((data) => {
             this.showModal = false
-            this.$notifications.notify({message: 'Camera updated successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            this.$notifications.notify({ message: 'Camera updated successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
           }).catch((err) => {
-            this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         } else {
           cameraService.createCamera(this.selectedCamera).then((data) => {
             this.showModal = false
-            this.$notifications.notify({message: 'Camera created successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            this.$notifications.notify({ message: 'Camera created successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
             this.$emit('loadConfiguration')
           }).catch((err) => {
-            this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         }
       },
       deleteCamera: function (camera) {
-        let that = this
-        let confirmFn = function () {
+        const that = this
+        const confirmFn = function () {
           cameraService.deleteCamera(camera).then((data) => {
-            that.$notifications.notify({message: 'Camera deleted successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            that.$notifications.notify({ message: 'Camera deleted successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
             that.$emit('loadConfiguration')
           }).catch((err) => {
-            that.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            that.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         }
-        let obj = {
+        const obj = {
           title: 'Delete camera ' + camera.Name + '?',
           message: 'Are you sure do you want do delete camera ' + camera.Name + '?',
           type: 'warning',

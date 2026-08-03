@@ -37,7 +37,7 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       humidityService.getLastMeasurement().then((data) => {
         that.humidity.value = data.value.toFixed(2) + ' %'
         that.humidity.footerText = new Date(data.timestamp).toLocaleString()

@@ -8,7 +8,7 @@
       </div>
       <div class="col-lg-2 col-sm-6">
         <well-pump></well-pump>
-      </div>      
+      </div>
       <div class="col-lg-2 col-sm-6">
         <temperature></temperature>
       </div>
@@ -75,7 +75,6 @@
   import Alarm from 'components/Dashboard/Views/Overview/Alarm.vue'
   import WellPump from 'components/Dashboard/Views/Overview/WellPump.vue'
   import Inverter from 'components/Dashboard/Views/Overview/Inverter.vue'
-  import ChartCard from 'components/UIComponents/Cards/ChartCard.vue'
   import RainGauge from 'components/Dashboard/Views/Overview/RainGauge.vue'
   import RainGaugeChart from 'components/Dashboard/Views/Overview/RainGaugeChart.vue'
   import Humidity from 'components/Dashboard/Views/Overview/Humidity.vue'
@@ -94,7 +93,6 @@
       TemperatureChart,
       Raspsonar,
       RaspsonarChart,
-      ChartCard,
       Alarm,
       WellPump,
       Inverter,

@@ -16,7 +16,15 @@ import Chartist from 'chartist'
 import 'bootstrap/dist/css/bootstrap.css'
 import './assets/sass/paper-dashboard.scss'
 
-window['environment'] = process.env
+// Kept for console debugging: `environment` shows which API the bundle talks to
+// and which commit it was built from. Spelled out key by key because vite
+// substitutes each `import.meta.env.X` textually - the object itself carries
+// only Vite's own MODE/DEV/PROD entries.
+window['environment'] = {
+  API_ENDPOINT: import.meta.env.API_ENDPOINT,
+  GIT_VERSION: import.meta.env.GIT_VERSION,
+  MODE: import.meta.env.MODE
+}
 
 // configure router
 //

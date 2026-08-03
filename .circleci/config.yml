@@ -14,8 +14,11 @@ jobs:
       - checkout:
           path: ~/project
       - run:
+          # No --legacy-peer-deps: the dependency tree resolves on its own since
+          # the eslint 3 stack was dropped, and leaving the flag on would hide a
+          # genuine peer conflict the next time one is introduced.
           name: Install dependencies
-          command: npm ci --legacy-peer-deps
+          command: npm ci
       - run:
           name: Run end-to-end tests
           command: npm run e2e

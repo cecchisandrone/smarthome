@@ -1,17 +1,19 @@
 <template>
-  <div>    
-    <div class="row">        
+  <div>
+    <div class="row">
       <div class="col-md-12">
         <h3>Inverters</h3>
-        <div class="card">          
+        <div class="card">
           <div class="content table-responsive table-full-width">
             <table class="table table-Striped">
               <thead>
-                <th v-for="column in inverterTable.columns">{{column}}</th>
+                <tr>
+                  <th v-for="column in inverterTable.columns" :key="column">{{column}}</th>
+                </tr>
               </thead>
               <tbody>
-                <tr v-for="item in inverterTable.data">
-                  <td v-for="column in inverterTable.columns" >{{ item[column] }}</td>
+                <tr v-for="item in inverterTable.data" :key="item.ID">
+                  <td v-for="column in inverterTable.columns" :key="column">{{ item[column] }}</td>
                   <td>
                     <button class="btn btn-sm" v-on:click="editInverter(item)">
                       Edit
@@ -19,21 +21,21 @@
                     <button class="btn btn-danger btn-sm" v-on:click="deleteInverter(item)">
                       Delete
                     </button>
-                  </td>                  
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <button style="margin: 10px" class="btn btn-success" v-on:click="editInverter({})">
             Create
-          </button>  
+          </button>
         </div>
       </div>
     </div>
-    <modal v-if="showModal" @close="showModal = false">            
+    <modal v-if="showModal" @close="showModal = false">
       <template #header>
         <h3>
-          Inverter: {{ selectedInverter.Name }}    
+          Inverter: {{ selectedInverter.Name }}
         </h3>
       </template>
       <template #body>
@@ -54,7 +56,7 @@
           <div class="row">
             <div class="col-md-12">
               <fg-input type="text"
-                        label="Name"                      
+                        label="Name"
                         placeholder="Name"
                         v-model="selectedInverter.Name">
               </fg-input>
@@ -77,7 +79,7 @@
                         v-model.number="selectedInverter.Port">
               </fg-input>
             </div>
-          </div>        
+          </div>
         </div>
       </template>
       <template #footer>
@@ -86,7 +88,7 @@
             Save
           </button>
         </div>
-      </template>      
+      </template>
     </modal>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>
   </div>
@@ -95,6 +97,7 @@
   import * as inverterService from 'src/services/inverterService.js'
   import ConfirmDialog from 'src/components/UIComponents/Modal/ConfirmDialog.vue'
   export default {
+    emits: ['loadConfiguration'],
     components: {
       ConfirmDialog
     },
@@ -108,7 +111,7 @@
     },
     computed: {
       inverterTable: function () {
-        var inverters = []
+        let inverters = []
         if (this.configuration.Inverters) {
           inverters = this.configuration.Inverters
         }
@@ -128,31 +131,31 @@
         if (this.selectedInverter.ID) {
           inverterService.updateInverter(this.selectedInverter).then((data) => {
             this.showModal = false
-            this.$notifications.notify({message: 'Inverter updated successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            this.$notifications.notify({ message: 'Inverter updated successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
           }).catch((err) => {
-            this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         } else {
           inverterService.createInverter(this.selectedInverter).then((data) => {
             this.showModal = false
-            this.$notifications.notify({message: 'Inverter created successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            this.$notifications.notify({ message: 'Inverter created successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
             this.$emit('loadConfiguration')
           }).catch((err) => {
-            this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         }
       },
       deleteInverter: function (Inverter) {
-        let that = this
-        let confirmFn = function () {
+        const that = this
+        const confirmFn = function () {
           inverterService.deleteInverter(Inverter).then((data) => {
-            that.$notifications.notify({message: 'Inverter deleted successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            that.$notifications.notify({ message: 'Inverter deleted successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
             that.$emit('loadConfiguration')
           }).catch((err) => {
-            that.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            that.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         }
-        let obj = {
+        const obj = {
           title: 'Delete Inverter ' + Inverter.Name + '?',
           message: 'Are you sure do you want do delete Inverter ' + Inverter.Name + '?',
           type: 'warning',

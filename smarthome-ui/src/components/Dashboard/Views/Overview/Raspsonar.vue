@@ -37,7 +37,7 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       raspsonarService.getLastMeasurement().then((data) => {
         that.raspsonar.value = data.value.toFixed(2) + ' cm'
         that.raspsonar.footerText = new Date(data.timestamp).toLocaleString()

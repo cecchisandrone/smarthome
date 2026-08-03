@@ -81,33 +81,33 @@ Two allow-lists live in `fixtures/test.js`:
 
 - `IGNORED_CONSOLE_ERRORS` - resource-load failures from the third parties we
   abort on purpose, and the 401 the failed-login test provokes.
-- `KNOWN_PRE_EXISTING_ERRORS` - bugs that predate the migration.
-  **Delete an entry as soon as its bug is fixed.**
+- `KNOWN_PRE_EXISTING_ERRORS` - **now empty.** Add an entry only to park a bug
+  that is scheduled to be fixed, and delete it again as soon as it is.
 
-## Pre-existing defects this suite documents
+## Defects this suite found, and where they went
 
-Found while writing the suite, and asserted as *observed* behaviour so the
-migration is compared like for like. Search the specs for "Known defect".
+Each was discovered while writing the suite in phase 0, pinned as *observed*
+behaviour so the migration could be compared like for like, and then fixed in
+the phase that owned it. The specs now assert the fixed behaviour.
 
-| Where | Defect |
-| --- | --- |
-| `NotificationPlugin/Notifications.vue` | `v-for` uses the notification object itself as `:key`. Vue 2 warned about it; Vue 3 does not, so the guard no longer sees it. |
-| `Logout.vue` | `<a href="#">` with no `.prevent`, so the anchor's default action overwrites the router push and `?loggedOut=true` is lost. Under vue-router 2 it landed on `#/`; under vue-router 4 it lands on `#/login`. |
-| `Configuration/Slack.vue` | The **Test** button sits inside a `<form>` with no `type="button"`, so the form submits and the page reloads before the result notification can be read. |
-| device tables in `Configuration/*.vue` | `<th>` elements are placed directly under `<thead>` with no `<tr>`. Vue builds the DOM programmatically, so no header row is ever created. |
+| Where | Defect | Fixed in |
+| --- | --- | --- |
+| `Overview/Relay.vue` | `getStatus()` dereferenced `relaysStatus[name]` before the per-relay GET resolved. Vue 2 logged the TypeError; Vue 3 rethrows it. | phase 3 |
+| `NotificationPlugin/Notifications.vue` | `v-for` keyed on the notification object itself. Notifications now carry an `id`. | phase 4 |
+| `Logout.vue` | `<a href="#">` with no `.prevent`, so the anchor's own navigation overwrote the router push and `?loggedOut=true` was lost. | phase 4 |
+| `Configuration/Slack.vue` | The **Test** button had no `type="button"`, so its `<form>` submitted and the page reloaded before the result notification could be read. | phase 4 |
+| device tables in `Configuration/*.vue` | `<th>` sat directly under `<thead>` with no `<tr>`, so no header row was ever built. | phase 4 |
 
-`Overview/Relay.vue` was on this list until phase 3. Its `getStatus()`
-dereferenced an undefined `relaysStatus` entry on the first render pass; Vue 2
-caught and logged that, Vue 3 rethrows it as an uncaught exception, so it was
-fixed rather than baselined. `getGlobalStatus()` still reports `'Ok'` while the
-per-relay GET is in flight — cosmetic now, but still wrong.
+One known issue is left, and it is cosmetic: `Overview/Relay.vue`'s
+`getGlobalStatus()` still reports `'Ok'` while the per-relay GET is in flight.
 
-## Notes for the migration
+## Notes
 
 - `routeUrl()` in `fixtures/test.js` is the single place that knows the router
   is in hash mode. Phase 3 kept hash mode (`createWebHashHistory()`); moving to
   `createWebHistory()` needs this **and** a `try_files` rule in `nginx/default`.
-- `navigation.spec.js` pins the behaviour of `SidebarPlugin` and of the sidebar
-  `router-link`s, both rewritten in phase 3.
+- `navigation.spec.js` pins the behaviour of `SidebarPlugin`, the sidebar
+  `router-link`s (both rewritten in phase 3) and the footer's build-time
+  `GIT_VERSION`, which is the only place a vite `define` reaches the DOM.
 - `configuration.spec.js` exercises `Modal.vue` slots and `ConfirmDialog.vue`
   (which replaced `vue2-simplert` in phase 2).

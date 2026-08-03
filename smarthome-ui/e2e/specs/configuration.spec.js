@@ -22,13 +22,13 @@ test.describe('configuration', () => {
   })
 
   test('renders the configuration returned by the API', async ({ page }) => {
-    // The device tables put <th> directly under <thead> with no <tr>, and Vue
-    // builds them with the DOM API, so no header row is ever created. These
-    // counts are therefore body rows only.
-    await expect(section(page, 'Relays').getByRole('row')).toHaveCount(2)
-    await expect(section(page, 'Cameras').getByRole('row')).toHaveCount(3)
-    await expect(section(page, 'Inverters').getByRole('row')).toHaveCount(1)
-    await expect(section(page, 'Well Pumps').getByRole('row')).toHaveCount(1)
+    // Header row plus body rows. The <th> elements used to sit directly under
+    // <thead> with no <tr>, so no header row existed at all until phase 4.
+    await expect(section(page, 'Relays').getByRole('row')).toHaveCount(3)
+    await expect(section(page, 'Cameras').getByRole('row')).toHaveCount(4)
+    await expect(section(page, 'Inverters').getByRole('row')).toHaveCount(2)
+    await expect(section(page, 'Well Pumps').getByRole('row')).toHaveCount(2)
+    await expect(section(page, 'Relays').getByRole('columnheader', { name: 'Name' })).toBeVisible()
     await expect(field(page, 'Notification channel')).toHaveValue('#smarthome')
     await expect(field(page, 'Duration')).toHaveValue('1.5')
   })
@@ -49,10 +49,10 @@ test.describe('configuration', () => {
   test('the Slack test button calls the notification endpoint', async ({ page, api }) => {
     await page.getByRole('button', { name: 'Test' }).click()
 
-    // Known defect: the button sits inside <form> with no type="button", so the
-    // form submits and the page reloads before the success notification can be
-    // seen. The request still goes out, which is what this pins down.
-    await expect(page).toHaveURL(/\?#\/admin\/configuration$/)
+    // The button carries type="button" now, so the surrounding <form> no longer
+    // submits and the result notification survives long enough to be read.
+    await expect(page).toHaveURL(/#\/admin\/configuration$/)
+    await expect(page.locator('.notifications')).toContainText('Configuration is correct')
     expect(api.slackTestCount).toBe(1)
   })
 
@@ -104,7 +104,7 @@ test.describe('configuration', () => {
     await confirm.getByRole('button', { name: 'Confirm' }).click()
 
     await expect(page.locator('.notifications')).toContainText('Relay deleted successfully')
-    await expect(relays.getByRole('row')).toHaveCount(1)
+    await expect(relays.getByRole('row')).toHaveCount(2)
     expect(api.configuration.Relays.map(r => r.Name)).toEqual(['Lights'])
   })
 
@@ -132,7 +132,7 @@ test.describe('configuration', () => {
     await confirm.getByRole('button', { name: 'Cancel' }).click()
 
     await expect(confirm).toHaveCount(0)
-    await expect(relays.getByRole('row')).toHaveCount(2)
+    await expect(relays.getByRole('row')).toHaveCount(3)
     expect(api.configuration.Relays).toHaveLength(2)
   })
 })

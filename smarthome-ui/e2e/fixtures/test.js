@@ -26,21 +26,12 @@ const IGNORED_CONSOLE_ERRORS = [
 ]
 
 /**
- * Defects that already exist at the start of the migration. They are baselined
- * here so the console guard is usable, NOT because they are acceptable.
- *
- * The two Overview/Relay.vue entries went with phase 3: Vue 2 caught that
- * render TypeError and logged it, Vue 3 rethrows it as an uncaught exception,
- * so it had to be fixed rather than baselined.
- *
- * Delete an entry here as soon as its bug is fixed; the guard will then start
- * enforcing it.
+ * Every defect that was baselined here has been fixed - the last of them in
+ * phase 4 - so the guard now enforces the full console output. Add an entry
+ * only to park a known bug that is scheduled to be fixed, and delete it again
+ * as soon as it is.
  */
-const KNOWN_PRE_EXISTING_ERRORS = [
-  // NotificationPlugin/Notifications.vue uses the notification object itself
-  // as the v-for :key.
-  /non-primitive value as key/
-]
+const KNOWN_PRE_EXISTING_ERRORS = []
 
 const isIgnorableConsoleError = text =>
   IGNORED_CONSOLE_ERRORS.some(re => re.test(text)) ||

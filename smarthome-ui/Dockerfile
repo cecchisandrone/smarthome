@@ -7,7 +7,7 @@ WORKDIR /build
 # npm ci, not npm install: rollup and esbuild pick platform-specific optional
 # binaries, and only a lockfile-exact install is guaranteed to resolve the
 # linux ones this stage needs.
-RUN npm ci --legacy-peer-deps
+RUN npm ci
 # The build context is smarthome-ui, so the repo's .git is not available here
 # and the build cannot work the revision out on its own - it has to be passed in.
 ARG GIT_VERSION=unknown

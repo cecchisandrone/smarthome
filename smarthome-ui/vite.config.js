@@ -60,19 +60,20 @@ export default defineConfig(({ mode }) => {
     },
 
     /**
-     * The 16 service files and ContentFooter.vue read process.env.* directly,
-     * exactly as webpack's DefinePlugin used to substitute it. Replacing the
-     * whole `process.env` expression keeps them working untouched; main.js
-     * also does `window['environment'] = process.env`.
+     * The 16 service files read import.meta.env.API_ENDPOINT and
+     * ContentFooter.vue reads import.meta.env.GIT_VERSION. Both are build-time
+     * constants - one depends on the mode, the other on git - so they are
+     * substituted here rather than declared in a .env file.
      *
-     * Phase 4 may convert these to import.meta.env.
+     * Phase 1 through 3 replaced the whole `process.env` expression instead,
+     * mirroring webpack's DefinePlugin. Phase 4 narrowed it to these two keys;
+     * Vite substitutes process.env.NODE_ENV for dependencies on its own.
      */
     define: {
-      'process.env': JSON.stringify({
-        NODE_ENV: isProduction ? 'production' : 'development',
-        API_ENDPOINT: isProduction ? API_ENDPOINT.production : API_ENDPOINT.development,
-        GIT_VERSION: gitVersion()
-      })
+      'import.meta.env.API_ENDPOINT': JSON.stringify(
+        isProduction ? API_ENDPOINT.production : API_ENDPOINT.development
+      ),
+      'import.meta.env.GIT_VERSION': JSON.stringify(gitVersion())
     },
 
     // Was `static/` at the repo root, copied to dist/static by webpack. Vite

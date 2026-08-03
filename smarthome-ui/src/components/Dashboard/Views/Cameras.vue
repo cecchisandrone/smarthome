@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(camera, index) in cameras">
+    <div v-for="camera in cameras" :key="camera.ID">
       <div class="col-md-4" v-if="camera.Enabled && (singleCamera == null || camera.Name == singleCamera)">
         <div class="camera-view">
           <div class="camera-name">{{camera.Name}}</div>
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -42,7 +42,7 @@
       }
     },
     created () {
-      var app = this
+      const app = this
       cameraService.getAllCameras().then((cameras) => {
         app.cameras = cameras
       })
@@ -62,12 +62,12 @@
 
 .camera-name {
     position: relative;
-    top: 26px;    
+    top: 26px;
 }
 
 .single-camera-button {
     position: relative;
-    top: 26px;    
+    top: 26px;
     right: 40px;
 }
 </style>

@@ -2,10 +2,10 @@ import axios from 'axios'
 import * as authService from './authService.js'
 
 function getLastMeasurement () {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/humidity/', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/humidity/', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -16,10 +16,10 @@ function getLastMeasurement () {
 }
 
 function getScheduledMeasurements () {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/humidity/?scheduled=true', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/humidity/?scheduled=true', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -29,4 +29,4 @@ function getScheduledMeasurements () {
   })
 }
 
-export {getLastMeasurement, getScheduledMeasurements}
+export { getLastMeasurement, getScheduledMeasurements }

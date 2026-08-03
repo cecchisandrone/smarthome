@@ -7,10 +7,10 @@
     </template>
     <template #content>
       <div class="numbers">
-        <div v-for="inverter in inverters">
+        <div v-for="inverter in inverters" :key="inverter.ID">
           <h6>{{ inverter.Name}}</h6>
           <span>{{getInverterMetric(inverter.Name, 'grid_power_reading')}} W</span>
-        </div>      
+        </div>
       </div>
     </template>
     <template #footer>
@@ -39,12 +39,12 @@
     },
     methods: {
       init: function () {
-        var that = this
+        const that = this
         configurationService.getConfiguration().then((data) => {
           that.inverters = data.Inverters
-          for (var i = 0; i < data.Inverters.length; i++) {
-            let name = data.Inverters[i].Name
-            let id = data.Inverters[i].ID
+          for (let i = 0; i < data.Inverters.length; i++) {
+            const name = data.Inverters[i].Name
+            const id = data.Inverters[i].ID
             inverterService.getInverterMetrics(id).then((data2) => {
               that.invertersMetrics[name] = data2.metrics
               that.footerText = new Date().toLocaleString()

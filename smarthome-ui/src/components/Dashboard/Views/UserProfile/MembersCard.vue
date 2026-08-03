@@ -6,7 +6,7 @@
     <div class="content">
       <ul class="list-unstyled team-members">
         <li>
-          <div class="row" v-for="member in members">
+          <div class="row" v-for="member in members" :key="member.title">
             <div class="col-xs-3">
               <div class="avatar">
                 <img :src="member.image" alt="Circle Image" class="img-circle img-no-padding img-responsive">
@@ -19,7 +19,7 @@
                 <small>{{member.status}}</small>
               </span>
             </div>
-  
+
             <div class="col-xs-3 text-right">
               <button class="btn btn-sm btn-success btn-icon">
                 <i class="fa fa-envelope"></i>
@@ -73,5 +73,5 @@
 
 </script>
 <style>
-  
+
 </style>

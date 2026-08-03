@@ -22,7 +22,7 @@
     <hr>
     <div class="text-center">
       <div class="row">
-        <div v-for="(info,index) in details" :class="getClasses(index)">
+        <div v-for="(info,index) in details" :key="index" :class="getClasses(index)">
           <h5>{{info.title}}
             <br>
             <small>{{info.subTitle}}</small>
@@ -54,7 +54,7 @@
     },
     methods: {
       getClasses (index) {
-        var remainder = index % 3
+        const remainder = index % 3
         if (remainder === 0) {
           return 'col-md-3 col-md-offset-1'
         } else if (remainder === 2) {
@@ -68,5 +68,5 @@
 
 </script>
 <style>
-  
+
 </style>

@@ -1,17 +1,19 @@
 <template>
-  <div>    
-    <div class="row">        
+  <div>
+    <div class="row">
       <div class="col-md-12">
         <h3>Relays</h3>
-        <div class="card">          
+        <div class="card">
           <div class="content table-responsive table-full-width">
             <table class="table table-Striped">
               <thead>
-                <th v-for="column in relayTable.columns">{{column}}</th>
+                <tr>
+                  <th v-for="column in relayTable.columns" :key="column">{{column}}</th>
+                </tr>
               </thead>
               <tbody>
-                <tr v-for="item in relayTable.data">
-                  <td v-for="column in relayTable.columns" >{{ item[column] }}</td>
+                <tr v-for="item in relayTable.data" :key="item.ID">
+                  <td v-for="column in relayTable.columns" :key="column">{{ item[column] }}</td>
                   <td>
                     <button class="btn btn-sm" v-on:click="editRelay(item)">
                       Edit
@@ -19,21 +21,21 @@
                     <button class="btn btn-danger btn-sm" v-on:click="deleteRelay(item)">
                       Delete
                     </button>
-                  </td>                  
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <button style="margin: 10px" class="btn btn-success" v-on:click="editRelay({})">
             Create
-          </button>  
+          </button>
         </div>
       </div>
     </div>
-    <modal v-if="showModal" @close="showModal = false">            
+    <modal v-if="showModal" @close="showModal = false">
       <template #header>
         <h3>
-          Relay: {{ selectedRelay.Name }}    
+          Relay: {{ selectedRelay.Name }}
         </h3>
       </template>
       <template #body>
@@ -54,7 +56,7 @@
           <div class="row">
             <div class="col-md-12">
               <fg-input type="text"
-                        label="Name"                      
+                        label="Name"
                         placeholder="Name"
                         v-model="selectedRelay.Name">
               </fg-input>
@@ -110,7 +112,7 @@
             Save
           </button>
         </div>
-      </template>      
+      </template>
     </modal>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>
   </div>
@@ -119,6 +121,7 @@
   import * as relayService from 'src/services/relayService.js'
   import ConfirmDialog from 'src/components/UIComponents/Modal/ConfirmDialog.vue'
   export default {
+    emits: ['loadConfiguration'],
     components: {
       ConfirmDialog
     },
@@ -132,7 +135,7 @@
     },
     computed: {
       relayTable: function () {
-        var relays = []
+        let relays = []
         if (this.configuration.Relays) {
           relays = this.configuration.Relays
         }
@@ -152,31 +155,31 @@
         if (this.selectedRelay.ID) {
           relayService.updateRelay(this.selectedRelay).then((data) => {
             this.showModal = false
-            this.$notifications.notify({message: 'Relay updated successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            this.$notifications.notify({ message: 'Relay updated successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
           }).catch((err) => {
-            this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         } else {
           relayService.createRelay(this.selectedRelay).then((data) => {
             this.showModal = false
-            this.$notifications.notify({message: 'Relay created successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            this.$notifications.notify({ message: 'Relay created successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
             this.$emit('loadConfiguration')
           }).catch((err) => {
-            this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         }
       },
       deleteRelay: function (relay) {
-        let that = this
-        let confirmFn = function () {
+        const that = this
+        const confirmFn = function () {
           relayService.deleteRelay(relay).then((data) => {
-            that.$notifications.notify({message: 'Relay deleted successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+            that.$notifications.notify({ message: 'Relay deleted successfully', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
             that.$emit('loadConfiguration')
           }).catch((err) => {
-            that.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+            that.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
           })
         }
-        let obj = {
+        const obj = {
           title: 'Delete relay ' + relay.Name + '?',
           message: 'Are you sure do you want do delete relay ' + relay.Name + '?',
           type: 'warning',

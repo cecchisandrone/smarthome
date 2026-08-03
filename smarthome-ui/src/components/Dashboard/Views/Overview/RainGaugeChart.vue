@@ -6,7 +6,7 @@
     <template #subTitle>
       <span> Measured every 2 hours</span>
     </template>
-  </chart-card>  
+  </chart-card>
 </template>
 
 <script>
@@ -40,12 +40,12 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       rainGaugeService.getScheduledMeasurements().then((data) => {
         that.rainGaugeChart.data.labels = []
         that.rainGaugeChart.data.series = [[]]
         for (const prop in data) {
-          that.rainGaugeChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}))
+          that.rainGaugeChart.data.labels.push(new Date(prop).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
           that.rainGaugeChart.data.series[0].push(data[prop])
         }
         that.$refs.rainGaugeChart.initChart()

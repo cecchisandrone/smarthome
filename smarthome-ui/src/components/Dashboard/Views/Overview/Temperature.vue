@@ -37,7 +37,7 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       temperatureService.getLastMeasurement().then((data) => {
         that.temperature.value = data.value.toFixed(2) + ' °C'
         that.temperature.footerText = new Date(data.timestamp).toLocaleString()

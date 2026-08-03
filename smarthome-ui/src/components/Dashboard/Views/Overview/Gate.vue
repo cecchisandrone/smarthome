@@ -6,7 +6,7 @@
           </div>
         </template>
         <template #content>
-          <div class="numbers">        
+          <div class="numbers">
             <button class="btn btn-default btn-md" v-bind:class="{ active: isActive }" v-on:click="openGate">
               Open
             </button>
@@ -34,7 +34,7 @@
     },
     methods: {
       openGate: function () {
-        var that = this
+        const that = this
         gateService.open().then((data) => {
           that.messages = 'Gate opened'
           that.isActive = true

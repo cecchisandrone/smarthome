@@ -6,7 +6,7 @@
     <template #subTitle>
       <span> Measured every 5 minutes</span>
     </template>
-  </chart-card>  
+  </chart-card>
 </template>
 
 <script>
@@ -39,14 +39,14 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       powerMeterService.getScheduledMeasurements().then((data) => {
         that.powerMeterChart.data.labels = []
         that.powerMeterChart.data.series = [[]]
         that.powerMeterChart.data.series[1] = []
         for (const prop in data) {
-          that.powerMeterChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}))
-          let value = data[prop]
+          that.powerMeterChart.data.labels.push(new Date(prop).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+          const value = data[prop]
           that.powerMeterChart.data.series[0].push(value)
         }
         that.$refs.powerMeterChart.initChart()

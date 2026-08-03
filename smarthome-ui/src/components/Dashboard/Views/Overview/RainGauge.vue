@@ -38,7 +38,7 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       rainGaugeService.getLast24hTotal().then((data) => {
         that.rainGauge.value = data.value.toFixed(2) + ' mm'
         that.rainGauge.footerText = new Date(data.timestamp).toLocaleString()

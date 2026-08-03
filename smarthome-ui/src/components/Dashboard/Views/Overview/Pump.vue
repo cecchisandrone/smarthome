@@ -6,7 +6,7 @@
       </div>
     </template>
     <template #content>
-      <div class="numbers">        
+      <div class="numbers">
         <button class="btn btn-default btn-md" v-bind:class="{ active: isActive }" v-on:click="togglePump">
           <span>{{ status }}</span>
         </button>
@@ -39,7 +39,7 @@
     },
     methods: {
       togglePump: function () {
-        var that = this
+        const that = this
         raspsonarService.toggleRelay(!that.isActive).then((data) => {
           that.isActive = data.relayStatus
           if (that.isActive) {
@@ -55,7 +55,7 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       raspsonarService.getRelayStatus().then((data) => {
         that.isActive = data.relayStatus
         if (that.isActive) {

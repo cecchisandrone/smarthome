@@ -2,12 +2,12 @@ import axios from 'axios'
 
 function login (username, password) {
   return new Promise(function (resolve, reject) {
-    var user = { 'username': username, 'password': password }
-    axios.post(process.env.API_ENDPOINT + '/auth', user)
+    const user = { username, password }
+    axios.post(import.meta.env.API_ENDPOINT + '/auth', user)
       .then((response1) => {
-        axios.get(process.env.API_ENDPOINT + '/auth/', {headers: { Authorization: `Bearer ${response1.data.token}` }})
+        axios.get(import.meta.env.API_ENDPOINT + '/auth/', { headers: { Authorization: `Bearer ${response1.data.token}` } })
           .then((response2) => {
-            var userData = Object.assign(response1.data, response2.data.claims)
+            const userData = Object.assign(response1.data, response2.data.claims)
             window.localStorage.setItem('smarthomeUser', JSON.stringify(userData))
             resolve(userData)
           })
@@ -24,7 +24,7 @@ function login (username, password) {
 // eslint-disable-next-line
 function renewToken (token) {
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/auth', {headers: { Authorization: `Bearer ${token}` }})
+    axios.put(import.meta.env.API_ENDPOINT + '/auth', { headers: { Authorization: `Bearer ${token}` } })
       .then(function (res) {
         window.localStorage.setItem('smarthomeUser', JSON.stringify(res.data))
         resolve(res.data)
@@ -36,9 +36,9 @@ function renewToken (token) {
 }
 
 function checkAuth () {
-  var token = getCurrentUser()
+  const token = getCurrentUser()
   if (token != null) {
-    var tokenExpiration = new Date(token.expire)
+    const tokenExpiration = new Date(token.expire)
     if (tokenExpiration < Date.now()) {
       // Token is expired
       window.localStorage.removeItem('smarthomeUser')
@@ -51,7 +51,7 @@ function checkAuth () {
 }
 
 function getCurrentUser () {
-  var user = window.localStorage.getItem('smarthomeUser')
+  const user = window.localStorage.getItem('smarthomeUser')
   if (user != null) {
     return JSON.parse(user)
   } else {

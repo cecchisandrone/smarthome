@@ -42,12 +42,12 @@
     },
     methods: {
       init: function () {
-        var that = this
+        const that = this
         configurationService.getConfiguration().then((data) => {
           that.relays = data.Relays
-          for (var i = 0; i < data.Relays.length; i++) {
-            let name = data.Relays[i].Name
-            let id = data.Relays[i].ID
+          for (let i = 0; i < data.Relays.length; i++) {
+            const name = data.Relays[i].Name
+            const id = data.Relays[i].ID
             relayService.getRelay(id).then((data2) => {
               that.relaysStatus[name] = data2.status
             })
@@ -62,9 +62,9 @@
         })
       },
       toggleRelay: function (relayId, relayName, channel) {
-        let status = this.relaysStatus[relayName]
+        const status = this.relaysStatus[relayName]
         status[channel - 1] = !status[channel - 1]
-        var that = this
+        const that = this
         let manuallyActivated = true
         if (Object.values(status).every(val => {
           return val === false
@@ -88,7 +88,7 @@
         // getGlobalStatus() reports 'Ok' before the per-relay GET has resolved,
         // so the status has to be checked here too. Vue 2 caught the resulting
         // TypeError and logged it; Vue 3 rethrows it as an uncaught exception.
-        let status = this.relaysStatus[relayName]
+        const status = this.relaysStatus[relayName]
         if (status !== undefined && status !== -1) {
           return status[channel - 1]
         }

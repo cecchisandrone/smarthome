@@ -8,7 +8,8 @@
   export default {
     data: function () {
       return {
-        imageSrc: 'static/img/loading_icon.gif'
+        imageSrc: 'static/img/loading_icon.gif',
+        refreshTimer: null
       }
     },
     props: ['camera'],
@@ -16,23 +17,32 @@
       if (this.camera.Type === 'iframe') {
         this.imageSrc = '#'
       } else {
-        var img, that
-        img = new Image()
-        that = this
+        const that = this
+        const img = new Image()
         img.onload = function () {
           that.imageSrc = that.camera.Url
         }
         img.src = this.camera.Url
         if (this.camera.Type === 'sv3c') {
-          setInterval(this.updateSv3cUrl, 5000)
+          this.refreshTimer = setInterval(this.updateSv3cUrl, 5000)
         }
         if (this.camera.Type === 'microcam') {
-          setInterval(this.updateMicrocamUrl, 5000)
+          this.refreshTimer = setInterval(this.updateMicrocamUrl, 5000)
         }
       }
     },
-    beforeDestroy () {
+    /**
+     * Vue 3 renamed beforeDestroy to beforeUnmount, so this hook had been
+     * silently dead since the flip. The interval it now also clears was never
+     * cleared at all: leaving the cameras page left it polling the camera
+     * forever, once per mounted camera.
+     */
+    beforeUnmount () {
       this.imageSrc = '#'
+      if (this.refreshTimer) {
+        clearInterval(this.refreshTimer)
+        this.refreshTimer = null
+      }
     },
     methods: {
       updateSv3cUrl: function () {

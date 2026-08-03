@@ -36,15 +36,9 @@ test.describe('authentication', () => {
 
     await page.locator('.navbar-right-menu').getByText('Logout').click()
 
-    // Known defect: Logout.vue renders <a href="#"> and its click handler has no
-    // .prevent, so the anchor's default action rewrites the hash right after
-    // $router.push and the '?loggedOut=true' query is lost.
-    //
-    // Where it lands changed with vue-router 4. Under vue-router 2 the anchor
-    // reset the hash to '#/' and the guard then redirected to the login form.
-    // vue-router 4 pushes through the history API, so the anchor's '#' leaves
-    // the resolved '/login' path in place and only the query is dropped.
-    await expect(page).toHaveURL(/#\/login$/)
+    // The query survives now that Logout.vue's handler is .prevent'ed; before
+    // phase 4 the <a href="#"> navigated after the router push and stripped it.
+    await expect(page).toHaveURL(/#\/login\?loggedOut=true$/)
     await expect(page.getByRole('heading', { name: 'SmartHome Authentication' })).toBeVisible()
     expect(await page.evaluate(() => window.localStorage.getItem('smarthomeUser'))).toBeNull()
     await expect(page.locator('.notifications')).toContainText('You have been successfully logged out')
