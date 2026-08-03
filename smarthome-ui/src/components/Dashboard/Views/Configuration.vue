@@ -12,7 +12,7 @@
     <div class="row">
       <relay-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></relay-configuration>
     </div>
-    <div class="row">    
+    <div class="row">
       <div class="col-sm-4">
         <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
         <rain-gauge-configuration :rainGauge="configuration.RainGauge" @rainGaugeModified="rainGaugeModified" @loadConfiguration="loadConfiguration"></rain-gauge-configuration>
@@ -33,7 +33,7 @@
       Save
     </button>
   </div>
-  
+
 </template>
 <script>
   import * as configurationService from 'src/services/configurationService.js'
@@ -69,14 +69,14 @@
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}, Heater: {}, PowerMeter: {}},
+        configuration: { Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}, Heater: {}, PowerMeter: {} },
         errors: null,
         saveButtonEnabled: false
       }
     },
     methods: {
       loadConfiguration: function () {
-        var app = this
+        const app = this
         configurationService.getConfiguration().then((data) => {
           app.configuration = data
         })
@@ -85,15 +85,15 @@
         })
       },
       saveConfiguration: function () {
-        var app = this
+        const app = this
         console.log(this.configuration)
         configurationService.saveConfiguration(this.configuration).then((data) => {
           app.configuration = data
-          this.$notifications.notify({message: 'Configuration saved', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+          this.$notifications.notify({ message: 'Configuration saved', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
         })
         .catch((err) => {
           app.errors = err.message
-          this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+          this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
         })
       },
       gateModified: function (gate) {

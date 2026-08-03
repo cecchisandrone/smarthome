@@ -1,16 +1,22 @@
 <template>
   <stats-card>
-    <div class="icon-success" slot="header">
-      <h3>Well Pumps</h3>
-    </div>
-    <div class="numbers" slot="content">
-      <button v-for="wellPump in wellPumps" class="btn btn-default btn-md" v-bind:class="{ active: getStatus(wellPump.Name) == 'On' }" v-on:click="togglePump(wellPump.ID, wellPump.Name)">
-        <span>{{ getStatus(wellPump.Name) }} ({{ wellPump.Name}})</span>
-      </button>
-    </div>
-    <div class="stats" slot="footer">
-      <i v-if="messages" class="ti-info"></i> {{messages}}
-    </div>
+    <template #header>
+      <div class="icon-success">
+        <h3>Well Pumps</h3>
+      </div>
+    </template>
+    <template #content>
+      <div class="numbers">
+        <button v-for="wellPump in wellPumps" :key="wellPump.ID" class="btn btn-default btn-md" v-bind:class="{ active: getStatus(wellPump.Name) == 'On' }" v-on:click="togglePump(wellPump.ID, wellPump.Name)">
+          <span>{{ getStatus(wellPump.Name) }} ({{ wellPump.Name}})</span>
+        </button>
+      </div>
+    </template>
+    <template #footer>
+      <div class="stats">
+        <i v-if="messages" class="ti-info"></i> {{messages}}
+      </div>
+    </template>
   </stats-card>
 </template>
 <script>
@@ -30,17 +36,17 @@
     },
     methods: {
       init: function () {
-        var that = this
+        const that = this
         configurationService.getConfiguration().then((data) => {
           that.wellPumps = data.WellPumps
-          for (var i = 0; i < data.WellPumps.length; i++) {
-            let name = data.WellPumps[i].Name
-            let id = data.WellPumps[i].ID
+          for (let i = 0; i < data.WellPumps.length; i++) {
+            const name = data.WellPumps[i].Name
+            const id = data.WellPumps[i].ID
             wellPumpService.getWellPumpRelay(id).then((data2) => {
-              that.$set(that.wellPumpsStatus, name, data2.status)
+              that.wellPumpsStatus[name] = data2.status
             })
             .catch((err) => {
-              that.$set(that.wellPumpsStatus, name, -1)
+              that.wellPumpsStatus[name] = -1
               that.messages += name + ': ' + err.message
             })
           }
@@ -50,8 +56,8 @@
         })
       },
       togglePump: function (wellPumpId, wellPumpName) {
-        let status = this.wellPumpsStatus[wellPumpName]
-        var that = this
+        const status = this.wellPumpsStatus[wellPumpName]
+        const that = this
         wellPumpService.toggleWellPumpRelay(wellPumpId, status ^ 1, !!(status ^ 1)).then((data) => {
           if (data.status) {
             that.messages = 'Well Pump ' + wellPumpName + ' activated'
@@ -61,7 +67,7 @@
           that.init()
         })
         .catch((err) => {
-          that.$set(that.wellPumpsStatus, name, -1)
+          that.wellPumpsStatus[name] = -1
           that.messages += name + ': ' + err.message
         })
       },

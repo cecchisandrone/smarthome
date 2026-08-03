@@ -16,15 +16,18 @@
       </div>
       <slot>
 
-      </slot>      
+      </slot>
       <ul :class="navClasses">
-        </span>
-        <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
-        <router-link v-for="(link,index) in sidebarLinks" :key="link.name" :to="link.path" tag="li" :ref="link.name">
-          <a v-on:click="hideSidebar">
-            <i :class="link.icon"></i>
-            <p v-on:click="hideSidebar">{{link.name}}</p>
-          </a>          
+        <!--vue-router 4 dropped `tag`, so the <li> is rendered here and the
+            active class (linkActiveClass: 'active') is applied by hand from the
+            slot's isActive flag, matching what vue-router 2 used to do.-->
+        <router-link v-for="link in sidebarLinks" :key="link.name" :to="link.path" custom v-slot="{ href, navigate, isActive }">
+          <li :class="{ active: isActive }">
+            <a :href="href" v-on:click="onLinkClick($event, navigate)">
+              <i :class="link.icon"></i>
+              <p>{{link.name}}</p>
+            </a>
+          </li>
         </router-link>
       </ul>
       <moving-arrow :move-y="arrowMovePx">
@@ -41,7 +44,7 @@
         type: String,
         default: 'sidebar',
         validator: (value) => {
-          let acceptedValues = ['sidebar', 'navbar']
+          const acceptedValues = ['sidebar', 'navbar']
           return acceptedValues.indexOf(value) !== -1
         }
       },
@@ -49,7 +52,7 @@
         type: String,
         default: 'black',
         validator: (value) => {
-          let acceptedValues = ['white', 'black', 'darkblue']
+          const acceptedValues = ['white', 'black', 'darkblue']
           return acceptedValues.indexOf(value) !== -1
         }
       },
@@ -57,7 +60,7 @@
         type: String,
         default: 'success',
         validator: (value) => {
-          let acceptedValues = ['primary', 'info', 'success', 'warning', 'danger']
+          const acceptedValues = ['primary', 'info', 'success', 'warning', 'danger']
           return acceptedValues.indexOf(value) !== -1
         }
       },
@@ -105,7 +108,7 @@
     methods: {
       findActiveLink () {
         this.sidebarLinks.find((element, index) => {
-          let found = element.path === this.$route.path
+          const found = element.path === this.$route.path
           if (found) {
             this.activeLinkIndex = index
           }
@@ -114,6 +117,14 @@
       },
       hideSidebar () {
         this.$sidebar.displaySidebar(false)
+      },
+      /**
+       * With `custom`, the slot's <a> carries a real href that the browser
+       * would follow, so navigation has to be driven explicitly.
+       */
+      onLinkClick (event, navigate) {
+        this.hideSidebar()
+        navigate(event)
       }
     },
     mounted () {

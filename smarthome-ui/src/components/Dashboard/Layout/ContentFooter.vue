@@ -22,7 +22,7 @@
   export default {
     computed: {
       gitVersion () {
-        return process.env.GIT_VERSION
+        return import.meta.env.GIT_VERSION
       }
     }
   }

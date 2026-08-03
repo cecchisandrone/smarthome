@@ -1,14 +1,20 @@
 <template>
     <stats-card>
-        <div class="text-center" :class="`icon-${raspsonar.type}`" slot="header">
-        <h3>Basement Water Level</h3>
-        </div>
-        <div class="numbers" slot="content">
-        {{raspsonar.value}}
-        </div>
-        <div class="stats" slot="footer">
-        <i :class="raspsonar.footerIcon"></i> {{raspsonar.footerText}}
-        </div>
+        <template #header>
+          <div class="text-center" :class="`icon-${raspsonar.type}`">
+          <h3>Basement Water Level</h3>
+          </div>
+        </template>
+        <template #content>
+          <div class="numbers">
+          {{raspsonar.value}}
+          </div>
+        </template>
+        <template #footer>
+          <div class="stats">
+          <i :class="raspsonar.footerIcon"></i> {{raspsonar.footerText}}
+          </div>
+        </template>
     </stats-card>
 </template>
 <script>
@@ -31,7 +37,7 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       raspsonarService.getLastMeasurement().then((data) => {
         that.raspsonar.value = data.value.toFixed(2) + ' cm'
         that.raspsonar.footerText = new Date(data.timestamp).toLocaleString()

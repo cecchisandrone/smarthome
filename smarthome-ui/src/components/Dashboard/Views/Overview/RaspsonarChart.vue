@@ -1,8 +1,12 @@
 <template>
   <chart-card ref="raspsonarChart" :chart-data="raspsonarChart.data" :chart-options="raspsonarChart.options">
-    <h4 class="title" slot="title">Basement water level (cm)</h4>
-    <span slot="subTitle"> Measured every 2 hours</span>
-  </chart-card>  
+    <template #title>
+      <h4 class="title">Basement water level (cm)</h4>
+    </template>
+    <template #subTitle>
+      <span> Measured every 2 hours</span>
+    </template>
+  </chart-card>
 </template>
 
 <script>
@@ -37,12 +41,12 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       raspsonarService.getScheduledMeasurements().then((data) => {
         that.raspsonarChart.data.labels = []
         that.raspsonarChart.data.series = [[]]
         for (const prop in data) {
-          that.raspsonarChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}))
+          that.raspsonarChart.data.labels.push(new Date(prop).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
           that.raspsonarChart.data.series[0].push(data[prop])
         }
         that.$refs.raspsonarChart.initChart()

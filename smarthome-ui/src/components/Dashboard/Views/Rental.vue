@@ -39,7 +39,7 @@ import * as rentalService from 'src/services/rentalService.js'
 export default {
   methods: {
     loadConfiguration: function () {
-      var app = this
+      const app = this
       configurationService.getConfiguration().then((data) => {
         app.configuration = data
       })
@@ -48,14 +48,14 @@ export default {
       })
     },
     generateAccessLink: function () {
-      var app = this
+      const app = this
       rentalService.generateAccessLink(this.booking).then((data) => {
         app.booking.AccessLink = data.link
-        this.$notifications.notify({message: 'Link generated', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+        this.$notifications.notify({ message: 'Link generated', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
       })
       .catch((err) => {
         app.errors = err.message
-        this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+        this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
       })
     }
   },

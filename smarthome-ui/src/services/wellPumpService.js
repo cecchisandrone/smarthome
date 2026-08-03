@@ -2,10 +2,10 @@ import axios from 'axios'
 import * as authService from './authService.js'
 
 function updateWellPump (wellPump) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPump.ID, wellPump, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPump.ID, wellPump, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -16,10 +16,10 @@ function updateWellPump (wellPump) {
 }
 
 function createWellPump (wellPump) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.post(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/', wellPump, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.post(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/', wellPump, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -30,10 +30,10 @@ function createWellPump (wellPump) {
 }
 
 function deleteWellPump (wellPump) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.delete(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPump.ID, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.delete(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPump.ID, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -44,10 +44,10 @@ function deleteWellPump (wellPump) {
 }
 
 function getAllWellPumps () {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -58,10 +58,10 @@ function getAllWellPumps () {
 }
 
 function getWellPumpRelay (wellPumpId) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPumpId + '/relay', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPumpId + '/relay', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -72,10 +72,10 @@ function getWellPumpRelay (wellPumpId) {
 }
 
 function toggleWellPumpRelay (wellPumpId, status, manuallyActivated) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPumpId + '/relay', null, {params: {status: status, manuallyActivated: manuallyActivated}, headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/well-pumps/' + wellPumpId + '/relay', null, { params: { status, manuallyActivated }, headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -85,4 +85,4 @@ function toggleWellPumpRelay (wellPumpId, status, manuallyActivated) {
   })
 }
 
-export {createWellPump, updateWellPump, deleteWellPump, getAllWellPumps, toggleWellPumpRelay, getWellPumpRelay}
+export { createWellPump, updateWellPump, deleteWellPump, getAllWellPumps, toggleWellPumpRelay, getWellPumpRelay }

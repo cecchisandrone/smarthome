@@ -2,10 +2,10 @@ import axios from 'axios'
 import * as authService from './authService.js'
 
 function updateInverter (inverter) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/' + inverter.ID, inverter, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/' + inverter.ID, inverter, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -16,10 +16,10 @@ function updateInverter (inverter) {
 }
 
 function createInverter (inverter) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.post(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/', inverter, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.post(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/', inverter, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -30,10 +30,10 @@ function createInverter (inverter) {
 }
 
 function deleteInverter (inverter) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.delete(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/' + inverter.ID, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.delete(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/' + inverter.ID, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -44,10 +44,10 @@ function deleteInverter (inverter) {
 }
 
 function getAllInverters () {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -58,10 +58,10 @@ function getAllInverters () {
 }
 
 function getInverterMetrics (inverterId) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/' + inverterId + '/metrics', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/inverters/' + inverterId + '/metrics', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -71,4 +71,4 @@ function getInverterMetrics (inverterId) {
   })
 }
 
-export {createInverter, updateInverter, deleteInverter, getAllInverters, getInverterMetrics}
+export { createInverter, updateInverter, deleteInverter, getAllInverters, getInverterMetrics }

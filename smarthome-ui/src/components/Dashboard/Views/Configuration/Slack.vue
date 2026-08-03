@@ -20,35 +20,39 @@
                 <fg-input type="text"
                         label="Token"
                         placeholder="Token"
-                        v-model.number="slack.Token"                        
+                        v-model.number="slack.Token"
                         @input="modelChanged">
                 </fg-input>
                 <fg-input type="text"
                         label="Location change users"
                         placeholder="Location change users"
-                        v-model.number="slack.LocationChangeUsers"                        
+                        v-model.number="slack.LocationChangeUsers"
                         @input="modelChanged">
                 </fg-input>
-                <button style="margin: 10px" class="btn btn-success" v-on:click="testSlackSettings">
+                <!-- type="button": the default inside a <form> is "submit",
+                     which reloaded the page before the result notification
+                     could be read. -->
+                <button type="button" style="margin: 10px" class="btn btn-success" v-on:click="testSlackSettings">
                   Test
                 </button>
           </form>
           </div>
           </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </template>
-  
+
 <script>
 import * as notificationService from 'src/services/notificationService.js'
 export default {
+  emits: ['slackModified'],
   props: ['slack'],
   methods: {
     modelChanged: function () {
       this.$emit('slackModified', this.slack)
     },
     testSlackSettings: function () {
-      var that = this
+      const that = this
       notificationService.testSlackNotification().then(function (res) {
         that.$notifications.notify(
           {

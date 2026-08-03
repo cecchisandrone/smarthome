@@ -1,5 +1,10 @@
 <template>
-      <transition name="modal">
+      <!-- `appear` because every call site toggles the whole <modal> with
+           v-if, so the transition never sees a toggle of its own child and the
+           .modal-enter-from styles below were dead. With appear the enter
+           transition runs when the component mounts, which is the moment the
+           dialog actually opens. Leaving is still instant. -->
+      <transition name="modal" appear>
         <div class="modal-mask">
           <div class="modal-wrapper">
             <div class="modal-container">
@@ -9,16 +14,16 @@
                     <div class="modal-header">
                         <slot name="header">
                         default header
-                        </slot>                
+                        </slot>
                     </div>
-                </div>              
+                </div>
                 <div class="col-xs-1">
                     <button class="btn btn-sm" @click="$emit('close')">
                     X
                     </button>
                 </div>
-              </div>             
-              </div>             
+              </div>
+              </div>
 
               <div class="modal-body">
                 <slot name="body" >
@@ -28,8 +33,8 @@
 
               <div class="modal-footer">
                 <slot name="footer">
-                  default footer                  
-                </slot>                
+                  default footer
+                </slot>
               </div>
             </div>
           </div>
@@ -38,6 +43,10 @@
 </template>
 
 <script>
+  export default {
+    name: 'modal',
+    emits: ['close']
+  }
 </script>
 
 <style>
@@ -92,7 +101,7 @@
  * these styles.
  */
 
-.modal-enter {
+.modal-enter-from {
   opacity: 0;
 }
 
@@ -100,7 +109,7 @@
   opacity: 0;
 }
 
-.modal-enter .modal-container,
+.modal-enter-from .modal-container,
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);

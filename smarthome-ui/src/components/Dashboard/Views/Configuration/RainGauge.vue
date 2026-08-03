@@ -20,12 +20,13 @@
           </form>
           </div>
           </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </template>
-  
+
 <script>
 export default {
+  emits: ['rainGaugeModified'],
   props: ['rainGauge'],
   methods: {
     modelChanged: function () {

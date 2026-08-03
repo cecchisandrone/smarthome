@@ -12,12 +12,13 @@
               </form>
             </div>
           </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </template>
-  
+
 <script>
 export default {
+  emits: ['alarmModified'],
   props: ['alarm'],
   methods: {
     modelChanged: function () {

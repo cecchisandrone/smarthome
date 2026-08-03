@@ -1,5 +1,33 @@
 version: 2.1
 jobs:
+  # Playwright end-to-end suite for smarthome-ui, running against the dev server
+  # with a fully mocked backend (see smarthome-ui/vue_migration.md, phase 0).
+  # It gates the image build so a broken UI is never published.
+  test_ui:
+    docker:
+      # Keep this tag in step with the @playwright/test version in
+      # smarthome-ui/package.json - the browsers are baked into the image.
+      - image: mcr.microsoft.com/playwright:v1.62.1-noble
+    resource_class: medium
+    working_directory: ~/project/smarthome-ui
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          # No --legacy-peer-deps: the dependency tree resolves on its own since
+          # the eslint 3 stack was dropped, and leaving the flag on would hide a
+          # genuine peer conflict the next time one is introduced.
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Run end-to-end tests
+          command: npm run e2e
+      - store_artifacts:
+          path: ~/project/smarthome-ui/e2e-report
+          destination: e2e-report
+      - store_artifacts:
+          path: ~/project/smarthome-ui/test-results
+          destination: test-results
   build_ui:
     machine:
       image: ubuntu-2204:current
@@ -55,7 +83,10 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
-      - build_ui
+      - test_ui
+      - build_ui:
+          requires:
+            - test_ui
       - build_server:
           requires:
             - build_ui

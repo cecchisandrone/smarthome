@@ -14,7 +14,7 @@
   </li>
 </template>
 <script>
-  export default{
+  export default {
     props: {
       title: String,
       icon: String
