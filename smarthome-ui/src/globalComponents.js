@@ -8,11 +8,11 @@ import Modal from './components/UIComponents/Modal/Modal.vue'
  */
 
 const GlobalComponents = {
-  install (Vue) {
-    Vue.component('fg-input', fgInput)
-    Vue.component('drop-down', DropDown)
-    Vue.component('logout', Logout)
-    Vue.component('modal', Modal)
+  install (app) {
+    app.component('fg-input', fgInput)
+    app.component('drop-down', DropDown)
+    app.component('logout', Logout)
+    app.component('modal', Modal)
   }
 }
 

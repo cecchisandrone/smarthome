@@ -27,12 +27,13 @@
           </form>
           </div>
           </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </template>
-  
+
 <script>
 export default {
+  emits: ['gateModified'],
   props: ['gate'],
   methods: {
     modelChanged: function () {

@@ -2,10 +2,10 @@ import axios from 'axios'
 import * as authService from './authService.js'
 
 function updateCamera (camera) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/cameras/' + camera.ID, camera, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/cameras/' + camera.ID, camera, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -16,10 +16,10 @@ function updateCamera (camera) {
 }
 
 function createCamera (camera) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.post(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/cameras/', camera, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.post(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/cameras/', camera, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -30,10 +30,10 @@ function createCamera (camera) {
 }
 
 function deleteCamera (camera) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.delete(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/cameras/' + camera.ID, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.delete(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/cameras/' + camera.ID, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -44,10 +44,10 @@ function deleteCamera (camera) {
 }
 
 function getAllCameras () {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/cameras/', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/cameras/', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -57,4 +57,4 @@ function getAllCameras () {
   })
 }
 
-export {createCamera, updateCamera, deleteCamera, getAllCameras}
+export { createCamera, updateCamera, deleteCamera, getAllCameras }

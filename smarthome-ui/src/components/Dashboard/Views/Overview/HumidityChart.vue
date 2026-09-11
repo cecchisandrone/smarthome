@@ -1,8 +1,12 @@
 <template>
   <chart-card ref="humidityChart" :chart-data="humidityChart.data" :chart-options="humidityChart.options">
-    <h4 class="title" slot="title">Outdoor Humidity (%)</h4>
-    <span slot="subTitle"> Measured every 2 hours</span>
-  </chart-card>  
+    <template #title>
+      <h4 class="title">Outdoor Humidity (%)</h4>
+    </template>
+    <template #subTitle>
+      <span> Measured every 2 hours</span>
+    </template>
+  </chart-card>
 </template>
 
 <script>
@@ -35,12 +39,12 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       humidityService.getScheduledMeasurements().then((data) => {
         that.humidityChart.data.labels = []
         that.humidityChart.data.series = [[]]
         for (const prop in data) {
-          that.humidityChart.data.labels.push(new Date(prop).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}))
+          that.humidityChart.data.labels.push(new Date(prop).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
           that.humidityChart.data.series[0].push(data[prop])
         }
         that.$refs.humidityChart.initChart()

@@ -1,15 +1,21 @@
 <template>
     <stats-card>
-        <div class="text-center" :class="`icon-${rainGauge.type}`" slot="header">
-        <h3>Rainfall</h3>
-        <h5>Last 24h</h5>
-        </div>
-        <div class="numbers" slot="content">
-        {{rainGauge.value}}
-        </div>
-        <div class="stats" slot="footer">
-        <i :class="rainGauge.footerIcon"></i> {{rainGauge.footerText}}
-        </div>
+        <template #header>
+          <div class="text-center" :class="`icon-${rainGauge.type}`">
+          <h3>Rainfall</h3>
+          <h5>Last 24h</h5>
+          </div>
+        </template>
+        <template #content>
+          <div class="numbers">
+          {{rainGauge.value}}
+          </div>
+        </template>
+        <template #footer>
+          <div class="stats">
+          <i :class="rainGauge.footerIcon"></i> {{rainGauge.footerText}}
+          </div>
+        </template>
     </stats-card>
 </template>
 <script>
@@ -32,7 +38,7 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       rainGaugeService.getLast24hTotal().then((data) => {
         that.rainGauge.value = data.value.toFixed(2) + ' mm'
         that.rainGauge.footerText = new Date(data.timestamp).toLocaleString()

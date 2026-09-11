@@ -32,12 +32,13 @@
           </form>
           </div>
           </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </template>
-  
+
 <script>
 export default {
+  emits: ['powerMeterModified'],
   props: ['powerMeter'],
   methods: {
     modelChanged: function () {

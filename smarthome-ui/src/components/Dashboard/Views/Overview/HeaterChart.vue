@@ -1,8 +1,12 @@
 <template>
   <chart-card ref="heaterChart" :chart-data="heaterChart.data" :chart-options="heaterChart.options">
-    <h4 class="title" slot="title">Heater Temperature (°C)</h4>
-    <span slot="subTitle"> Measured every 15 minutes</span>
-  </chart-card>  
+    <template #title>
+      <h4 class="title">Heater Temperature (°C)</h4>
+    </template>
+    <template #subTitle>
+      <span> Measured every 15 minutes</span>
+    </template>
+  </chart-card>
 </template>
 
 <script>
@@ -35,12 +39,12 @@
       }
     },
     created () {
-      var that = this
+      const that = this
       heaterService.getScheduledMeasurements().then((data) => {
         that.heaterChart.data.labels = []
         that.heaterChart.data.series = [[]]
         for (const prop in data) {
-          that.heaterChart.data.labels.push(new Date(prop).toLocaleTimeString([], {day: '2-digit', hour: '2-digit', minute: '2-digit'}))
+          that.heaterChart.data.labels.push(new Date(prop).toLocaleTimeString([], { day: '2-digit', hour: '2-digit', minute: '2-digit' }))
           that.heaterChart.data.series[0].push(data[prop])
         }
         that.$refs.heaterChart.initChart()

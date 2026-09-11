@@ -26,32 +26,33 @@
             <fg-input type="text"
                     label="Relay name"
                     placeholder="Relay name"
-                    v-model.number="raspsonar.RelayName"                        
+                    v-model.number="raspsonar.RelayName"
                     @input="modelChanged">
             </fg-input>
             <fg-input type="number"
                     label="Distance threshold"
                     placeholder="Distance threshold"
-                    v-model.number="raspsonar.DistanceThreshold"                        
+                    v-model.number="raspsonar.DistanceThreshold"
                     @input="modelChanged"
                     step="0.1">
             </fg-input>
             <fg-input type="number"
                     label="Auto power off distance threshold"
                     placeholder="Auto power off distance threshold"
-                    v-model.number="raspsonar.AutoPowerOffDistanceThreshold"                        
+                    v-model.number="raspsonar.AutoPowerOffDistanceThreshold"
                     @input="modelChanged"
                     step="0.1">
             </fg-input>
           </form>
           </div>
           </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </template>
-  
+
 <script>
 export default {
+  emits: ['raspsonarModified'],
   props: ['raspsonar'],
   methods: {
     modelChanged: function () {

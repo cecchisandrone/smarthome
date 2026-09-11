@@ -26,7 +26,7 @@
 </script>
 <style lang="scss">
   $bg-nude: #f4f3ef !default;
-  
+
   .moving-arrow {
     border-right: 17px solid $bg-nude;
     border-top: 17px solid transparent;

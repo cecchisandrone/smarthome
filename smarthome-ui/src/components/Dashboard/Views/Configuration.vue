@@ -12,7 +12,7 @@
     <div class="row">
       <relay-configuration :configuration="configuration" @loadConfiguration="loadConfiguration"></relay-configuration>
     </div>
-    <div class="row">    
+    <div class="row">
       <div class="col-sm-4">
         <raspsonar-configuration :raspsonar="configuration.Raspsonar" @raspsonarModified="raspsonarModified" @loadConfiguration="loadConfiguration"></raspsonar-configuration>
         <rain-gauge-configuration :rainGauge="configuration.RainGauge" @rainGaugeModified="rainGaugeModified" @loadConfiguration="loadConfiguration"></rain-gauge-configuration>
@@ -33,23 +33,23 @@
       Save
     </button>
   </div>
-  
+
 </template>
 <script>
   import * as configurationService from 'src/services/configurationService.js'
-  import * as SlackConfiguration from 'src/components/Dashboard/Views/Configuration/Slack.vue'
-  import * as CameraConfiguration from 'src/components/Dashboard/Views/Configuration/Camera.vue'
-  import * as GateConfiguration from 'src/components/Dashboard/Views/Configuration/Gate.vue'
-  import * as RaspsonarConfiguration from 'src/components/Dashboard/Views/Configuration/Raspsonar.vue'
-  import * as TemperatureConfiguration from 'src/components/Dashboard/Views/Configuration/Temperature.vue'
-  import * as AlarmConfiguration from 'src/components/Dashboard/Views/Configuration/Alarm.vue'
-  import * as WellPumpConfiguration from 'src/components/Dashboard/Views/Configuration/WellPump.vue'
-  import * as InverterConfiguration from 'src/components/Dashboard/Views/Configuration/Inverter.vue'
-  import * as RainGaugeConfiguration from 'src/components/Dashboard/Views/Configuration/RainGauge.vue'
-  import * as HumidityConfiguration from 'src/components/Dashboard/Views/Configuration/Humidity.vue'
-  import * as HeaterConfiguration from 'src/components/Dashboard/Views/Configuration/Heater.vue'
-  import * as PowerMeterConfiguration from 'src/components/Dashboard/Views/Configuration/PowerMeter.vue'
-  import * as RelayConfiguration from 'src/components/Dashboard/Views/Configuration/Relay.vue'
+  import SlackConfiguration from 'src/components/Dashboard/Views/Configuration/Slack.vue'
+  import CameraConfiguration from 'src/components/Dashboard/Views/Configuration/Camera.vue'
+  import GateConfiguration from 'src/components/Dashboard/Views/Configuration/Gate.vue'
+  import RaspsonarConfiguration from 'src/components/Dashboard/Views/Configuration/Raspsonar.vue'
+  import TemperatureConfiguration from 'src/components/Dashboard/Views/Configuration/Temperature.vue'
+  import AlarmConfiguration from 'src/components/Dashboard/Views/Configuration/Alarm.vue'
+  import WellPumpConfiguration from 'src/components/Dashboard/Views/Configuration/WellPump.vue'
+  import InverterConfiguration from 'src/components/Dashboard/Views/Configuration/Inverter.vue'
+  import RainGaugeConfiguration from 'src/components/Dashboard/Views/Configuration/RainGauge.vue'
+  import HumidityConfiguration from 'src/components/Dashboard/Views/Configuration/Humidity.vue'
+  import HeaterConfiguration from 'src/components/Dashboard/Views/Configuration/Heater.vue'
+  import PowerMeterConfiguration from 'src/components/Dashboard/Views/Configuration/PowerMeter.vue'
+  import RelayConfiguration from 'src/components/Dashboard/Views/Configuration/Relay.vue'
 
   export default {
     components: {
@@ -69,14 +69,14 @@
     },
     data () {
       return {
-        configuration: {Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}, Heater: {}, PowerMeter: {}},
+        configuration: { Gate: {}, Raspsonar: {}, Slack: {}, Temperature: {}, Alarm: {}, RainGauge: {}, Humidity: {}, Inverter: {}, Heater: {}, PowerMeter: {} },
         errors: null,
         saveButtonEnabled: false
       }
     },
     methods: {
       loadConfiguration: function () {
-        var app = this
+        const app = this
         configurationService.getConfiguration().then((data) => {
           app.configuration = data
         })
@@ -85,15 +85,15 @@
         })
       },
       saveConfiguration: function () {
-        var app = this
+        const app = this
         console.log(this.configuration)
         configurationService.saveConfiguration(this.configuration).then((data) => {
           app.configuration = data
-          this.$notifications.notify({message: 'Configuration saved', horizontalAlign: 'center', verticalAlign: 'top', type: 'success'})
+          this.$notifications.notify({ message: 'Configuration saved', horizontalAlign: 'center', verticalAlign: 'top', type: 'success' })
         })
         .catch((err) => {
           app.errors = err.message
-          this.$notifications.notify({message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger'})
+          this.$notifications.notify({ message: err.message, horizontalAlign: 'center', verticalAlign: 'top', type: 'danger' })
         })
       },
       gateModified: function (gate) {

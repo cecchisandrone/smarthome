@@ -8,13 +8,13 @@
           <span class="icon-bar bar2"></span>
           <span class="icon-bar bar3"></span>
         </button>
-        <a class="navbar-brand">{{routeName}}</a>                
+        <a class="navbar-brand">{{routeName}}</a>
       </div>
       <div class="navbar-right-menu">
         <ul class="nav navbar-nav navbar-right">
           <li>
             <logout></logout>
-          </li>          
+          </li>
         </ul>
       </div>
     </div>
@@ -24,7 +24,7 @@
   export default {
     computed: {
       routeName () {
-        const {name} = this.$route
+        const { name } = this.$route
         return this.capitalizeFirstLetter(name)
       }
     },

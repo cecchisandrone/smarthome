@@ -20,12 +20,13 @@
           </form>
           </div>
           </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </template>
-  
+
 <script>
 export default {
+  emits: ['humidityModified'],
   props: ['humidity'],
   methods: {
     modelChanged: function () {

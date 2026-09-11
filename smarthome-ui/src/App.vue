@@ -6,7 +6,7 @@
       <ul class="nav navbar-nav">
           <li>
             <logout></logout>
-          </li> 
+          </li>
         <li class="divider"></li>
       </ul>
     </side-bar>

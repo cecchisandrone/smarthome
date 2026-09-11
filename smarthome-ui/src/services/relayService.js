@@ -2,10 +2,10 @@ import axios from 'axios'
 import * as authService from './authService.js'
 
 function updateRelay (relay) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relay.ID, relay, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relay.ID, relay, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -16,10 +16,10 @@ function updateRelay (relay) {
 }
 
 function createRelay (relay) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.post(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/', relay, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.post(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/', relay, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -30,10 +30,10 @@ function createRelay (relay) {
 }
 
 function deleteRelay (relay) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.delete(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relay.ID, {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.delete(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relay.ID, { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -44,10 +44,10 @@ function deleteRelay (relay) {
 }
 
 function getAllRelays () {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -58,10 +58,10 @@ function getAllRelays () {
 }
 
 function getRelay (relayId) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.get(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relayId + '/relay', {headers: { Authorization: `Bearer ${user.token}` }})
+    axios.get(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relayId + '/relay', { headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -72,10 +72,10 @@ function getRelay (relayId) {
 }
 
 function toggleRelay (relayId, status, manuallyActivated) {
-  var user = authService.getCurrentUser()
-  var configurationId = user.configurationId
+  const user = authService.getCurrentUser()
+  const configurationId = user.configurationId
   return new Promise(function (resolve, reject) {
-    axios.put(process.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relayId + '/relay', status, {params: {manuallyActivated: manuallyActivated}, headers: { Authorization: `Bearer ${user.token}` }})
+    axios.put(import.meta.env.API_ENDPOINT + '/configurations/' + configurationId + '/relays/' + relayId + '/relay', status, { params: { manuallyActivated }, headers: { Authorization: `Bearer ${user.token}` } })
       .then(function (res) {
         resolve(res.data)
       })
@@ -85,4 +85,4 @@ function toggleRelay (relayId, status, manuallyActivated) {
   })
 }
 
-export {createRelay, updateRelay, deleteRelay, getAllRelays, toggleRelay, getRelay}
+export { createRelay, updateRelay, deleteRelay, getAllRelays, toggleRelay, getRelay }

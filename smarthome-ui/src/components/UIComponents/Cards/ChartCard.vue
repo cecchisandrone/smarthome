@@ -54,15 +54,15 @@
        * Initializes the chart by merging the chart options sent via props and the default chart options
        */
       initChart () {
-        var chartIdQuery = `#${this.chartId}`
+        const chartIdQuery = `#${this.chartId}`
         this.$Chartist[this.chartType](chartIdQuery, this.chartData, this.chartOptions)
       },
       /***
        * Assigns a random id to the chart
        */
       updateChartId () {
-        var currentTime = new Date().getTime().toString()
-        var randomInt = this.getRandomInt(0, currentTime)
+        const currentTime = new Date().getTime().toString()
+        const randomInt = this.getRandomInt(0, currentTime)
         this.chartId = `div_${randomInt}`
       },
       getRandomInt (min, max) {
@@ -78,7 +78,7 @@
 </script>
 <style>
 svg.ct-chart-bar, svg.ct-chart-line{
-	overflow: visible;
+  overflow: visible;
 }
 .ct-label.ct-label.ct-horizontal.ct-end {
   position: relative;

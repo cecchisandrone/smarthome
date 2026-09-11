@@ -1,0 +1,19 @@
+# node_modules must never be copied in: rollup and esbuild resolve
+# platform-specific optional binaries (@rollup/rollup-darwin-arm64,
+# @esbuild/darwin-arm64, ...), and a host tree carried into the linux builder
+# leaves the wrong ones in place, breaking `vite build`.
+node_modules/
+
+# Build output - regenerated inside the image.
+dist/
+
+# Test tooling and its artifacts are not needed to build the bundle.
+e2e/
+playwright.config.js
+e2e-report/
+playwright-report/
+test-results/
+
+.git/
+.DS_Store
+npm-debug.log
