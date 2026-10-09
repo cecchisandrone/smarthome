@@ -7,7 +7,7 @@ const resolve = dir => fileURLToPath(new URL(dir, import.meta.url))
 
 const API_ENDPOINT = {
   development: 'http://localhost:8080/api/v1',
-  production: 'https://smarthome.cecchisandrone.net:8443/api/v1'
+  production: 'http://smarthome.cecchisandrone.net:8080/api/v1'
 }
 
 /**

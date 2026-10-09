@@ -1,12 +1,5 @@
 services:
   smarthome-server:
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.smarthome-api.rule=Host(`smarthome.cecchisandrone.net`) && PathPrefix(`/api`)
-      - traefik.http.routers.smarthome-api.tls=true
-      - traefik.http.routers.smarthome-api.entrypoints=web,websecure
-      - traefik.http.routers.smarthome-api.tls.certresolver=myresolver
-      - traefik.http.routers.smarthome-api.middlewares=smarthome@docker
     environment:
     - SMARTHOME_ENV=${SMARTHOME_ENV}
     - MYSQL_SMARTHOME_USER=${MYSQL_SMARTHOME_USER}
