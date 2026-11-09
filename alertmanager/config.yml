@@ -6,9 +6,7 @@ receivers:
     - send_resolved: true
       username: 'Prometheus'
       channel: '#alarm'
-      api_url: 'https://tinyurl.com/53y4hmrh'
+      api_url: 'https://hooks.slack.com/services/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'
       icon_url: 'http://voverc-grafana.s3.amazonaws.com/monitoring.png'
       title: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}"
       text: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
-
-
