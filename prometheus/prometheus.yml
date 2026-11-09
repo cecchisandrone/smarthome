@@ -184,10 +184,6 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Lights Relay'
-      - targets: ['192.168.1.169']
-        labels:
-          role: 'iot'
-          name: 'Thermostat'
       - targets: ['192.168.1.173']
         labels:
           role: 'iot'
