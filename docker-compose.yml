@@ -80,6 +80,8 @@ services:
     ports:
     - 9093:9093
     restart: always
+    volumes:
+    - /etc/alertmanager/secrets/slack_url.txt:/alertmanager/slack_url.txt
   blackbox-exporter:
     command: --log.level=info --config.file=/etc/blackbox_exporter/config.yml
     image: cecchisandrone/blackbox-exporter:latest
