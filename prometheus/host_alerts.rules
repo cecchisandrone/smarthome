@@ -1,0 +1,53 @@
+groups:
+  - name: host_alerts
+    rules:
+      # --- CPU Alerts ---
+      - alert: HostHighCpuLoad
+        expr: (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage has exceeded 90% for the last 5 minutes (currently {{ $value | printf \"%.2f\" }}%)."
+
+      # Alert when /dev/sda2 free space is below 20%
+      - alert: Sda2DiskSpaceRunningLow
+        expr: (node_filesystem_avail_bytes{device="/dev/sda2"} / node_filesystem_size_bytes{device="/dev/sda2"} * 100) < 30
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Disk space low on {{ $labels.instance }} (/dev/sda2)"
+          description: "Partition /dev/sda2 has less than 30% space remaining (currently {{ $value | printf \"%.2f\" }}%)."
+
+      # Alert if /dev/sda2 is filling rapidly and predicted to exhaust within 24 hours
+      - alert: Sda2DiskWillFillIn24Hours
+        expr: (node_filesystem_avail_bytes{device="/dev/sda2"} / -(predict_linear(node_filesystem_avail_bytes{device="/dev/sda2"}[4h], 86400))) < 0
+          and predict_linear(node_filesystem_avail_bytes{device="/dev/sda2"}[4h], 86400) < 0
+        for: 1h
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk /dev/sda2 projected to fill within 24h"
+          description: "Based on consumption over the last 4 hours, /dev/sda2 will run out of space in less than 24 hours."
+
+      # --- Memory Alerts ---
+      - alert: HostMemoryRunningLow
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage has exceeded 85% for the last 5 minutes (currently {{ $value | printf \"%.2f\" }}% used, less than {{ with query \"node_memory_MemAvailable_bytes / 1024 / 1024\" }}{{ . | first | value | printf \"%.0f\" }}{{ end }} MB available)."
+
+      # Alerts only when the host is actively reading/writing to swap heavily
+      - alert: HostSwapThrashing
+        expr: (rate(node_vmstat_pswpin[5m]) + rate(node_vmstat_pswpout[5m])) > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Heavy swap I/O thrashing on {{ $labels.instance }}"
+          description: "System is actively swapping pages in and out at high rates, causing I/O degradation."

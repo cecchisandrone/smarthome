@@ -3,8 +3,14 @@ global:
   evaluation_interval: 10s
   scrape_timeout:      10s
 rule_files:
-  - 'alert.rules'
+  - 'node_alerts.rules'
+  - 'host_alerts.rules'
 scrape_configs:
+  - job_name: "node"
+    static_configs:
+      - targets: ["host.docker.internal:9100"]
+        labels:
+          instance: "smarthome"
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
@@ -178,6 +184,10 @@ scrape_configs:
         labels:
           role: 'iot'
           name: 'Lights Relay'
+      - targets: ['192.168.1.169']
+        labels:
+          role: 'iot'
+          name: 'Thermostat'
       - targets: ['192.168.1.173']
         labels:
           role: 'iot'

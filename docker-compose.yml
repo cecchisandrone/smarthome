@@ -70,6 +70,8 @@ services:
     image: cecchisandrone/prometheus:latest
     restart: always
     command: --storage.tsdb.retention.time=60d --config.file=/etc/prometheus/prometheus.yml
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
     ports:
     - 9090:9090
     volumes:
@@ -172,6 +174,21 @@ services:
     volumes:
       - smarthome-n8n-data:/home/node/.n8n
       - ./local-files:/files
+  node-exporter:
+    image: prom/node-exporter:v1.12.1
+    container_name: node-exporter
+    restart: always
+    network_mode: host
+    pid: host
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
 volumes:
   smarthome-mysql-data:
   smarthome-grafana-data:
